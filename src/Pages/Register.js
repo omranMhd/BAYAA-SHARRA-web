@@ -12,6 +12,10 @@ import { createTheme, ThemeProvider } from "@mui/material/styles";
 import MenuItem from "@mui/material/MenuItem";
 import Switch from "@mui/material/Switch";
 import { Link } from "react-router-dom";
+import InputLabel from "@mui/material/InputLabel";
+// import MenuItem from "@mui/material/MenuItem";
+import FormControl from "@mui/material/FormControl";
+import Select from "@mui/material/Select";
 
 import { useForm } from "react-hook-form";
 import { DevTool } from "@hookform/devtools";
@@ -62,6 +66,28 @@ const cities = [
     label: "Daraa",
   },
 ];
+const phoneCodes = [
+  {
+    value: "00963",
+    label: "+963",
+  },
+  {
+    value: "00962",
+    label: "+962",
+  },
+  {
+    value: "00964",
+    label: "+964",
+  },
+  {
+    value: "0020",
+    label: "+20",
+  },
+  {
+    value: "00966",
+    label: "+966",
+  },
+];
 
 const schema = yup.object({
   firstName: yup
@@ -74,11 +100,9 @@ const schema = yup.object({
     .required("last name is required ")
     .max(10, "last name cannot be longer than 10 characters"),
 
-  email: yup
-    .string()
-    .required("email is required")
-    .email("invalid email format"),
-
+  email: yup.string(),
+  // .required("email is required")
+  // .email("invalid email format")
   phone: yup.string() /*.required("phone is required")*/,
 
   address: yup.object().shape({
@@ -105,6 +129,7 @@ export default function Register() {
       lastName: "",
       email: "",
       phone: "",
+      phoneCode: "",
       address: {
         country: "",
         city: "",
@@ -117,11 +142,21 @@ export default function Register() {
   const { errors } = formState;
 
   const onSubmit = (data) => {
-    console.log("submitted data :", data);
+    console.log("submitted dataaaaaaaaaaaa :", data);
+
+    if (showEmailField) {
+      delete data["phone"];
+    } else {
+      delete data["email"];
+      //combine phone code and phone together
+      data.phone = `${data.phoneCode}${data.phone}`;
+      delete data.phoneCode;
+    }
 
     // convert address object to string to store it in DB in this format
     data.address = JSON.stringify(data.address);
 
+    console.log("newwwwwwwwwwwww submitted dataaaaaaaaaaaa :", data);
     axiosInstance
       .post("/register", data)
       .then((res) => {
@@ -139,11 +174,26 @@ export default function Register() {
       })
       .catch((e) => {
         console.log("errrrrrrrrrrrrrrr :", e);
+
+        // if email or phone exist in table
+        if (e.response.status === 422) {
+          console.log("e.response.data.errors :", e.response.data.errors);
+          if (showEmailField) {
+            setEmailExist(e.response.data.errors.email[0]);
+            setTimeout(() => {
+              setEmailExist(null);
+            }, 5000);
+          } else {
+            setPhoneExist(e.response.data.errors.phone[0]);
+          }
+        }
       });
   };
 
   // This is to save the case where the user wants to enter an email or mobile number
   const [showEmailField, setShowEmailField] = useState(false);
+  const [emailExist, setEmailExist] = useState(null);
+  const [phoneExist, setPhoneExist] = useState(null);
 
   useEffect(() => {
     console.log("setShowEmailField :", Number(showEmailField));
@@ -161,6 +211,7 @@ export default function Register() {
   return (
     <ThemeProvider theme={defaultTheme}>
       <NavBar />
+
       <Grid container component="main" sx={{ height: "100vh" }}>
         <CssBaseline />
         <Grid
@@ -251,36 +302,82 @@ export default function Register() {
                 />
               </div>
               {showEmailField ? (
-                <TextField
-                  margin="normal"
-                  required
-                  fullWidth
-                  id="email"
-                  label="Email Address"
-                  name="email"
-                  autoComplete="email"
-                  size="small"
-                  {...register("email")}
-                  error={!!errors.email}
-                  helperText={errors.email?.message}
-                />
+                <>
+                  <TextField
+                    margin="normal"
+                    required
+                    fullWidth
+                    id="email"
+                    label="Email Address"
+                    name="email"
+                    autoComplete="email"
+                    size="small"
+                    {...register("email")}
+                    error={!!errors.email}
+                    helperText={errors.email?.message}
+                  />
+                  {emailExist != null ? <small>{emailExist}</small> : null}
+                </>
               ) : (
-                <TextField
-                  margin="normal"
-                  required
-                  fullWidth
-                  id="phoneNumber"
-                  label="phone number"
-                  name="phoneNumber"
-                  size="small"
-                  {...register("phone")}
-                  error={!!errors.phone}
-                  helperText={errors.phone?.message}
-                />
+                <>
+                  <Grid container spacing={1}>
+                    <Grid item xs={12} sm={3}>
+                      <FormControl fullWidth size="small" margin="normal">
+                        <InputLabel id="demo-simple-select-label">
+                          Code
+                        </InputLabel>
+                        <Select
+                          labelId="demo-simple-select-label"
+                          id="demo-simple-select"
+                          // value={age}
+                          // label="Age"
+                          // onChange={handleChange}
+                          {...register("phoneCode")}
+                        >
+                          {phoneCodes.map((code) => {
+                            return (
+                              <MenuItem value={code.value}>
+                                {code.label}
+                              </MenuItem>
+                            );
+                          })}
+                        </Select>
+                      </FormControl>
+                    </Grid>
+                    <Grid item xs={12} sm={9}>
+                      <TextField
+                        margin="normal"
+                        required
+                        fullWidth
+                        id="phoneNumber"
+                        label="phone number"
+                        name="phoneNumber"
+                        size="small"
+                        {...register("phone")}
+                        error={!!errors.phone}
+                        helperText={errors.phone?.message}
+                      />
+                    </Grid>
+                  </Grid>
+                </>
               )}
 
               <Grid container spacing={2}>
                 <Grid item xs={12} sm={6}>
+                  {/* <FormControl fullWidth>
+                    <InputLabel id="demo-simple-select-label">Age</InputLabel>
+                    <Select
+                      labelId="demo-simple-select-label"
+                      id="demo-simple-select"
+                      value={""}
+                      label="Age"
+                      onChange={"handleChange"}
+                    >
+                      <MenuItem value={10}>Ten</MenuItem>
+                      <MenuItem value={20}>Twenty</MenuItem>
+                      <MenuItem value={30}>Thirty</MenuItem>
+                    </Select>
+                  </FormControl> */}
                   <TextField
                     select
                     required

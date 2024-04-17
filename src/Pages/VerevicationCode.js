@@ -15,6 +15,7 @@ import axiosInstance from "../Axios/axiosInstance";
 import { useNavigate } from "react-router-dom";
 import * as types from "../Redux/actionTypes";
 import { useDispatch } from "react-redux";
+import Alert from "@mui/material/Alert";
 
 // TODO remove, this demo shouldn't need to reset the theme.
 
@@ -22,12 +23,32 @@ const defaultTheme = createTheme();
 
 function VerevicationCode() {
   const [code, setCode] = useState("");
+  const [invalidCode, setInvalidCode] = useState(false);
+  const [resendCodeStatus, setResendCodeStatus] = useState("");
 
   const token = useSelector((state) => {
     return state.token;
   });
   const user_id = useSelector((state) => {
     return state.user.id;
+  });
+
+  const email = useSelector((state) => {
+    if (state.user.email != null) {
+      return state.user.email;
+    }
+  });
+  const phone = useSelector((state) => {
+    if (state.user.phone != null) {
+      return "phone";
+    }
+  });
+  const verified_by = useSelector((state) => {
+    if (state.user.email != null) {
+      return "email";
+    } else if (state.user.phone != null) {
+      return "phone";
+    }
   });
 
   const navigate = useNavigate();
@@ -39,12 +60,10 @@ function VerevicationCode() {
       code: code,
       user_id: user_id,
     };
+    console.log(data);
 
     axiosInstance.defaults.headers.common["Authorization"] = `Bearer ${token}`;
-    console.log(
-      "axiossssssssssss headersssssssssssss :",
-      axiosInstance.defaults.headers
-    );
+
     axiosInstance
       .post("/verify-account", data)
       .then((res) => {
@@ -61,12 +80,65 @@ function VerevicationCode() {
       })
       .catch((e) => {
         console.log("error in api '/verify-account' :", e);
+
+        if (e.response.status === 400) {
+          setInvalidCode(true);
+          setTimeout(() => {
+            setInvalidCode(false);
+          }, 5000);
+        }
       });
   };
 
+  const handleResendCode = () => {
+    const data = {
+      user_id: user_id,
+      verified_by: verified_by,
+    };
+
+    if (verified_by === "email") {
+      data.email = email;
+    } else if (verified_by === "phone") {
+      data.phone = phone;
+    }
+
+    console.log("dddddddddddddddddddddddddd :", data);
+
+    axiosInstance.defaults.headers.common["Authorization"] = `Bearer ${token}`;
+
+    axiosInstance
+      .post("/resend-code", data)
+      .then((res) => {
+        setResendCodeStatus("Success");
+        setTimeout(() => {
+          setResendCodeStatus("");
+        }, 5000);
+      })
+      .catch((e) => {
+        if (e.response.status === 500) {
+          setResendCodeStatus("Failed");
+          setTimeout(() => {
+            setResendCodeStatus("");
+          }, 5000);
+        }
+      });
+  };
   return (
     <ThemeProvider theme={defaultTheme}>
       <NavBar />
+      {invalidCode && (
+        <Alert severity="warning">
+          The code you entered is invalid, try again
+        </Alert>
+      )}
+      {resendCodeStatus === "Success" && (
+        <Alert severity="success">
+          success sending email .................
+        </Alert>
+      )}
+      {resendCodeStatus === "Failed" && (
+        <Alert severity="error">Failed sending email .................</Alert>
+      )}
       <Container component="main" maxWidth="xs">
         <CssBaseline />
         <Box
@@ -84,9 +156,6 @@ function VerevicationCode() {
           <Typography component="h1" variant="h6">
             Enter The code to verify your account
           </Typography>
-          <Typography component="h1" variant="h6">
-            {token}
-          </Typography>
           <Box>
             <TextField
               margin="normal"
@@ -98,14 +167,29 @@ function VerevicationCode() {
               value={code}
               onChange={(e) => setCode(e.target.value)}
             />
-            <Button
-              fullWidth
-              variant="contained"
-              onClick={handleCheck}
-              sx={{ mt: 3, mb: 2 }}
-            >
-              Check
-            </Button>
+            <Grid container spacing={10}>
+              <Grid item xs={12} sm={6}>
+                <Button
+                  fullWidth
+                  variant="contained"
+                  onClick={handleCheck}
+                  // sx={{ mt: 3, mb: 2 }}
+                  disabled={code.length !== 6}
+                >
+                  Check
+                </Button>
+              </Grid>
+              <Grid item xs={12} sm={6}>
+                <Button
+                  fullWidth
+                  variant="contained"
+                  onClick={handleResendCode}
+                  // sx={{ mt: 3, mb: 2 }}
+                >
+                  Resend code
+                </Button>
+              </Grid>
+            </Grid>
 
             <Link to="/" variant="body2">
               {"Skip"}

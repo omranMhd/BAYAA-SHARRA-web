@@ -7,6 +7,7 @@ import AdDetails from "../Pages/AdDetails";
 import Profile from "../Pages/Profile";
 import VerevicationCode from "../Pages/VerevicationCode";
 import NoMatch from "../Pages/NoMatch";
+import ProtectedRoute from "../Components/ProtectedRoute";
 
 //we can create routes using array of objects
 const routes = createBrowserRouter([
@@ -32,7 +33,11 @@ const routes = createBrowserRouter([
   },
   {
     path: "/new-ad",
-    element: <NewAd />,
+    element: (
+      <ProtectedRoute>
+        <NewAd />
+      </ProtectedRoute>
+    ),
   },
   {
     path: "/ad-details/:adId",
@@ -44,7 +49,11 @@ const routes = createBrowserRouter([
   },
   {
     path: "/profile",
-    element: <Profile />,
+    element: (
+      <ProtectedRoute>
+        <Profile />
+      </ProtectedRoute>
+    ),
     children: [
       {
         path: "my-info",
