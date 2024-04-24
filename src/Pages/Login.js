@@ -17,7 +17,7 @@ import { DevTool } from "@hookform/devtools";
 import axiosInstance from "../Axios/axiosInstance";
 import Alert from "@mui/material/Alert";
 import { useNavigate, Link } from "react-router-dom";
-import { useSelector, useDispatch } from "react-redux";
+// import { useSelector, useDispatch } from "react-redux";
 import * as types from "../Redux/actionTypes";
 
 const schema = yup.object({
@@ -39,7 +39,7 @@ export default function SignIn() {
   const [showEmailField, setShowEmailField] = useState(false);
   const [invalidCredentials, setInvalidCredentials] = useState(false);
   const navigate = useNavigate();
-  const dispatch = useDispatch();
+  // const dispatch = useDispatch();
 
   const form = useForm({
     defaultValues: {
@@ -63,11 +63,16 @@ export default function SignIn() {
         console.log("resssssssssssssssssss :", res.data.data.token);
         console.log("resssssssssssssssssss :", res.status);
 
-        //save response data in global state
-        dispatch({
-          type: types.SAVE_USER_INFO_AND_TOKEN,
-          payload: res.data.data,
-        });
+        // ===================== to delete ====================
+        // //save response data in global state
+        // dispatch({
+        //   type: types.SAVE_USER_INFO_AND_TOKEN,
+        //   payload: res.data.data,
+        // });
+
+        //save response data (user info and its token ) in local Storage
+        localStorage.setItem("user", res.data.data.user);
+        localStorage.setItem("token", res.data.data.token);
 
         // after that go to verevication-code page
         navigate("/");
@@ -78,11 +83,16 @@ export default function SignIn() {
 
         // if account is unverified
         if (e.response.status === 423) {
-          //save response data in global state  to use it by user to verify his account
-          dispatch({
-            type: types.SAVE_USER_INFO_AND_TOKEN,
-            payload: e.response.data.data,
-          });
+          // =====================to delete===============================================
+          // //save response data in global state  to use it by user to verify his account
+          // dispatch({
+          //   type: types.SAVE_USER_INFO_AND_TOKEN,
+          //   payload: e.response.data.data,
+          // });
+
+          //save response data (user info and its token ) in local Storage to use it by user to verify his account
+          localStorage.setItem("user", e.response.data.data.user);
+          localStorage.setItem("token", e.response.data.data.token);
 
           // Then Go To Verevication Code
           navigate("/verevication-code");

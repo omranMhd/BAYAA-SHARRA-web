@@ -9,12 +9,12 @@ import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 import Container from "@mui/material/Container";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
-import { useSelector } from "react-redux";
+// import { useSelector } from "react-redux";
 import NavBar from "../Components/NavBar";
 import axiosInstance from "../Axios/axiosInstance";
 import { useNavigate } from "react-router-dom";
 import * as types from "../Redux/actionTypes";
-import { useDispatch } from "react-redux";
+// import { useDispatch } from "react-redux";
 import Alert from "@mui/material/Alert";
 
 // TODO remove, this demo shouldn't need to reset the theme.
@@ -26,34 +26,43 @@ function VerevicationCode() {
   const [invalidCode, setInvalidCode] = useState(false);
   const [resendCodeStatus, setResendCodeStatus] = useState("");
 
-  const token = useSelector((state) => {
-    return state.token;
-  });
-  const user_id = useSelector((state) => {
-    return state.user.id;
-  });
+  // const token = useSelector((state) => {
+  //   return state.token;
+  // });
+  const token = localStorage.getItem("token");
 
-  const email = useSelector((state) => {
-    if (state.user.email != null) {
-      return state.user.email;
-    }
-  });
-  const phone = useSelector((state) => {
-    if (state.user.phone != null) {
-      return "phone";
-    }
-  });
-  const verified_by = useSelector((state) => {
-    if (state.user.email != null) {
-      return "email";
-    } else if (state.user.phone != null) {
-      return "phone";
-    }
-  });
+  // const user_id = useSelector((state) => {
+  //   return state.user.id;
+  // });
+
+  const user = localStorage.getItem("user");
+  const user_id = user.id;
+  let email = user.email != null ? user.email : null;
+  let phone = user.phone != null ? user.phone : null;
+  let verified_by;
+
+  if (user.email != null) {
+    verified_by = "email";
+  } else if (user.phone != null) {
+    verified_by = "phone";
+  }
+  // const email = useSelector((state) => {
+  //   if (state.user.email != null) {
+  //     return state.user.email;
+  //   }
+  // });
+
+  // const phone = useSelector((state) => {
+  //   if (state.user.phone != null) {
+  //     return "phone";
+  //   }
+  // });
+
+  // const verified_by = useSelector((state) => {});
 
   const navigate = useNavigate();
 
-  const dispatch = useDispatch();
+  // const dispatch = useDispatch();
 
   const handleCheck = () => {
     const data = {
@@ -69,11 +78,15 @@ function VerevicationCode() {
       .then((res) => {
         console.log("success api '/verify-account '", res.data.data);
 
-        // update user info in global state after verify account
-        dispatch({
-          type: types.UPDATE_USER_INFO,
-          payload: res.data.data,
-        });
+        // // update user info in global state after verify account
+        // dispatch({
+        //   type: types.UPDATE_USER_INFO,
+        //   payload: res.data.data,
+        // });
+
+        //update user info in local Storage
+        localStorage.removeItem("user");
+        localStorage.setItem("user", res.data.data.user);
 
         //go to home page
         navigate("/");

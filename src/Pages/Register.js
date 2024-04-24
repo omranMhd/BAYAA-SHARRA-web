@@ -21,108 +21,22 @@ import { useForm } from "react-hook-form";
 import { DevTool } from "@hookform/devtools";
 
 import axiosInstance from "../Axios/axiosInstance";
-import * as yup from "yup";
+import registerSchema from "../Validations Schema/register validation schema";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { useNavigate } from "react-router-dom";
-import { useSelector, useDispatch } from "react-redux";
+// import { useSelector, useDispatch } from "react-redux";
 import * as types from "../Redux/actionTypes";
 import NavBar from "../Components/NavBar";
+import { useQuery } from "react-query";
 
 const defaultTheme = createTheme();
 
-const countries = [
-  {
-    value: "Syria",
-    label: "SYRIA",
-  },
-  {
-    value: "iraq",
-    label: "IRAQ",
-  },
-  {
-    value: "jordan",
-    label: "JORDAN",
-  },
-  {
-    value: "egypt",
-    label: "EGYPT",
-  },
-];
-const cities = [
-  {
-    value: "Damascus",
-    label: "Damascus",
-  },
-  {
-    value: "Aleppo",
-    label: "Aleppo",
-  },
-  {
-    value: "Homs",
-    label: "Homs",
-  },
-  {
-    value: "Daraa",
-    label: "Daraa",
-  },
-];
-const phoneCodes = [
-  {
-    value: "00963",
-    label: "+963",
-  },
-  {
-    value: "00962",
-    label: "+962",
-  },
-  {
-    value: "00964",
-    label: "+964",
-  },
-  {
-    value: "0020",
-    label: "+20",
-  },
-  {
-    value: "00966",
-    label: "+966",
-  },
-];
-
-const schema = yup.object({
-  firstName: yup
-    .string()
-    .required("first name is required ")
-    .max(10, "First name cannot be longer than 10 characters"),
-
-  lastName: yup
-    .string()
-    .required("last name is required ")
-    .max(10, "last name cannot be longer than 10 characters"),
-
-  email: yup.string(),
-  // .required("email is required")
-  // .email("invalid email format")
-  phone: yup.string() /*.required("phone is required")*/,
-
-  address: yup.object().shape({
-    country: yup.string().required("country is required "),
-    city: yup.string().required("city is required "),
-  }),
-
-  password: yup
-    .string()
-    .required("password is required")
-    .min(8, "Password must be at least 8 characters"),
-});
-
-///////////////////////
-
-// TODO remove, this demo shouldn't need to reset the theme.
+const schema = registerSchema;
 
 export default function Register() {
+  //==================  Begin Hooks ====================//
   const navigate = useNavigate();
-  const dispatch = useDispatch();
+
   const form = useForm({
     defaultValues: {
       firstName: "",
@@ -138,9 +52,78 @@ export default function Register() {
     },
     resolver: yupResolver(schema),
   });
-  const { register, control, handleSubmit, formState, setValue } = form;
+  const { register, control, handleSubmit, formState, setValue, watch } = form;
   const { errors } = formState;
+  const selectedCountry = watch("address.country");
 
+  // //هنا قمت باعادة قيمة حقل المدينة الى الحالة الافتراضية بعد كل عملية تغيير البلد وذلك لاجبار المستخدم على اختيار المدينة من جديد
+  // useEffect(() => {
+  //   setValue("address.city", "");
+  // }, [selectedCountry, setValue]);
+
+  // This is to save the case where the user wants to enter an email or mobile number
+  const [showEmailField, setShowEmailField] = useState(false);
+
+  const [emailExist, setEmailExist] = useState(null);
+  const [phoneExist, setPhoneExist] = useState(null);
+
+  //هنا ببساطة عندما نريد استخدام الأيميل بعملية التسجيل يجب ان نعيد قيمة الهاتف الى القيمة الابتدائية والعكس صحيح
+  useEffect(() => {
+    console.log("setShowEmailField :", Number(showEmailField));
+    if (showEmailField) {
+      setValue("phone", "");
+    } else {
+      setValue("email", "");
+    }
+  }, [showEmailField, setValue]);
+
+  const { data: countriesInfo } = useQuery(
+    "countries-info",
+    () => {
+      return axiosInstance.get("/countries-info");
+    },
+    {
+      select: (data) => {
+        return data.data;
+      },
+    }
+  );
+
+  
+  /*هنا نقوم باختيار فقط المدن التي تنتمي الى البلد المختار لاستخدامها ضمن الـ
+  select
+  الخاصة بالمدينة
+  */
+  const citiesCorrespondingToTheSelectedCountry = countriesInfo?.find(
+    (country) => country.country === selectedCountry
+  )?.cities;
+
+  console.log("cities :", citiesCorrespondingToTheSelectedCountry);
+  console.log("country :", selectedCountry);
+
+  //   console.log("use query  isLoading:", isLoading);
+  // console.log("use query result:", result.data?.data);
+
+  // let countriesInfo = result.data?.data;
+
+  // const [countriesInfo, setCountriesInfo] = useState([]);
+
+  // useEffect(() => {
+  //   axiosInstance
+  //     .get("/countries-info")
+  //     .then((res) => {
+  //       console.log("countries-infoooooooooooooooooooo :", res.data);
+
+  //       setCountriesInfo(res.data);
+  //     })
+  //     .catch((e) => {
+  //       console.log("dfdfdfdfdfddfd :", e);
+  //     });
+  // }, []);
+
+  //==================  End Hooks ====================//
+
+  //==================  Begin Defind methods and variables ====================//
   const onSubmit = (data) => {
     console.log("submitted dataaaaaaaaaaaa :", data);
 
@@ -163,11 +146,10 @@ export default function Register() {
         console.log("resssssssssssssssssss :", res);
         console.log("resssssssssssssssssss :", res.data.data.user);
         console.log("resssssssssssssssssss :", res.data.data.token);
-        //save response data in global state management
-        dispatch({
-          type: types.SAVE_USER_INFO_AND_TOKEN,
-          payload: res.data.data,
-        });
+
+        //save response data (user info and its token ) in local Storage
+        localStorage.setItem("user", JSON.stringify(res.data.data.user));
+        localStorage.setItem("token", res.data.data.token);
 
         // after that go to verevication-code page
         navigate("/verevication-code");
@@ -190,23 +172,11 @@ export default function Register() {
       });
   };
 
-  // This is to save the case where the user wants to enter an email or mobile number
-  const [showEmailField, setShowEmailField] = useState(false);
-  const [emailExist, setEmailExist] = useState(null);
-  const [phoneExist, setPhoneExist] = useState(null);
-
-  useEffect(() => {
-    console.log("setShowEmailField :", Number(showEmailField));
-    if (showEmailField) {
-      setValue("phone", "");
-    } else {
-      setValue("email", "");
-    }
-  }, [showEmailField, setValue]);
-
   const handleSwitchChange = () => {
     setShowEmailField((showEmailField) => !showEmailField);
   };
+
+  //==================  End Defind methods and variables ====================//
 
   return (
     <ThemeProvider theme={defaultTheme}>
@@ -322,27 +292,27 @@ export default function Register() {
                 <>
                   <Grid container spacing={1}>
                     <Grid item xs={12} sm={3}>
-                      <FormControl fullWidth size="small" margin="normal">
-                        <InputLabel id="demo-simple-select-label">
-                          Code
-                        </InputLabel>
-                        <Select
-                          labelId="demo-simple-select-label"
-                          id="demo-simple-select"
-                          // value={age}
-                          // label="Age"
-                          // onChange={handleChange}
-                          {...register("phoneCode")}
-                        >
-                          {phoneCodes.map((code) => {
-                            return (
-                              <MenuItem value={code.value}>
-                                {code.label}
-                              </MenuItem>
-                            );
-                          })}
-                        </Select>
-                      </FormControl>
+                      <TextField
+                        margin="normal"
+                        labelId="demo-simple-select-label"
+                        id="demo-simple-select"
+                        select
+                        label="Code"
+                        size="small"
+                        fullWidth
+                        // value={age}
+                        // label="Age"
+                        // onChange={handleChange}
+                        {...register("phoneCode")}
+                      >
+                        {countriesInfo?.map((country) => {
+                          return (
+                            <MenuItem value={country.phoneCode}>
+                              {country.phoneCode}
+                            </MenuItem>
+                          );
+                        })}
+                      </TextField>
                     </Grid>
                     <Grid item xs={12} sm={9}>
                       <TextField
@@ -364,20 +334,6 @@ export default function Register() {
 
               <Grid container spacing={2}>
                 <Grid item xs={12} sm={6}>
-                  {/* <FormControl fullWidth>
-                    <InputLabel id="demo-simple-select-label">Age</InputLabel>
-                    <Select
-                      labelId="demo-simple-select-label"
-                      id="demo-simple-select"
-                      value={""}
-                      label="Age"
-                      onChange={"handleChange"}
-                    >
-                      <MenuItem value={10}>Ten</MenuItem>
-                      <MenuItem value={20}>Twenty</MenuItem>
-                      <MenuItem value={30}>Thirty</MenuItem>
-                    </Select>
-                  </FormControl> */}
                   <TextField
                     select
                     required
@@ -391,11 +347,13 @@ export default function Register() {
                     error={!!errors.address?.country}
                     helperText={errors.address?.country?.message}
                   >
-                    {countries.map((option) => (
-                      <MenuItem key={option.value} value={option.value}>
-                        {option.label}
-                      </MenuItem>
-                    ))}
+                    {countriesInfo?.map((country) => {
+                      return (
+                        <MenuItem key={country.country} value={country.country}>
+                          {country.country}
+                        </MenuItem>
+                      );
+                    })}
                   </TextField>
                 </Grid>
                 <Grid item xs={12} sm={6}>
@@ -411,12 +369,32 @@ export default function Register() {
                     {...register("address.city")}
                     error={!!errors.address?.city}
                     helperText={errors.address?.city?.message}
+                    // disabled={
+                    //   selectedCountry === undefined || selectedCountry === ""
+                    // }
                   >
-                    {cities.map((option) => (
+                    {/* {cities.map((option) => (
                       <MenuItem key={option.value} value={option.value}>
                         {option.label}
                       </MenuItem>
-                    ))}
+                    ))} */}
+
+                    {/* {countriesInfo
+                      .filter((country) => country.country === selectedCountry)
+                      .cities?.map((city) => {
+                        return (
+                          <MenuItem key={city} value={city}>
+                            {city}
+                          </MenuItem>
+                        );
+                      })} */}
+                    {citiesCorrespondingToTheSelectedCountry?.map((city) => {
+                      return (
+                        <MenuItem key={city} value={city}>
+                          {city}
+                        </MenuItem>
+                      );
+                    })}
                   </TextField>
                 </Grid>
               </Grid>
