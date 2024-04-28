@@ -3,112 +3,102 @@ import NavBar from "../Components/NavBar";
 import {
   Button,
   TextField,
-  FormControlLabel,
   Grid,
   Box,
   Typography,
   Container,
 } from "@mui/material";
 import Switch from "@mui/material/Switch";
+import CircularProgress from "@mui/material/CircularProgress";
+import MenuItem from "@mui/material/MenuItem";
 import { useForm } from "react-hook-form";
-import * as yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { DevTool } from "@hookform/devtools";
 import axiosInstance from "../Axios/axiosInstance";
 import Alert from "@mui/material/Alert";
+import Snackbar from "@mui/material/Snackbar";
 import { useNavigate, Link } from "react-router-dom";
-// import { useSelector, useDispatch } from "react-redux";
-import * as types from "../Redux/actionTypes";
-
-const schema = yup.object({
-  email: yup
-    .string()
-    .required("email is required")
-    .email("invalid email format"),
-
-  phone: yup.string() /*.required("phone is required")*/,
-
-  password: yup
-    .string()
-    .required("password is required")
-    .min(8, "Password must be at least 8 characters"),
-});
+import loginValidationSchema from "../Validations Schema/login validation schema";
+import { useQuery, useMutation } from "react-query";
 
 export default function SignIn() {
   // This is to save the case where the user wants to enter an email or mobile number
   const [showEmailField, setShowEmailField] = useState(false);
   const [invalidCredentials, setInvalidCredentials] = useState(false);
+  const [emailExist, setEmailExist] = useState(null);
+  const [phoneExist, setPhoneExist] = useState(null);
   const navigate = useNavigate();
-  // const dispatch = useDispatch();
 
-  const form = useForm({
-    defaultValues: {
-      email: "",
-      phone: "",
-      password: "",
+  const { data: countriesInfo } = useQuery(
+    "countries-info",
+    () => {
+      return axiosInstance.get("/countries-info");
     },
-    resolver: yupResolver(schema),
-  });
-  const { register, control, handleSubmit, formState, setValue } = form;
-  const { errors } = formState;
+    {
+      select: (data) => {
+        return data.data;
+      },
+    }
+  );
 
-  const onSubmit = (data) => {
-    console.log("submitted data :", data);
+  const postLoginMutation = useMutation(
+    (data) => axiosInstance.post("/login", data),
+    {
+      onSuccess: (response) => {
+        // Handle the response data here
+        console.log("onSuccess response", response);
+        // save response data (user info and its token ) in local Storage
+        localStorage.setItem("user", JSON.stringify(response.data.data.user));
+        localStorage.setItem("token", response.data.data.token);
 
-    axiosInstance
-      .post("/login", data)
-      .then((res) => {
-        console.log("resssssssssssssssssss :", res);
-        console.log("resssssssssssssssssss :", res.data.data.user);
-        console.log("resssssssssssssssssss :", res.data.data.token);
-        console.log("resssssssssssssssssss :", res.status);
-
-        // ===================== to delete ====================
-        // //save response data in global state
-        // dispatch({
-        //   type: types.SAVE_USER_INFO_AND_TOKEN,
-        //   payload: res.data.data,
-        // });
-
-        //save response data (user info and its token ) in local Storage
-        localStorage.setItem("user", res.data.data.user);
-        localStorage.setItem("token", res.data.data.token);
-
-        // after that go to verevication-code page
+        // after that go to home page
         navigate("/");
-      })
-      .catch((e) => {
-        console.log("errrrrrrrrrrrrrrr e.response :", e.response);
-        console.log("errrrrrrrrrrrrrrr :", e.response.status);
+      },
+      onError: (error) => {
+        // Handle any errors here
+        console.error("onError", error);
 
         // if account is unverified
-        if (e.response.status === 423) {
-          // =====================to delete===============================================
-          // //save response data in global state  to use it by user to verify his account
-          // dispatch({
-          //   type: types.SAVE_USER_INFO_AND_TOKEN,
-          //   payload: e.response.data.data,
-          // });
-
+        if (error.response.status === 423) {
           //save response data (user info and its token ) in local Storage to use it by user to verify his account
-          localStorage.setItem("user", e.response.data.data.user);
-          localStorage.setItem("token", e.response.data.data.token);
+          localStorage.setItem(
+            "user",
+            JSON.stringify(error.response.data.data.user)
+          );
+          localStorage.setItem("token", error.response.data.data.token);
 
           // Then Go To Verevication Code
           navigate("/verevication-code");
         }
         // if credentials is Invalid (email-phone or password)
         if (
-          e.response.status === 401 &&
-          e.response.data.message === "Invalid credentials"
+          error.response.status === 401 &&
+          error.response.data.message === "Invalid credentials"
         ) {
           setInvalidCredentials(true);
           setTimeout(() => {
             setInvalidCredentials(false);
           }, 5000);
         }
-      });
-  };
+      },
+      onSettled: () => {
+        // This will run after the mutation is either successful or fails
+        console.log("Mutation has completed");
+      },
+    }
+  );
+
+  const form = useForm({
+    defaultValues: {
+      email: "",
+      phoneCode: "",
+      phone: "",
+      password: "",
+    },
+    resolver: yupResolver(loginValidationSchema),
+  });
+  const { register, control, handleSubmit, formState, setValue } = form;
+  const { errors } = formState;
 
   useEffect(() => {
     console.log("setShowEmailField :", Number(showEmailField));
@@ -119,109 +109,198 @@ export default function SignIn() {
     }
   }, [showEmailField, setValue]);
 
+  const onSubmit = (formData) => {
+    //هون عملت نسخة من بيانات الفورم مشان اشتغل عليها وعدل عليه , لانو التعديل على اوبجكت الفورم الأساسي رح يأثر على الفورم
+    const data = Object.assign({}, formData);
+
+    if (showEmailField) {
+      delete data["phone"];
+      delete data["phoneCode"];
+    } else {
+      delete data["email"];
+      //combine phone code and phone together
+      data.phone = `${data.phoneCode}${data.phone}`;
+      delete data["phoneCode"];
+    }
+
+    console.log("submitted data :", data);
+    postLoginMutation.mutate(data);
+  };
+
   const handleSwitchChange = () => {
     setShowEmailField((showEmailField) => !showEmailField);
   };
 
   return (
-    <Container component="main" maxWidth="xs">
-      <NavBar />
+    <>
+      <Snackbar
+        anchorOrigin={{ vertical: "top", horizontal: "center" }}
+        open={invalidCredentials}
+        // autoHideDuration={6000}
+      >
+        <Alert severity="warning" variant="filled" sx={{ width: "100%" }}>
+          {showEmailField ? "Email " : "Phone "} or Password is Incorrect
+        </Alert>
+      </Snackbar>
       <Box
+        id="a"
         sx={{
-          marginTop: 8,
+          height: "700px",
+          // backgroundImage: "url(realEstates‬.jpg)", // Set the background image
+          // backgroundImage: "url('hand shake.gif')", // Set the background image
+          backgroundImage: "url(https://source.unsplash.com/random?wallpapers)", // Set the background image
+          backgroundSize: "cover", // Cover the entire Box with the image
+          backgroundPosition: "center", // Center the image within the Box
           display: "flex",
-          flexDirection: "column",
+          justifyContent: "center",
           alignItems: "center",
-          // backgroundImage: 'url(https://source.unsplash.com/random?wallpapers)',
-          // backgroundSize: "cover",
-          // backgroundPosition: "center",
+          flexDirection: "column",
         }}
       >
-        {invalidCredentials && (
-          <Alert severity="error">invalidCredentials</Alert>
-        )}
-        <Typography component="h1" variant="h5">
-          Sign in
-        </Typography>
-        <Box
-          component="form"
-          onSubmit={handleSubmit(onSubmit)}
-          noValidate
-          sx={{ mt: 1 }}
-        >
-          <div>
-            <label>Login By Email :</label>
-            <Switch
-              checked={showEmailField}
-              onChange={handleSwitchChange}
-              color="primary"
-              size="small"
-            />
-          </div>
-          {showEmailField ? (
-            <TextField
-              margin="normal"
-              required
-              fullWidth
-              id="email"
-              label="Email Address"
-              autoComplete="email"
-              size="small"
-              {...register("email")}
-              error={!!errors.email}
-              helperText={errors.email?.message}
-            />
-          ) : (
-            <TextField
-              margin="normal"
-              required
-              fullWidth
-              id="phoneNumber"
-              label="phone number"
-              name="phoneNumber"
-              size="small"
-              {...register("phone")}
-              error={!!errors.phone}
-              helperText={errors.phone?.message}
-            />
-          )}
-          <TextField
-            margin="normal"
-            required
-            fullWidth
-            label="Password"
-            type="password"
-            id="password"
-            autoComplete="current-password"
-            size="small"
-            {...register("password")}
-            error={!!errors.password}
-            helperText={errors.password?.message}
+        <Link to="/" variant="body2">
+          <img
+            src={"BAYAASHARRA.png"}
+            alt="Login"
+            style={{ width: "120px", height: "100px", marginBottom: "5px" }}
           />
-
-          <Button
-            type="submit"
-            fullWidth
-            variant="contained"
-            sx={{ mt: 3, mb: 2 }}
+        </Link>
+        {/* <Typography component="h1" variant="h5">
+          BAYYA SHARRA
+        </Typography> */}
+        <Box
+          id="b"
+          sx={{
+            // width: "300px",
+            // height: "300px",
+            backgroundColor: "white",
+            padding: "20px",
+            borderRadius: "10px",
+            // border: "2px solid",
+            // borderColor: "blue",
+          }}
+        >
+          <Typography component="h1" variant="h5" sx={{ textAlign: "center" }}>
+            Sign in
+          </Typography>
+          <Box
+            component="form"
+            onSubmit={handleSubmit(onSubmit)}
+            noValidate
+            sx={{ mt: 1 }}
           >
-            Sign In
-          </Button>
-          <Grid container>
-            <Grid item xs>
-              <Link href="#" variant="body2">
-                Forgot password?
-              </Link>
+            <div>
+              <label>Login By Email :</label>
+              <Switch
+                checked={showEmailField}
+                onChange={handleSwitchChange}
+                color="primary"
+                size="small"
+              />
+            </div>
+            {showEmailField ? (
+              <Grid container spacing={1}>
+                <Grid item xs={12} sm={12}>
+                  <TextField
+                    margin="normal"
+                    required
+                    fullWidth
+                    id="email"
+                    label="Email Address"
+                    autoComplete="email"
+                    size="small"
+                    {...register("email")}
+                    error={!!errors.email}
+                    helperText={errors.email?.message}
+                  />
+                </Grid>
+              </Grid>
+            ) : (
+              <Grid container spacing={1}>
+                <Grid item xs={12} sm={4}>
+                  <TextField
+                    margin="normal"
+                    labelId="demo-simple-select-label"
+                    id="demo-simple-select"
+                    select
+                    label="Code"
+                    size="small"
+                    fullWidth
+                    // value={age}
+                    // label="Age"
+                    // onChange={handleChange}
+                    {...register("phoneCode")}
+                  >
+                    {countriesInfo?.map((country) => {
+                      return (
+                        <MenuItem value={country.phoneCode}>
+                          {country.phoneCode}
+                        </MenuItem>
+                      );
+                    })}
+                  </TextField>
+                </Grid>
+                <Grid item xs={12} sm={8}>
+                  <TextField
+                    margin="normal"
+                    required
+                    fullWidth
+                    id="phoneNumber"
+                    label="phone number"
+                    name="phoneNumber"
+                    size="small"
+                    {...register("phone")}
+                    error={!!errors.phone}
+                    helperText={errors.phone?.message}
+                  />
+                  {phoneExist != null ? (
+                    <small style={{ color: "red" }}>{phoneExist}</small>
+                  ) : null}
+                </Grid>
+              </Grid>
+            )}
+            <TextField
+              margin="normal"
+              required
+              fullWidth
+              label="Password"
+              type="password"
+              id="password"
+              autoComplete="current-password"
+              size="small"
+              {...register("password")}
+              error={!!errors.password}
+              helperText={errors.password?.message}
+            />
+
+            <Button
+              type="submit"
+              fullWidth
+              variant="contained"
+              sx={{ mt: 3, mb: 2 }}
+              disabled={postLoginMutation.isLoading}
+            >
+              {postLoginMutation.isLoading ? (
+                <CircularProgress size={25} style={{ color: "white" }} />
+              ) : (
+                "Sign In"
+              )}
+            </Button>
+            <Grid container spacing={2}>
+              <Grid item xs>
+                <Link href="#" variant="body2">
+                  Forgot password?
+                </Link>
+              </Grid>
+              <Grid item>
+                <Link to="/register" variant="body2">
+                  Don't have an account? Sign Up
+                </Link>
+              </Grid>
             </Grid>
-            <Grid item>
-              <Link to="/register" variant="body2">
-                Don't have an account? Sign Up
-              </Link>
-            </Grid>
-          </Grid>
-          <DevTool control={control} />
+            <DevTool control={control} />
+          </Box>
         </Box>
       </Box>
-    </Container>
+    </>
   );
 }

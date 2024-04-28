@@ -1,28 +1,25 @@
 import React from "react";
-// import { useSelector } from "react-redux";
+// import { useSelector } from "react-redux"
 import { Navigate, useLocation } from "react-router-dom";
 
 const ProtectedRoute = ({ children }) => {
-
-
   // ====================to delete====================================
   // const userState = useSelector((state) => {
   //   if (state.token === "" && Object.keys(state.user).length === 0) {
-  //     return "userUnLogin";
+  //     return "userUnLogin"
   //   } else {
   //     if (
   //       state.user.email_verified_at == null &&
   //       state.user.phone_verified_at == null
   //     ) {
-  //       return "acountUnverified";
+  //       return "acountUnverified"
   //     }
-  //     return "userLogin";
+  //     return "userLogin"
   //   }
-  // });
+  // })
   // userState values should be : "userUnLogin" or "acountUnverified" or  "userLogin"
 
   const userState = "userLogin";
-  
 
   let location = useLocation();
 

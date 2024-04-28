@@ -2,6 +2,7 @@ import Box from "@mui/material/Box";
 import { Typography } from "@mui/material";
 import ApartmentIcon from "@mui/icons-material/Apartment";
 import DirectionsCarIcon from "@mui/icons-material/DirectionsCar";
+import ReportGmailerrorredIcon from '@mui/icons-material/ReportGmailerrorred';
 
 function CategorySlide(props) {
   let icon = "";
@@ -33,7 +34,17 @@ function CategorySlide(props) {
       );
       break;
     default:
-      icon = "";
+      icon = (
+        <>
+          <ReportGmailerrorredIcon
+            fontSize="large"
+            style={{ fontSize: "50px", margin: "auto" }}
+          />
+          <Typography style={{ fontSize: "20px", margin: "auto" ,textAlign:"center"}}>
+            {props.typography}
+          </Typography>
+        </>
+      );
   }
   return (
     <>
@@ -42,8 +53,6 @@ function CategorySlide(props) {
           display: "flex",
           flexDirection: "column",
           justifyContent: "center",
-          
-          
         }}
       >
         {icon}

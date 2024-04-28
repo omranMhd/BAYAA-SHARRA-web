@@ -62,7 +62,8 @@ export default function AdvertisementCard() {
       <CardMedia
         component="img"
         height="194"
-        image="/car.jpg"
+        // image="/car.jpg"
+        image="https://source.unsplash.com/random?wallpapers"
         alt="Paella dish"
       />
       <CardContent>
