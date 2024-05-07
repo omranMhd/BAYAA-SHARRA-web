@@ -2,7 +2,7 @@ import Box from "@mui/material/Box";
 import { Typography } from "@mui/material";
 import ApartmentIcon from "@mui/icons-material/Apartment";
 import DirectionsCarIcon from "@mui/icons-material/DirectionsCar";
-import ReportGmailerrorredIcon from '@mui/icons-material/ReportGmailerrorred';
+import ReportGmailerrorredIcon from "@mui/icons-material/ReportGmailerrorred";
 
 function CategorySlide(props) {
   let icon = "";
@@ -12,9 +12,13 @@ function CategorySlide(props) {
         <>
           <ApartmentIcon
             fontSize="large"
+            // style={{ fontSize: "50px", margin: "auto" }}
             style={{ fontSize: "50px", margin: "auto" }}
           />
-          <Typography style={{ fontSize: "20px", margin: "auto" }}>
+          <Typography
+            // style={{ fontSize: "20px", margin: "auto", textAlign: "center" }}
+            style={{ fontSize: "20px", margin: "auto" }}
+          >
             {props.typography}
           </Typography>
         </>
@@ -27,7 +31,9 @@ function CategorySlide(props) {
             fontSize="large"
             style={{ fontSize: "50px", margin: "auto" }}
           />
-          <Typography style={{ fontSize: "20px", margin: "auto" }}>
+          <Typography
+            style={{ fontSize: "20px", margin: "auto", textAlign: "center" }}
+          >
             {props.typography}
           </Typography>
         </>
@@ -40,7 +46,9 @@ function CategorySlide(props) {
             fontSize="large"
             style={{ fontSize: "50px", margin: "auto" }}
           />
-          <Typography style={{ fontSize: "20px", margin: "auto" ,textAlign:"center"}}>
+          <Typography
+            style={{ fontSize: "20px", margin: "auto", textAlign: "center" }}
+          >
             {props.typography}
           </Typography>
         </>
@@ -51,8 +59,15 @@ function CategorySlide(props) {
       <Box
         sx={{
           display: "flex",
-          flexDirection: "column",
+          // flexDirection: "column",
           justifyContent: "center",
+          cursor: "pointer",
+          backgroundColor: "#7717b3",
+          borderRadius:"50px",
+          padding:"10px"
+        }}
+        onClick={() => {
+          alert(props.categoryName);
         }}
       >
         {icon}

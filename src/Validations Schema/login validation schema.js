@@ -10,8 +10,8 @@ const schema = yup.object({
 
   password: yup
     .string()
-    .required("password is required")
-    .min(8, "Password must be at least 8 characters"),
+    .required("field required")
+    .min(8, "less than 8 characters"),
 });
 
 export default schema;

@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useContext } from "react";
 import { styled, alpha } from "@mui/material/styles";
 import AppBar from "@mui/material/AppBar";
 import Box from "@mui/material/Box";
@@ -9,27 +9,27 @@ import InputBase from "@mui/material/InputBase";
 import Badge from "@mui/material/Badge";
 import MenuItem from "@mui/material/MenuItem";
 import Menu from "@mui/material/Menu";
-import MenuIcon from "@mui/icons-material/Menu";
 import SearchIcon from "@mui/icons-material/Search";
 import AccountCircle from "@mui/icons-material/AccountCircle";
-import MailIcon from "@mui/icons-material/Mail";
 import NotificationsIcon from "@mui/icons-material/Notifications";
 import MoreIcon from "@mui/icons-material/MoreVert";
 import Avatar from "@mui/material/Avatar";
 import LanguageIcon from "@mui/icons-material/Language";
 import FavoriteIcon from "@mui/icons-material/Favorite";
-import Switch from "@mui/material/Switch";
 import Tooltip from "@mui/material/Tooltip";
 import { Button } from "@mui/material";
 import AddIcon from "@mui/icons-material/Add";
 import LightModeIcon from "@mui/icons-material/LightMode";
-import NightlightRoundIcon from "@mui/icons-material/NightlightRound";
+import DarkModeIcon from "@mui/icons-material/DarkMode";
 import LogoutIcon from "@mui/icons-material/Logout";
 import AccountCircleIcon from "@mui/icons-material/AccountCircle";
 import InputIcon from "@mui/icons-material/Input";
 import { useNavigate } from "react-router-dom";
 import axiosInstance from "../Axios/axiosInstance";
 import { useMutation } from "react-query";
+import ThemeContext from "../Contexts/ThemeContext";
+import { useTheme } from "@mui/material/styles";
+import { useTranslation } from "react-i18next";
 
 const Search = styled("div")(({ theme }) => ({
   position: "relative",
@@ -40,7 +40,7 @@ const Search = styled("div")(({ theme }) => ({
     // backgroundColor: alpha(theme.palette.common.white, 0.50),
     border: "2px solid #153258",
   },
-  marginRight: theme.spacing(2),
+  marginRight: theme.spacing(6),
   marginLeft: 0,
   width: "100%",
   boxShadow: "0px 4px 8px rgba(0, 0, 0, 0.5)",
@@ -78,9 +78,10 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
 }));
 
 function MainAppBar() {
+  const { t, i18n } = useTranslation();
+  const theme = useTheme();
+  const { mode, setMode } = useContext(ThemeContext);
   const navigate = useNavigate();
-  // to control theme state
-  const [currentTheme, setCurrentTheme] = useState("light");
 
   const [isLogedIn, setIsLogedIn] = useState(false);
 
@@ -131,13 +132,20 @@ function MainAppBar() {
   );
 
   const [anchorEl, setAnchorEl] = useState(null);
+  const [anchorLangMenu, setAnchorLangMenu] = useState(null);
   const [mobileMoreAnchorEl, setMobileMoreAnchorEl] = useState(null);
 
   const isMenuOpen = Boolean(anchorEl);
   const isMobileMenuOpen = Boolean(mobileMoreAnchorEl);
 
+  const isLangMenuOpen = Boolean(anchorLangMenu);
+
   const handleProfileMenuOpen = (event) => {
     setAnchorEl(event.currentTarget);
+  };
+
+  const handleLanguageMenuOpen = (event) => {
+    setAnchorLangMenu(event.currentTarget);
   };
 
   const handleMobileMenuClose = () => {
@@ -149,17 +157,58 @@ function MainAppBar() {
     handleMobileMenuClose();
   };
 
+  const handleLangMenuClose = () => {
+    setAnchorLangMenu(null);
+  };
+
   const handleMobileMenuOpen = (event) => {
     setMobileMoreAnchorEl(event.currentTarget);
   };
 
+  const langMenuId = "primary-search-account-menu";
+  const languageMenu = (
+    <Menu
+      anchorEl={anchorLangMenu}
+      anchorOrigin={{
+        vertical: "bottom",
+        horizontal: "right",
+      }}
+      id={langMenuId}
+      keepMounted
+      transformOrigin={{
+        vertical: "top",
+        horizontal: "right",
+      }}
+      open={isLangMenuOpen}
+      onClose={handleLangMenuClose}
+    >
+      <MenuItem
+        onClick={() => {
+          handleLangMenuClose();
+          i18n.changeLanguage("en");
+          localStorage.setItem("currrentLanguage", "en");
+        }}
+      >
+        EN
+      </MenuItem>
+      <MenuItem
+        onClick={() => {
+          handleLangMenuClose();
+          i18n.changeLanguage("ar");
+          localStorage.setItem("currrentLanguage", "ar");
+        }}
+      >
+        AR
+      </MenuItem>
+    </Menu>
+  );
   const menuId = "primary-search-account-menu";
   // this main menu , it appears when user click on photo avatar
   const renderMenu = (
     <Menu
       anchorEl={anchorEl}
       anchorOrigin={{
-        vertical: "top",
+        vertical: "bottom",
         horizontal: "right",
       }}
       id={menuId}
@@ -223,65 +272,68 @@ function MainAppBar() {
             <NotificationsIcon />
           </Badge>
         </IconButton>
-        <p>Notifications</p>
+        <p>{t("notifications")}</p>
       </MenuItem>
       <MenuItem>
         <IconButton size="large" aria-label="show 4 new mails" color="inherit">
           <FavoriteIcon />
         </IconButton>
-        <p>Favorites</p>
+        <p>{t("favorites")}</p>
       </MenuItem>
-      <MenuItem>
+      <MenuItem onClick={handleLanguageMenuOpen}>
         <IconButton size="large" aria-label="show 4 new mails" color="inherit">
           <LanguageIcon />
         </IconButton>
-        <p>Language</p>
+        <p>{t("language")}</p>
       </MenuItem>
-      {currentTheme === "light" && (
-        <MenuItem
-          onClick={() => {
-            setCurrentTheme("night");
-          }}
-        >
-          <IconButton
-            size="large"
-            aria-label="show 4 new mails"
-            color="inherit"
-          >
-            <NightlightRoundIcon />
-          </IconButton>
-          <p>Night</p>
-        </MenuItem>
-      )}
-      {currentTheme === "night" && (
-        <MenuItem
-          onClick={() => {
-            setCurrentTheme("light");
-          }}
-        >
-          <IconButton
-            size="large"
-            aria-label="show 4 new mails"
-            color="inherit"
-          >
-            <LightModeIcon />
-          </IconButton>
-          <p>Light</p>
-        </MenuItem>
-      )}
 
-      <MenuItem onClick={handleProfileMenuOpen}>
-        <IconButton
-          size="large"
-          aria-label="account of current user"
-          aria-controls="primary-search-account-menu"
-          aria-haspopup="true"
-          color="inherit"
-        >
-          <AccountCircle />
+      <MenuItem
+        onClick={() => {
+          if (theme.palette.mode === "dark") {
+            setMode("light");
+          } else if (theme.palette.mode === "light") {
+            setMode("dark");
+          }
+        }}
+      >
+        <IconButton size="large" aria-label="show 4 new mails" color="inherit">
+          {theme.palette.mode === "dark" && <LightModeIcon />}
+          {theme.palette.mode === "light" && <DarkModeIcon />}
         </IconButton>
-        <p>Profile</p>
+        <p>{t("theme")}</p>
       </MenuItem>
+
+      {isLogedIn ? (
+        <MenuItem onClick={handleProfileMenuOpen}>
+          <IconButton
+            size="large"
+            aria-label="account of current user"
+            aria-controls="primary-search-account-menu"
+            aria-haspopup="true"
+            color="inherit"
+          >
+            <AccountCircle />
+          </IconButton>
+          <p>Profile</p>
+        </MenuItem>
+      ) : (
+        <MenuItem
+          onClick={() => {
+            navigate("/login");
+          }}
+        >
+          <IconButton
+            size="large"
+            aria-label="account of current user"
+            aria-controls="primary-search-account-menu"
+            aria-haspopup="true"
+            color="inherit"
+          >
+            <InputIcon />
+          </IconButton>
+          <p>{t("login")}</p>
+        </MenuItem>
+      )}
     </Menu>
   );
 
@@ -312,7 +364,7 @@ function MainAppBar() {
             component="div"
             sx={{ display: { xs: "none", sm: "block" }, color: "#153258" }}
           >
-            BAYYA SHARRA
+            {t("bayaa sharra")}
           </Typography>
 
           <Box sx={{ flexGrow: 1 }} />
@@ -321,26 +373,27 @@ function MainAppBar() {
               <SearchIcon />
             </SearchIconWrapper>
             <StyledInputBase
-              placeholder="Search…"
+              placeholder={t("search")}
               inputProps={{ "aria-label": "search" }}
             />
           </Search>
           {/* <Box sx={{ flexGrow: 1 }} /> */}
           <Button
             variant="contained"
+            // color={theme.palette.DARK_BLUE}
             sx={{
               margin: "10px",
-              backgroundColor: "#153258",
+              backgroundColor: theme.palette.LIGHT_BLUE_or_DARK_BLUE,
             }}
             endIcon={<AddIcon />}
             onClick={() => {
               navigate("/new-ad");
             }}
           >
-            Add Post
+            {t("add post")}
           </Button>
           <Box sx={{ display: { xs: "none", md: "flex" } }}>
-            <Tooltip title="Favorites" arrow>
+            <Tooltip title={t("favorites")} arrow>
               <IconButton aria-label="translate" size="large">
                 <FavoriteIcon
                   sx={{
@@ -349,45 +402,45 @@ function MainAppBar() {
                 />
               </IconButton>
             </Tooltip>
-            {currentTheme === "light" && (
-              <Tooltip title="Theme" arrow>
-                <IconButton
-                  aria-label="translate"
-                  size="large"
-                  onClick={() => {
-                    setCurrentTheme("night");
-                  }}
-                >
+
+            <Tooltip title={t("theme")} arrow>
+              <IconButton
+                aria-label="translate"
+                size="large"
+                onClick={() => {
+                  if (theme.palette.mode === "dark") {
+                    setMode("light");
+                    localStorage.setItem("themeMode", "light");
+                  } else if (theme.palette.mode === "light") {
+                    setMode("dark");
+                    localStorage.setItem("themeMode", "dark");
+                  }
+                }}
+              >
+                {theme.palette.mode === "dark" && (
                   <LightModeIcon
                     sx={{
                       color: "#153258",
                     }}
                   />
-                </IconButton>
-              </Tooltip>
-            )}
-            {currentTheme === "night" && (
-              <Tooltip title="Theme" arrow>
-                <IconButton
-                  aria-label="translate"
-                  size="large"
-                  onClick={() => {
-                    setCurrentTheme("light");
-                  }}
-                >
-                  <NightlightRoundIcon
+                )}
+                {theme.palette.mode === "light" && (
+                  <DarkModeIcon
                     sx={{
                       color: "#153258",
                     }}
                   />
-                </IconButton>
-              </Tooltip>
-            )}
+                )}
+              </IconButton>
+            </Tooltip>
 
-            {/* <ThemeSwitch sx={{ mt: "15px" }} /> */}
-
-            <Tooltip title="Language" arrow>
-              <IconButton aria-label="translate" color="inherit" size="large">
+            <Tooltip title={t("language")} arrow>
+              <IconButton
+                aria-label="translate"
+                color="inherit"
+                size="large"
+                onClick={handleLanguageMenuOpen}
+              >
                 <LanguageIcon
                   sx={{
                     color: "#153258",
@@ -395,7 +448,7 @@ function MainAppBar() {
                 />
               </IconButton>
             </Tooltip>
-            <Tooltip title="Notification" arrow>
+            <Tooltip title={t("notifications")} arrow>
               <IconButton
                 size="large"
                 aria-label="show 17 new notifications"
@@ -423,7 +476,7 @@ function MainAppBar() {
                 <Avatar alt="Remy Sharp" src="/omran.jpg" />
               </IconButton>
             ) : (
-              <Tooltip title="Log in" arrow>
+              <Tooltip title={t("login")} arrow>
                 <IconButton
                   size="large"
                   edge="end"
@@ -458,6 +511,7 @@ function MainAppBar() {
       </AppBar>
       {renderMobileMenu}
       {renderMenu}
+      {languageMenu}
     </Box>
   );
 }

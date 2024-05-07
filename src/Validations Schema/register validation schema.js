@@ -3,13 +3,13 @@ import * as yup from "yup";
 const schema = yup.object({
   firstName: yup
     .string()
-    .required("first name is required ")
-    .max(10, "Must be less than 10 characters"),
+    .required("field required")
+    .max(10, "more than 10 characters"),
 
   lastName: yup
     .string()
-    .required("last name is required ")
-    .max(10, "Must be less than 10 characters"),
+    .required("field required")
+    .max(10, "more than 10 characters"),
 
   email: yup
     .string()
@@ -21,13 +21,13 @@ const schema = yup.object({
   //   country: yup.string().required("country is required "),
   //   city: yup.string().required("city is required "),
   // }),
-  country: yup.string().required("country is required "),
-  city: yup.string().required("city is required "),
+  country: yup.string().required("field required"),
+  city: yup.string().required("field required"),
 
   password: yup
     .string()
-    .required("password is required")
-    .min(8, "Password must be at least 8 characters"),
+    .required("field required")
+    .min(8, "less than 8 characters"),
 });
 
 export default schema;

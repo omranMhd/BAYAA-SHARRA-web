@@ -10,18 +10,22 @@ import SideFilters from "../Components/SideFilters";
 
 import Grid from "@mui/material/Grid";
 
+import { useTheme } from "@mui/material/styles";
+
 function Home() {
+  const theme = useTheme();
+  console.log("aaaaaaaaaaaaaaaaaaaa :", theme.palette.mode);
   return (
     <>
       <MainAppBar />
       <MainSlider />
       <CategoriesSlider />
 
-      <Grid container spacing={1}>
-        <Grid item xs={9} sx={{ backgroundColor: "#f0f2f5" }}>
+      <Grid container spacing={1} /*sx={{direction: "rtl"}}*/>
+        <Grid item xs={9}>
           <AdvertisementsCardsViewer />
         </Grid>
-        <Grid item xs={3}>
+        <Grid item xs={3} sx={{ backgroundColor: theme.palette.DARK_BLUE_or_LIGHT_BLUE }}>
           <SideFilters />
         </Grid>
       </Grid>

@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import NavBar from "../Components/NavBar";
+import MainAppBar from "../Components/MainAppBar";
 import {
   Button,
   TextField,
@@ -11,15 +11,21 @@ import {
 import Switch from "@mui/material/Switch";
 import CircularProgress from "@mui/material/CircularProgress";
 import MenuItem from "@mui/material/MenuItem";
+import InputAdornment from "@mui/material/InputAdornment";
+import IconButton from "@mui/material/IconButton";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { DevTool } from "@hookform/devtools";
 import axiosInstance from "../Axios/axiosInstance";
 import Alert from "@mui/material/Alert";
+import Visibility from "@mui/icons-material/Visibility";
+import VisibilityOff from "@mui/icons-material/VisibilityOff";
 import Snackbar from "@mui/material/Snackbar";
 import { useNavigate, Link } from "react-router-dom";
 import loginValidationSchema from "../Validations Schema/login validation schema";
 import { useQuery, useMutation } from "react-query";
+import { useTheme } from "@mui/material/styles";
+import { useTranslation } from "react-i18next";
 
 export default function SignIn() {
   // This is to save the case where the user wants to enter an email or mobile number
@@ -27,7 +33,11 @@ export default function SignIn() {
   const [invalidCredentials, setInvalidCredentials] = useState(false);
   const [emailExist, setEmailExist] = useState(null);
   const [phoneExist, setPhoneExist] = useState(null);
+  const [showPassword, setShowPassword] = useState(false);
   const navigate = useNavigate();
+  const theme = useTheme();
+  const { t, i18n } = useTranslation();
+  console.log("ttttttttttttttttttttttttttttt :", theme);
 
   const { data: countriesInfo } = useQuery(
     "countries-info",
@@ -133,6 +143,7 @@ export default function SignIn() {
 
   return (
     <>
+      <MainAppBar />
       <Snackbar
         anchorOrigin={{ vertical: "top", horizontal: "center" }}
         open={invalidCredentials}
@@ -148,7 +159,8 @@ export default function SignIn() {
           height: "700px",
           // backgroundImage: "url(realEstates‬.jpg)", // Set the background image
           // backgroundImage: "url('hand shake.gif')", // Set the background image
-          backgroundImage: "url(https://source.unsplash.com/random?wallpapers)", // Set the background image
+          // backgroundImage: "url(https://source.unsplash.com/random?wallpapers)", // Set the background image
+          backgroundImage: "url(slide3.jpg)", // Set the background image
           backgroundSize: "cover", // Cover the entire Box with the image
           backgroundPosition: "center", // Center the image within the Box
           display: "flex",
@@ -172,15 +184,23 @@ export default function SignIn() {
           sx={{
             // width: "300px",
             // height: "300px",
-            backgroundColor: "white",
+            backgroundColor: theme.palette.WHITE_or_DARK_BLUE,
             padding: "20px",
             borderRadius: "10px",
             // border: "2px solid",
             // borderColor: "blue",
+            direction: i18n.language === "ar" ? "rtl" : "ltr",
           }}
         >
-          <Typography component="h1" variant="h5" sx={{ textAlign: "center" }}>
-            Sign in
+          <Typography
+            component="h1"
+            variant="h5"
+            sx={{
+              textAlign: "center",
+              color: theme.palette.BLACK_or_WHITE,
+            }}
+          >
+            {t("Sign in")}
           </Typography>
           <Box
             component="form"
@@ -189,7 +209,7 @@ export default function SignIn() {
             sx={{ mt: 1 }}
           >
             <div>
-              <label>Login By Email :</label>
+              <label>{t("login by email")}:</label>
               <Switch
                 checked={showEmailField}
                 onChange={handleSwitchChange}
@@ -205,7 +225,7 @@ export default function SignIn() {
                     required
                     fullWidth
                     id="email"
-                    label="Email Address"
+                    label={t("Email Address")}
                     autoComplete="email"
                     size="small"
                     {...register("email")}
@@ -222,7 +242,7 @@ export default function SignIn() {
                     labelId="demo-simple-select-label"
                     id="demo-simple-select"
                     select
-                    label="Code"
+                    label={t("code")}
                     size="small"
                     fullWidth
                     // value={age}
@@ -245,7 +265,7 @@ export default function SignIn() {
                     required
                     fullWidth
                     id="phoneNumber"
-                    label="phone number"
+                    label={t("phone number")}
                     name="phoneNumber"
                     size="small"
                     {...register("phone")}
@@ -262,14 +282,27 @@ export default function SignIn() {
               margin="normal"
               required
               fullWidth
-              label="Password"
-              type="password"
+              label={t("password")}
+              type={showPassword ? "text" : "password"}
               id="password"
               autoComplete="current-password"
               size="small"
               {...register("password")}
               error={!!errors.password}
-              helperText={errors.password?.message}
+              helperText={t(errors.password?.message)}
+              InputProps={{
+                startAdornment: (
+                  <InputAdornment position="end">
+                    <IconButton
+                      onClick={() => {
+                        setShowPassword(!showPassword);
+                      }}
+                    >
+                      {showPassword ? <VisibilityOff /> : <Visibility />}
+                    </IconButton>
+                  </InputAdornment>
+                ),
+              }}
             />
 
             <Button
@@ -282,18 +315,20 @@ export default function SignIn() {
               {postLoginMutation.isLoading ? (
                 <CircularProgress size={25} style={{ color: "white" }} />
               ) : (
-                "Sign In"
+                t("Sign in")
               )}
             </Button>
             <Grid container spacing={2}>
               <Grid item xs>
-                <Link href="#" variant="body2">
+                {/* <Link href="#" variant="body2">
                   Forgot password?
-                </Link>
+                </Link> */}
               </Grid>
               <Grid item>
                 <Link to="/register" variant="body2">
-                  Don't have an account? Sign Up
+                  <Box color={theme.palette.BLACK_or_WHITE}>
+                    {t("Don't have an account? Sign Up")}
+                  </Box>
                 </Link>
               </Grid>
             </Grid>

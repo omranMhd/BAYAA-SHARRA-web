@@ -8,18 +8,26 @@ import Grid from "@mui/material/Grid";
 import Typography from "@mui/material/Typography";
 import MenuItem from "@mui/material/MenuItem";
 import Switch from "@mui/material/Switch";
+import Visibility from "@mui/icons-material/Visibility";
+import VisibilityOff from "@mui/icons-material/VisibilityOff";
+import InputAdornment from "@mui/material/InputAdornment";
+import IconButton from "@mui/material/IconButton";
 import { Link } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import { DevTool } from "@hookform/devtools";
+import MainAppBar from "../Components/MainAppBar";
 
 import axiosInstance from "../Axios/axiosInstance";
 import registerSchema from "../Validations Schema/register validation schema";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { useNavigate } from "react-router-dom";
 import { useQuery, useMutation } from "react-query";
+import { useTheme } from "@mui/material/styles";
+import { useTranslation } from "react-i18next";
 
 export default function Register() {
   //==================  Begin Hooks ====================//
+  const { t, i18n } = useTranslation();
   const navigate = useNavigate();
 
   const form = useForm({
@@ -53,6 +61,7 @@ export default function Register() {
 
   const [emailExist, setEmailExist] = useState(null);
   const [phoneExist, setPhoneExist] = useState(null);
+  const [showPassword, setShowPassword] = useState(false);
 
   //هنا ببساطة عندما نريد استخدام الأيميل بعملية التسجيل يجب ان نعيد قيمة الهاتف الى القيمة الابتدائية والعكس صحيح
   useEffect(() => {
@@ -124,6 +133,8 @@ export default function Register() {
   console.log("country :", selectedCountry);
   console.log("cities :", citiesCorrespondingToTheSelectedCountry);
 
+  const theme = useTheme();
+
   //==================  End Hooks ====================//
 
   //==================  Begin Defind methods and variables ====================//
@@ -162,6 +173,7 @@ export default function Register() {
 
   return (
     <>
+      <MainAppBar />
       {/* this background page with image */}
       <Box
         id="a"
@@ -169,13 +181,15 @@ export default function Register() {
           height: "700px",
           // backgroundImage: "url(realEstates‬.jpg)", // Set the background image
           // backgroundImage: "url('hand shake.gif')", // Set the background image
-          backgroundImage: "url(https://source.unsplash.com/random?wallpapers)", // Set the background image
+          // backgroundImage: "url(https://source.unsplash.com/random?wallpapers)", // Set the background image
+          backgroundImage: "url(slide3.jpg)", // Set the background image
           backgroundSize: "cover", // Cover the entire Box with the image
           backgroundPosition: "center", // Center the image within the Box
           display: "flex",
           justifyContent: "center",
           alignItems: "center",
           flexDirection: "column",
+          direction: i18n.language === "ar" ? "rtl" : "ltr",
         }}
       >
         <Link to="/" variant="body2">
@@ -194,15 +208,19 @@ export default function Register() {
           sx={{
             // width: "300px",
             // height: "300px",
-            backgroundColor: "white",
+            backgroundColor: theme.palette.WHITE_or_DARK_BLUE,
             padding: "20px",
             borderRadius: "10px",
             // border: "2px solid",
             // borderColor: "blue",
           }}
         >
-          <Typography component="h1" variant="h5" sx={{ textAlign: "center" }}>
-            Sign Up
+          <Typography
+            component="h1"
+            variant="h5"
+            sx={{ textAlign: "center", color: theme.palette.BLACK_or_WHITE }}
+          >
+            {t("Sign up")}
           </Typography>
 
           <Box
@@ -219,33 +237,34 @@ export default function Register() {
                   required
                   fullWidth
                   id="firstName"
-                  label="First Name"
+                  label={t("First Name")}
                   autoFocus
                   size="small"
                   margin="normal"
                   {...register("firstName")}
                   error={!!errors.firstName}
-                  helperText={errors.firstName?.message}
+                  helperText={t(errors.firstName?.message)}
                 />
+                {JSON.stringify(errors.firstName?.message)}
               </Grid>
               <Grid item xs={12} sm={6}>
                 <TextField
                   required
                   fullWidth
                   id="lastName"
-                  label="Last Name"
+                  label={t("Last Name")}
                   // name="lastName"
                   autoComplete="family-name"
                   size="small"
                   margin="normal"
                   {...register("lastName")}
                   error={!!errors.lastName}
-                  helperText={errors.lastName?.message}
+                  helperText={t(errors.lastName?.message)}
                 />
               </Grid>
             </Grid>
             <div>
-              <label>Register By Email :</label>
+              <label>{t("Register by email")} :</label>
               <Switch
                 checked={showEmailField}
                 onChange={handleSwitchChange}
@@ -260,13 +279,13 @@ export default function Register() {
                   required
                   fullWidth
                   id="email"
-                  label="Email Address"
+                  label={t("Email Address")}
                   name="email"
                   autoComplete="email"
                   size="small"
                   {...register("email")}
                   error={!!errors.email}
-                  helperText={errors.email?.message}
+                  helperText={t(errors.email?.message)}
                 />
                 {emailExist != null ? (
                   <small style={{ color: "red" }}>{emailExist}</small>
@@ -281,7 +300,7 @@ export default function Register() {
                       labelId="demo-simple-select-label"
                       id="demo-simple-select"
                       select
-                      label="Code"
+                      label={t("code")}
                       size="small"
                       fullWidth
                       // value={age}
@@ -304,12 +323,12 @@ export default function Register() {
                       required
                       fullWidth
                       id="phoneNumber"
-                      label="phone number"
+                      label={t("phone number")}
                       name="phoneNumber"
                       size="small"
                       {...register("phone")}
                       error={!!errors.phone}
-                      helperText={errors.phone?.message}
+                      helperText={t(errors.phone?.message)}
                     />
                     {phoneExist != null ? (
                       <small style={{ color: "red" }}>{phoneExist}</small>
@@ -326,13 +345,13 @@ export default function Register() {
                   required
                   fullWidth
                   id="country"
-                  label="Country"
+                  label={t("Country")}
                   autoFocus
                   size="small"
                   margin="normal"
                   {...register("country")}
                   error={!!errors.country}
-                  helperText={errors.country?.message}
+                  helperText={t(errors.country?.message)}
                 >
                   {countriesInfo?.map((country) => {
                     return (
@@ -349,13 +368,13 @@ export default function Register() {
                   required
                   fullWidth
                   id="city"
-                  label="city"
+                  label={t("City")}
                   autoComplete="family-name"
                   size="small"
                   margin="normal"
                   {...register("city")}
                   error={!!errors.city}
-                  helperText={errors.city?.message}
+                  helperText={t(errors.city?.message)}
                 >
                   {citiesCorrespondingToTheSelectedCountry?.map((city) => {
                     return (
@@ -371,14 +390,27 @@ export default function Register() {
               margin="normal"
               required
               fullWidth
-              label="Password"
-              type="password"
+              label={t("password")}
+              type={showPassword ? "text" : "password"}
               id="password"
               autoComplete="current-password"
               size="small"
               {...register("password")}
               error={!!errors.password}
-              helperText={errors.password?.message}
+              helperText={t(errors.password?.message)}
+              InputProps={{
+                startAdornment: (
+                  <InputAdornment position="end">
+                    <IconButton
+                      onClick={() => {
+                        setShowPassword(!showPassword);
+                      }}
+                    >
+                      {showPassword ? <VisibilityOff /> : <Visibility />}
+                    </IconButton>
+                  </InputAdornment>
+                ),
+              }}
             />
 
             <Button
@@ -391,7 +423,7 @@ export default function Register() {
               {postRegisterMutation.isLoading ? (
                 <CircularProgress size={25} style={{ color: "white" }} />
               ) : (
-                "Sign Up"
+                t("Sign up")
               )}
             </Button>
             {/* <LoadingButton
@@ -406,7 +438,9 @@ export default function Register() {
             <Grid container>
               <Grid item>
                 <Link to="/login" variant="body2">
-                  {"Do you have an account? Sign In"}
+                  <Box color={theme.palette.BLACK_or_WHITE}>
+                    {t("Do you have an account? Sign In")}
+                  </Box>
                 </Link>
               </Grid>
             </Grid>
