@@ -2,6 +2,7 @@ import { useState, useEffect, useContext } from "react";
 import { styled, alpha } from "@mui/material/styles";
 import AppBar from "@mui/material/AppBar";
 import Box from "@mui/material/Box";
+import { Link } from "react-router-dom";
 import Toolbar from "@mui/material/Toolbar";
 import IconButton from "@mui/material/IconButton";
 import Typography from "@mui/material/Typography";
@@ -82,7 +83,7 @@ function MainAppBar() {
   const theme = useTheme();
   const { mode, setMode } = useContext(ThemeContext);
   const navigate = useNavigate();
-
+  // const [isLogedIn, setIsLogedIn] = useState(useIsUserLogedin());
   const [isLogedIn, setIsLogedIn] = useState(false);
 
   useEffect(() => {
@@ -353,11 +354,13 @@ function MainAppBar() {
         sx={{ backgroundColor: "#e7e7e7", width: "100%" }}
       >
         <Toolbar>
-          <img
-            src={"BAYAASHARRA.png"}
-            alt="Login"
-            style={{ width: "55px", height: "50px", marginRight: "10px" }}
-          />
+          <Link to="/" variant="body2">
+            <img
+              src={"BAYAASHARRA.png"}
+              alt="Login"
+              style={{ width: "55px", height: "50px", marginRight: "10px" }}
+            />
+          </Link>
           <Typography
             variant="h6"
             noWrap

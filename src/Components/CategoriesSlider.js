@@ -32,7 +32,7 @@ function CategoriesSlider() {
       return axiosInstance.get("/main-categories");
     }
   );
-  console.log("bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb :", mainCategories?.data);
+  console.log("bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb :", mainCategories?.data.data);
   return (
     <Box
       sx={{
@@ -111,13 +111,13 @@ function CategoriesSlider() {
             onSlideChange={() => console.log("slide change")}
             onSwiper={(swiper) => console.log(swiper)}
           >
-            {mainCategories?.data.map((category) => {
+            {mainCategories?.data.data.map((category) => {
               return (
                 <SwiperSlide>
                   <CategorySlide
                     iconName="ApartmentIcon"
-                    typography={t(category)}
-                    categoryName={category}
+                    typography={t(category.name)}
+                    categoryName={category.name}
                   />
                 </SwiperSlide>
               );
