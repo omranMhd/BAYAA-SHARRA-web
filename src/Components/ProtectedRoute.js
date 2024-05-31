@@ -1,34 +1,28 @@
 import React from "react";
-// import { useSelector } from "react-redux"
-import { Navigate, useLocation } from "react-router-dom";
 
-const ProtectedRoute = ({ children }) => {
-  // ====================to delete====================================
-  // const userState = useSelector((state) => {
-  //   if (state.token === "" && Object.keys(state.user).length === 0) {
-  //     return "userUnLogin"
-  //   } else {
-  //     if (
-  //       state.user.email_verified_at == null &&
-  //       state.user.phone_verified_at == null
-  //     ) {
-  //       return "acountUnverified"
-  //     }
-  //     return "userLogin"
-  //   }
-  // })
-  // userState values should be : "userUnLogin" or "acountUnverified" or  "userLogin"
+import { Navigate } from "react-router-dom";
 
-  const userState = "userLogin";
+const ProtectedRoute = ({ userShouldBe, children }) => {
+  let canUserEnter = false;
 
-  let location = useLocation();
+  const user = JSON.parse(localStorage.getItem("user"));
+  const token = localStorage.getItem("token");
 
-  if (userState === "userUnLogin") {
-    return <Navigate to="/login" state={{ from: location }} replace />;
-  } else if (userState === "acountUnverified") {
-    return (
-      <Navigate to="/verevication-code" state={{ from: location }} replace />
-    );
+  if (userShouldBe === "logedin") {
+    if (user != null && token != null) {
+      if (user.email_verified_at != null || user.phone_verified_at != null) {
+        canUserEnter = true;
+      }
+    }
+  } else if (userShouldBe === "registered") {
+    if (user != null && token != null) {
+      canUserEnter = true;
+    }
+  }
+
+  if (!canUserEnter) {
+    // navigate("/login");
+    return <Navigate to="/login" replace={true} />;
   }
   return children;
 };

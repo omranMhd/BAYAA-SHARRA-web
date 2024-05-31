@@ -189,7 +189,6 @@ export default function Register() {
           justifyContent: "center",
           alignItems: "center",
           flexDirection: "column",
-          direction: i18n.language === "ar" ? "rtl" : "ltr",
         }}
       >
         <Link to="/" variant="body2">
@@ -229,7 +228,13 @@ export default function Register() {
             onSubmit={handleSubmit(onSubmit)}
             sx={{ mt: 1 }}
           >
-            <Grid container spacing={2}>
+            <Grid
+              container
+              spacing={2}
+              sx={{
+                direction: i18n.language === "ar" ? "rtl" : "ltr",
+              }}
+            >
               <Grid item xs={12} sm={6}>
                 <TextField
                   autoComplete="given-name"
@@ -245,7 +250,6 @@ export default function Register() {
                   error={!!errors.firstName}
                   helperText={t(errors.firstName?.message)}
                 />
-                {JSON.stringify(errors.firstName?.message)}
               </Grid>
               <Grid item xs={12} sm={6}>
                 <TextField
@@ -263,7 +267,11 @@ export default function Register() {
                 />
               </Grid>
             </Grid>
-            <div>
+            <Box
+              sx={{
+                direction: i18n.language === "ar" ? "rtl" : "ltr",
+              }}
+            >
               <label>{t("Register by email")} :</label>
               <Switch
                 checked={showEmailField}
@@ -271,7 +279,7 @@ export default function Register() {
                 color="primary"
                 size="small"
               />
-            </div>
+            </Box>
             {showEmailField ? (
               <>
                 <TextField
@@ -288,7 +296,19 @@ export default function Register() {
                   helperText={t(errors.email?.message)}
                 />
                 {emailExist != null ? (
-                  <small style={{ color: "red" }}>{emailExist}</small>
+                  <Box
+                    sx={{
+                      direction: i18n.language === "ar" ? "rtl" : "ltr",
+                    }}
+                  >
+                    <small
+                      style={{
+                        color: "red",
+                      }}
+                    >
+                      {t(emailExist)}
+                    </small>
+                  </Box>
                 ) : null}
               </>
             ) : (
@@ -331,14 +351,26 @@ export default function Register() {
                       helperText={t(errors.phone?.message)}
                     />
                     {phoneExist != null ? (
-                      <small style={{ color: "red" }}>{phoneExist}</small>
+                      <Box
+                        sx={{
+                          direction: i18n.language === "ar" ? "rtl" : "ltr",
+                        }}
+                      >
+                        <small style={{ color: "red" }}>{t(phoneExist)}</small>
+                      </Box>
                     ) : null}
                   </Grid>
                 </Grid>
               </>
             )}
 
-            <Grid container spacing={2}>
+            <Grid
+              container
+              spacing={2}
+              sx={{
+                direction: i18n.language === "ar" ? "rtl" : "ltr",
+              }}
+            >
               <Grid item xs={12} sm={6}>
                 <TextField
                   select
@@ -356,7 +388,8 @@ export default function Register() {
                   {countriesInfo?.map((country) => {
                     return (
                       <MenuItem key={country.country} value={country.country}>
-                        {country.country}
+                        {i18n.language === "en" && country.country}
+                        {i18n.language === "ar" && country.country_ar}
                       </MenuItem>
                     );
                   })}
@@ -378,8 +411,9 @@ export default function Register() {
                 >
                   {citiesCorrespondingToTheSelectedCountry?.map((city) => {
                     return (
-                      <MenuItem key={city} value={city}>
-                        {city}
+                      <MenuItem key={city.en} value={city.en}>
+                        {i18n.language === "en" && city.en}
+                        {i18n.language === "ar" && city.ar}
                       </MenuItem>
                     );
                   })}
@@ -399,7 +433,7 @@ export default function Register() {
               error={!!errors.password}
               helperText={t(errors.password?.message)}
               InputProps={{
-                startAdornment: (
+                endAdornment: (
                   <InputAdornment position="end">
                     <IconButton
                       onClick={() => {
@@ -435,7 +469,12 @@ export default function Register() {
             >
               <span>Fetch data</span>
             </LoadingButton> */}
-            <Grid container>
+            <Grid
+              container
+              sx={{
+                direction: i18n.language === "ar" ? "rtl" : "ltr",
+              }}
+            >
               <Grid item>
                 <Link to="/login" variant="body2">
                   <Box color={theme.palette.BLACK_or_WHITE}>

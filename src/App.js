@@ -26,7 +26,7 @@ function App() {
       ...(mode === "light" ? lightObjectColors : darkObjectColors),
     },
     typography: {
-      fontFamily: ["Lalezar", "Jersey 15"].join(","),
+      fontFamily: ["Kanit", "Rubik"].join(","),
     },
   });
   return (

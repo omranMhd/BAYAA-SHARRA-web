@@ -1,11 +1,21 @@
 import React from "react";
 import Box from "@mui/material/Box";
-import { Link } from "react-router-dom";
+import { Link, json } from "react-router-dom";
 import AdvertisementCard from "../Components/AdvertisementCard";
 import Pagination from "@mui/material/Pagination";
 import Stack from "@mui/material/Stack";
+import { useQuery } from "react-query";
+import axiosInstance from "../Axios/axiosInstance";
 
 function AdvertisementsCardsViewer() {
+  const { isLoading: mainCategoriesIsLoading, data: advertisements } = useQuery(
+    "get-advertisements",
+    () => {
+      return axiosInstance.get("/all-advertisements");
+    }
+  );
+
+  console.log("adadadadad :", advertisements?.data.data);
   return (
     <>
       <Box
@@ -14,26 +24,29 @@ function AdvertisementsCardsViewer() {
           justifyContent: "space-around",
           flexWrap: "wrap",
           alignContent: "space-around",
-          padding: "15px",
+          // padding: "15px",
         }}
       >
-        
-        {Array.from({ length: 2 }).map((n) => {
+        {advertisements?.data.data.map((ad) => {
           return (
             <AdvertisementCard
-              // image="https://source.unsplash.com/random?wallpapers"
-              image="slide3.jpg"
+              image={`http://127.0.0.1:8000/storage/${ad.cardPhoto}`}
               // title="200 sqm furnished apartment we  we "
-              title="200 sqm furnished apartment"
-              price="200000000"
-              newPrice="175000000"
-              currency="SP"
-              adderss="Syria - Damascus"
-              sellOrRent="Sell"
+              // image="slide3.jpg"
+              title={ad.title}
+              price={ad.price}
+              newPrice={ad.newPrice}
+              currency={ad.currency}
+              adderss={`${JSON.parse(ad.address).country} - ${
+                JSON.parse(ad.address).city
+              }`}
+              sellOrRent={ad.sellOrRent}
+              id={ad.id}
+              cardWidth="350px"
             />
           );
         })}
-        {Array.from({ length: 25 }).map((n) => {
+        {/* {Array.from({ length: 25 }).map((n) => {
           return (
             <AdvertisementCard
               // image="https://source.unsplash.com/random?wallpapers"
@@ -47,11 +60,18 @@ function AdvertisementsCardsViewer() {
               sellOrRent="Rent"
             />
           );
-        })}
+        })} */}
       </Box>
-      <Stack spacing={2} sx={{ m: 5 }}>
+      <Box
+        sx={{
+          m: 5,
+          // backgroundColor: "red",
+          display: "flex",
+          justifyContent: "center",
+        }}
+      >
         <Pagination count={10} color="primary" />
-      </Stack>
+      </Box>
     </>
   );
 }

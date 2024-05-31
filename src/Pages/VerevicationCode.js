@@ -12,11 +12,14 @@ import { useNavigate } from "react-router-dom";
 import Alert from "@mui/material/Alert";
 import { useMutation } from "react-query";
 import { MuiOtpInput } from "mui-one-time-password-input";
+import { useTranslation } from "react-i18next";
+import MainAppBar from "../Components/MainAppBar";
 
 // TODO remove, this demo shouldn't need to reset the theme.
 
 function VerevicationCode() {
   const [code, setCode] = React.useState("");
+  const { t, i18n } = useTranslation();
   const handleChange = (newValue) => {
     setCode(newValue);
   };
@@ -131,27 +134,37 @@ function VerevicationCode() {
   };
   return (
     <>
+      <MainAppBar />
       <Snackbar
-        anchorOrigin={{ vertical: "top", horizontal: "center" }}
+        anchorOrigin={{ vertical: "bottom", horizontal: "right" }}
         open={invalidCode}
-        // onClose={handleClose}
-        message="The code you entered is invalid, try again"
-        // key={vertical + horizontal}
-      />
+        // autoHideDuration={6000}
+      >
+        <Alert severity="error" variant="filled" sx={{ width: "100%" }}>
+          {t("The code you entered is invalid, try again")}
+        </Alert>
+      </Snackbar>
+
       <Snackbar
-        anchorOrigin={{ vertical: "top", horizontal: "center" }}
+        anchorOrigin={{ vertical: "bottom", horizontal: "right" }}
         open={resendCodeStatus === "Success"}
-        // onClose={handleClose}
-        message="success sending email"
-        // key={vertical + horizontal}
-      />
+        // autoHideDuration={6000}
+      >
+        <Alert severity="success" variant="filled" sx={{ width: "100%" }}>
+          {t("success sending email")}
+        </Alert>
+      </Snackbar>
+
       <Snackbar
-        anchorOrigin={{ vertical: "top", horizontal: "center" }}
+        anchorOrigin={{ vertical: "bottom", horizontal: "right" }}
         open={resendCodeStatus === "Failed"}
-        // onClose={handleClose}
-        message="Failed sending email"
-        // key={vertical + horizontal}
-      />
+        // autoHideDuration={6000}
+      >
+        <Alert severity="error" variant="filled" sx={{ width: "100%" }}>
+          {t("Failed sending email")}
+        </Alert>
+      </Snackbar>
+
 
       <Box
         sx={{
@@ -162,9 +175,9 @@ function VerevicationCode() {
           border: "2px solid", // Set the border style
           borderColor: "primary.main", // Set the border color
           borderRadius: "10px",
-          width: "80%",
+          width: "65%",
           margin: "auto",
-          marginTop: 20,
+          marginTop: 15,
           padding: "15px",
           boxShadow: "10px 10px 5px 0px rgba(0, 0, 0, 0.7)",
         }}
@@ -173,7 +186,7 @@ function VerevicationCode() {
           style={{ fontSize: "100px", color: "#153258" }}
         />
         <Typography component="h1" variant="h6">
-          Please check your inbox for verification code sent to you.
+          {t("Please check your inbox for verification code sent to you")}
         </Typography>
         <Box
           sx={{
@@ -186,7 +199,7 @@ function VerevicationCode() {
           }}
         >
           <Typography component="h1" variant="h6" sx={{ textAlign: "center" }}>
-            Enter code
+            {t("Enter Code")}
           </Typography>
           <MuiOtpInput
             value={code}
@@ -207,7 +220,7 @@ function VerevicationCode() {
             sx={{ width: "94%", margin: "auto" }}
             disabled={code.length !== 4}
           >
-            Check
+            {t("Verify")}
           </Button>
         </Box>
 
@@ -226,12 +239,12 @@ function VerevicationCode() {
             {resendVerificationCodeMutation.isLoading ? (
               <CircularProgress size={25} style={{ color: "gray" }} />
             ) : (
-              "Resend Code"
+              t("Resend Code")
             )}
           </Button>
 
           <Link to="/" variant="body2">
-            <Button variant="outlined">Skip</Button>
+            <Button variant="outlined">{t("Skip")}</Button>
           </Link>
         </Box>
 

@@ -7,10 +7,10 @@ function Footer() {
     <Box
     sx={{
       height: "300px",
-      backgroundColor: "red",
+      backgroundColor: "#e7e7e7",
     }}
   >
-    Fotter
+    
   </Box>
   )
 }

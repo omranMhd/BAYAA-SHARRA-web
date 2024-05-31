@@ -119,7 +119,7 @@ function MainAppBar() {
 
         setIsLogedIn(false);
         // // after that go to verevication-code page
-        // navigate("/verevication-code");
+        navigate("/");
       },
       onError: (error) => {
         // Handle any errors here
@@ -356,19 +356,28 @@ function MainAppBar() {
         <Toolbar>
           <Link to="/" variant="body2">
             <img
-              src={"BAYAASHARRA.png"}
+              src={"/BAYAASHARRA.png"}
               alt="Login"
               style={{ width: "55px", height: "50px", marginRight: "10px" }}
             />
+            {i18n.language === "en" && (
+              <img
+                src={"/bs.png"}
+                alt="Login"
+                style={{ width: "120px", height: "25px", marginBottom: "10px" }}
+              />
+            )}
           </Link>
-          <Typography
-            variant="h6"
-            noWrap
-            component="div"
-            sx={{ display: { xs: "none", sm: "block" }, color: "#153258" }}
-          >
-            {t("bayaa sharra")}
-          </Typography>
+          {i18n.language === "ar" && (
+            <Typography
+              variant="h6"
+              noWrap
+              component="div"
+              sx={{ display: { xs: "none", sm: "block" }, color: "#153258" }}
+            >
+              {t("bayaa sharra")}
+            </Typography>
+          )}
 
           <Box sx={{ flexGrow: 1 }} />
           <Search>

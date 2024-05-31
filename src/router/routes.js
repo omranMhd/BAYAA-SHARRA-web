@@ -34,23 +34,31 @@ const routes = createBrowserRouter([
   {
     path: "/new-ad",
     element: (
-      <ProtectedRoute>
+      <ProtectedRoute userShouldBe="logedin">
         <NewAd />
       </ProtectedRoute>
     ),
   },
   {
     path: "/ad-details/:adId",
-    element: <AdDetails />,
+    element: (
+      <ProtectedRoute userShouldBe="logedin">
+        <AdDetails />
+      </ProtectedRoute>
+    ),
   },
   {
     path: "/verevication-code",
-    element: <VerevicationCode length={4} />,
+    element: (
+      <ProtectedRoute userShouldBe="registered">
+        <VerevicationCode />
+      </ProtectedRoute>
+    ),
   },
   {
     path: "/profile",
     element: (
-      <ProtectedRoute>
+      <ProtectedRoute userShouldBe="logedin">
         <Profile />
       </ProtectedRoute>
     ),

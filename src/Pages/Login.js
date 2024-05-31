@@ -145,12 +145,14 @@ export default function SignIn() {
     <>
       <MainAppBar />
       <Snackbar
-        anchorOrigin={{ vertical: "top", horizontal: "center" }}
+        anchorOrigin={{ vertical: "bottom", horizontal: "right" }}
         open={invalidCredentials}
         // autoHideDuration={6000}
       >
-        <Alert severity="warning" variant="filled" sx={{ width: "100%" }}>
-          {showEmailField ? "Email " : "Phone "} or Password is Incorrect
+        <Alert severity="error" variant="filled" sx={{ width: "100%" }}>
+          {showEmailField
+            ? t("Email or Password is Incorrect")
+            : t("Phone or Password is Incorrect")}
         </Alert>
       </Snackbar>
       <Box
@@ -189,7 +191,7 @@ export default function SignIn() {
             borderRadius: "10px",
             // border: "2px solid",
             // borderColor: "blue",
-            direction: i18n.language === "ar" ? "rtl" : "ltr",
+            // direction: i18n.language === "ar" ? "rtl" : "ltr",
           }}
         >
           <Typography
@@ -208,7 +210,11 @@ export default function SignIn() {
             noValidate
             sx={{ mt: 1 }}
           >
-            <div>
+            <Box
+              sx={{
+                direction: i18n.language === "ar" ? "rtl" : "ltr",
+              }}
+            >
               <label>{t("login by email")}:</label>
               <Switch
                 checked={showEmailField}
@@ -216,7 +222,7 @@ export default function SignIn() {
                 color="primary"
                 size="small"
               />
-            </div>
+            </Box>
             {showEmailField ? (
               <Grid container spacing={1}>
                 <Grid item xs={12} sm={12}>
@@ -291,7 +297,7 @@ export default function SignIn() {
               error={!!errors.password}
               helperText={t(errors.password?.message)}
               InputProps={{
-                startAdornment: (
+                endAdornment: (
                   <InputAdornment position="end">
                     <IconButton
                       onClick={() => {
@@ -318,12 +324,18 @@ export default function SignIn() {
                 t("Sign in")
               )}
             </Button>
-            <Grid container spacing={2}>
-              <Grid item xs>
-                {/* <Link href="#" variant="body2">
+            <Grid
+              container
+              spacing={2}
+              sx={{
+                direction: i18n.language === "ar" ? "rtl" : "ltr",
+              }}
+            >
+              {/* <Grid item xs>
+                <Link href="#" variant="body2">
                   Forgot password?
-                </Link> */}
-              </Grid>
+                </Link>
+              </Grid> */}
               <Grid item>
                 <Link to="/register" variant="body2">
                   <Box color={theme.palette.BLACK_or_WHITE}>
