@@ -110,5 +110,7 @@
     "name": "الاسم",
     "create": "إنشاء",
     "skip": "إلغاء",
-    "choosePhotoLessthan200KB": "اختر صورة حجمها أقل من 200 كيلويابت"
+    "choosePhotoLessthan200KB": "اختر صورة حجمها أقل من 500 كيلويابت",
+    "longitude": "خط الطول",
+    "latitude": "خط العرض"
 }

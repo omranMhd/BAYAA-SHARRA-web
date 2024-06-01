@@ -43,6 +43,7 @@ import FurnitureStatusTextFieldSelect from "../Components/Inputs Fields Componen
 import MaterialTextFieldSelect from "../Components/Inputs Fields Components/MaterialTextFieldSelect";
 import ClothesStatusTextFieldSelect from "../Components/Inputs Fields Components/ClothesStatusTextFieldSelect";
 import ClothesTypeTextFieldSelect from "../Components/Inputs Fields Components/ClothesTypeTextFieldSelect";
+import MapContainer from "../Components/MapContainer";
 
 import CircularProgress from "@mui/material/CircularProgress";
 import MenuItem from "@mui/material/MenuItem";
@@ -84,8 +85,8 @@ function NewAd() {
       // Basic feilds
       category: "",
       subCategory: "",
-      locationLongitude: "13.13", //خط الطول
-      locationLatitude: "45.34", //خط العرض
+      locationLongitude: null, //خط الطول
+      locationLatitude: null, //خط العرض
       country: "",
       city: "",
       title: "",
@@ -256,7 +257,7 @@ function NewAd() {
     // photo size in KB
     let photoSize = photo.size / 1024;
 
-    if (photoSize > 200) {
+    if (photoSize > 500) {
       const temp = selectedPhotoesHasErrorInSize;
       temp[index] = true;
       setSelectedPhotoesHasErrorInSize(temp);
@@ -426,31 +427,6 @@ function NewAd() {
               </RadioGroup>
             </FormControl>
           )}
-          {/* map just for realestates */}
-          {watch("category") === "RealEstates" && (
-            <>
-              <Typography>{t("ChooseLocation")}</Typography>
-              <img
-                src="/map.png"
-                alt="map"
-                style={{
-                  width: "100%",
-                  hight: "250px",
-                }}
-                objectFit="cover"
-              />
-              {/* <img
-                src="http://127.0.0.1:8000/storage/advertisements_photoes/4ELAHFXTpgE9QB75nCUsjJCQ7pG3nGV9QsFiy5n5.jpg"
-                alt="map"
-                style={{
-                  width: "50%",
-                  hight: "50%",
-                }}
-                objectFit="cover"
-              /> */}
-            </>
-          )}
-
           <Grid container spacing={2}>
             {/*Country  */}
             <Grid item xs={12} sm={6}>
@@ -502,6 +478,70 @@ function NewAd() {
                   );
                 })}
               </TextField>
+            </Grid>
+
+            <Grid item xs={12} sm={12}>
+              {/* map just for realestates */}
+              {watch("category") === "RealEstates" && (
+                <>
+                  <Typography>{t("ChooseLocation")}</Typography>
+                  <Box
+                    sx={{
+                      margin: "15px",
+                    }}
+                  >
+                    <MapContainer
+                      cityLocation={
+                        citiesCorrespondingToTheSelectedCountry?.find(
+                          (city) => city.en === watch("city")
+                        )?.location
+                      }
+                      setLocationValues={(location) => {
+                        setValue("locationLatitude", location.lat);
+                        setValue("locationLongitude", location.lng);
+                      }}
+                    />
+                  </Box>
+                  <Grid container spacing={1}>
+                    <Grid item xs={12} sm={6}>
+                      <TextField
+                        required
+                        fullWidth
+                        id="Title"
+                        label={t("latitude")}
+                        // label="lat"
+                        autoComplete="family-name"
+                        size="small"
+                        margin="normal"
+                        {...register("locationLatitude")}
+                        error={!!errors.locationLatitude}
+                        helperText={t(errors.locationLatitude?.message)}
+                        InputProps={{
+                          readOnly: true,
+                        }}
+                      />
+                    </Grid>
+                    <Grid item xs={12} sm={6}>
+                      <TextField
+                        required
+                        fullWidth
+                        id="Title"
+                        label={t("longitude")}
+                        // label="lng"
+                        autoComplete="family-name"
+                        size="small"
+                        margin="normal"
+                        {...register("locationLongitude")}
+                        error={!!errors.locationLongitude}
+                        helperText={t(errors.locationLongitude?.message)}
+                        InputProps={{
+                          readOnly: true,
+                        }}
+                      />
+                    </Grid>
+                  </Grid>
+                </>
+              )}
             </Grid>
           </Grid>
 

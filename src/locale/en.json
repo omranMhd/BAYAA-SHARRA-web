@@ -110,5 +110,7 @@
     "name": "Name",
     "create": "Create",
     "skip": "Skip",
-    "choosePhotoLessthan200KB": "Choose Photo Less than 200KB"
+    "choosePhotoLessthan200KB": "Choose Photo Less than 500KB",
+    "longitude": "Longitude",
+    "latitude": "Latitude"
 }
