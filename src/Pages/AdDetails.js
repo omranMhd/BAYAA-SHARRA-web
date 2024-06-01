@@ -15,6 +15,7 @@ import ButtonGroup from "@mui/material/ButtonGroup";
 import AdvertisementCard from "../Components/AdvertisementCard";
 import Footer from "../Components/Footer";
 import ThumbUpOffAltIcon from "@mui/icons-material/ThumbUpOffAlt";
+import ThumbUpIcon from "@mui/icons-material/ThumbUp";
 import ReportGmailerrorredIcon from "@mui/icons-material/ReportGmailerrorred";
 import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
 import FavoriteIcon from "@mui/icons-material/Favorite";
@@ -22,6 +23,12 @@ import LocationOnOutlinedIcon from "@mui/icons-material/LocationOnOutlined";
 import TextField from "@mui/material/TextField";
 import SendIcon from "@mui/icons-material/Send";
 import PhoneInTalkIcon from "@mui/icons-material/PhoneInTalk";
+import Dialog from "@mui/material/Dialog";
+import DialogActions from "@mui/material/DialogActions";
+import DialogContent from "@mui/material/DialogContent";
+import DialogContentText from "@mui/material/DialogContentText";
+import DialogTitle from "@mui/material/DialogTitle";
+import CircularProgress from "@mui/material/CircularProgress";
 import { useQuery, useMutation } from "react-query";
 import axiosInstance from "../Axios/axiosInstance";
 
@@ -29,12 +36,17 @@ function AdDetails() {
   let params = useParams();
   const theme = useTheme();
   const [isAdinMyFavoriteList, setIsAdinMyFavoriteList] = useState(false);
+  const [isAdLiked, setIsAdLiked] = useState(false);
+  const [open, setOpen] = useState(false);
+  const [complaintReason, setComplaintReason] = useState("");
+
   const { data: adDetailsResponse } = useQuery("ad-details", () => {
     const token = localStorage.getItem("token");
 
     axiosInstance.defaults.headers.common["Authorization"] = `Bearer ${token}`;
     return axiosInstance.get(`/ad-details/${params.adId}`);
   });
+
   console.log("bbb :", adDetailsResponse?.data.data);
 
   const { isLoading: isAdInFavoriteList, data: isAdExistInFavoriteList } =
@@ -71,9 +83,35 @@ function AdDetails() {
       }
     );
 
-  console.log(
-    "is this ad in my favorite list :",
-    isAdExistInFavoriteList?.data.isExist
+  const { data: checkIsAdLiked } = useQuery(
+    "is-ad-liked",
+    () => {
+      const user_id = JSON.parse(localStorage.getItem("user")).id;
+      const token = localStorage.getItem("token");
+
+      axiosInstance.defaults.headers.common[
+        "Authorization"
+      ] = `Bearer ${token}`;
+
+      return axiosInstance.get(`/is-ad-liked/${user_id}/${params.adId}`);
+    },
+    {
+      onSuccess: (response) => {
+        // Handle the response data here
+        // console.log("onSuccess response", response);
+        console.log("test test", response);
+
+        setIsAdLiked(response.data.isExist);
+      },
+      onError: (error) => {
+        // Handle any errors here
+        console.error("onError", error);
+      },
+      onSettled: () => {
+        // This will run after the mutation is either successful or fails
+        console.log("Mutation has completed");
+      },
+    }
   );
 
   const addAdvertToFavoriteList = useMutation(
@@ -106,6 +144,36 @@ function AdDetails() {
     }
   );
 
+  const addLikeToAdvertisement = useMutation(
+    () => {
+      // هون لازم نتحقق اذا كانت هي المعلومات موجودة اولا قبل استخدامها
+      const token = localStorage.getItem("token");
+      const user_id = JSON.parse(localStorage.getItem("user")).id;
+
+      axiosInstance.defaults.headers.common[
+        "Authorization"
+      ] = `Bearer ${token}`;
+
+      return axiosInstance.post(`/add-like/${user_id}/${params.adId}`);
+    },
+    {
+      onSuccess: (response) => {
+        // Handle the response data here
+        console.log("onSuccess response", response);
+
+        setIsAdLiked(true);
+      },
+      onError: (error) => {
+        // Handle any errors here
+        console.error("onError", error);
+      },
+      onSettled: () => {
+        // This will run after the mutation is either successful or fails
+        console.log("Mutation has completed");
+      },
+    }
+  );
+
   const removeAdvertFromFavoriteList = useMutation(
     () => {
       // هون لازم نتحقق اذا كانت هي المعلومات موجودة اولا قبل استخدامها
@@ -126,6 +194,63 @@ function AdDetails() {
         console.log("onSuccess response", response);
 
         setIsAdinMyFavoriteList(false);
+      },
+      onError: (error) => {
+        // Handle any errors here
+        console.error("onError", error);
+      },
+      onSettled: () => {
+        // This will run after the mutation is either successful or fails
+        console.log("Mutation has completed");
+      },
+    }
+  );
+
+  const removeLikeFromAdvertisement = useMutation(
+    () => {
+      // هون لازم نتحقق اذا كانت هي المعلومات موجودة اولا قبل استخدامها
+      const token = localStorage.getItem("token");
+      const user_id = JSON.parse(localStorage.getItem("user")).id;
+
+      axiosInstance.defaults.headers.common[
+        "Authorization"
+      ] = `Bearer ${token}`;
+
+      return axiosInstance.delete(`/remove-like/${user_id}/${params.adId}`);
+    },
+    {
+      onSuccess: (response) => {
+        // Handle the response data here
+        console.log("onSuccess response", response);
+
+        setIsAdLiked(false);
+      },
+      onError: (error) => {
+        // Handle any errors here
+        console.error("onError", error);
+      },
+      onSettled: () => {
+        // This will run after the mutation is either successful or fails
+        console.log("Mutation has completed");
+      },
+    }
+  );
+
+  const addComplaint = useMutation(
+    (data) => {
+      const token = localStorage.getItem("token");
+
+      axiosInstance.defaults.headers.common[
+        "Authorization"
+      ] = `Bearer ${token}`;
+
+      return axiosInstance.post("/add-complaint", data);
+    },
+    {
+      onSuccess: (response) => {
+        // Handle the response data here
+        console.log("onSuccess response", response);
+        setOpen(false);
       },
       onError: (error) => {
         // Handle any errors here
@@ -406,10 +531,100 @@ function AdDetails() {
                     Favorate
                   </Button>
                 )}
+                {isAdLiked ? (
+                  <Button
+                    onClick={() => {
+                      removeLikeFromAdvertisement.mutate();
+                    }}
+                    endIcon={<ThumbUpIcon />}
+                  >
+                    Like
+                  </Button>
+                ) : (
+                  <Button
+                    onClick={() => {
+                      addLikeToAdvertisement.mutate();
+                    }}
+                    endIcon={<ThumbUpOffAltIcon />}
+                  >
+                    Like{" "}
+                  </Button>
+                )}
 
-                <Button endIcon={<ThumbUpOffAltIcon />}>Like </Button>
-                <Button endIcon={<ReportGmailerrorredIcon />}>Report</Button>
+                <Button
+                  onClick={() => {
+                    setOpen(true);
+                  }}
+                  endIcon={<ReportGmailerrorredIcon />}
+                >
+                  Report
+                </Button>
               </ButtonGroup>
+              <Dialog
+                open={open}
+                onClose={() => {
+                  setOpen(false);
+                }}
+                aria-labelledby="alert-dialog-title"
+                aria-describedby="alert-dialog-description"
+              >
+                <DialogTitle id="alert-dialog-title">
+                  Please write your complaint in the field
+                </DialogTitle>
+                <DialogContent>
+                  <TextField
+                    // label={t("description")}
+                    label="message"
+                    required
+                    multiline
+                    rows={3}
+                    variant="outlined"
+                    fullWidth
+                    margin="normal"
+                    name="ComplaintReason"
+                    value={complaintReason}
+                    onChange={(e) => {
+                      setComplaintReason(e.target.value);
+                    }}
+                    // {...register("description")}
+                    // error={!!errors.description}
+                    // helperText={t(errors.description?.message)}
+                  />
+                </DialogContent>
+                <DialogActions>
+                  <Button
+                    variant="outlined"
+                    onClick={() => {
+                      setOpen(false);
+                    }}
+                  >
+                    Skip
+                  </Button>
+                  <Button
+                    disabled={addComplaint.isLoading}
+                    variant="contained"
+                    onClick={() => {
+                      const data = {};
+                      const user_id = JSON.parse(
+                        localStorage.getItem("user")
+                      ).id;
+                      data.user_id = user_id;
+                      data.advertisement_id = params.adId;
+                      data.reason = complaintReason;
+                      // alert(complaintReason);
+                      addComplaint.mutate(data);
+                      // setOpen(false);
+                    }}
+                    autoFocus
+                  >
+                    {addComplaint.isLoading ? (
+                      <CircularProgress size={25} style={{ color: "white" }} />
+                    ) : (
+                      "Send"
+                    )}
+                  </Button>
+                </DialogActions>
+              </Dialog>
             </Box>
             {/* advertisement comments */}
             <Box
