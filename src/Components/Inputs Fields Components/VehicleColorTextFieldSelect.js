@@ -19,8 +19,10 @@ function VehicleColorTextFieldSelect({ register, errors }) {
       error={!!errors.vehicleColor}
       helperText={errors.vehicleColor?.message}
     >
-      <MenuItem value={"original"}>original</MenuItem>
-      <MenuItem value={"repainted"}>repainted</MenuItem>
+      <MenuItem value={"red"}>Red</MenuItem>
+      <MenuItem value={"blue"}>Blue</MenuItem>
+      <MenuItem value={"black"}>Black</MenuItem>
+      <MenuItem value={"yallow"}>yallow</MenuItem>
     </TextField>
   );
 }

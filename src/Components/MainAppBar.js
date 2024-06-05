@@ -100,6 +100,8 @@ function MainAppBar() {
     }
   }, [setIsLogedIn]);
 
+  const user = JSON.parse(localStorage.getItem("user"));
+
   const postLogoutMutation = useMutation(
     () => {
       const token = localStorage.getItem("token");
@@ -485,7 +487,7 @@ function MainAppBar() {
                 onClick={handleProfileMenuOpen}
                 color="inherit"
               >
-                <Avatar alt="Remy Sharp" src="/omran.jpg" />
+                <Avatar alt="Remy Sharp" src={`http://127.0.0.1:8000/storage/${user.image}`} />
               </IconButton>
             ) : (
               <Tooltip title={t("login")} arrow>

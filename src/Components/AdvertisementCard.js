@@ -106,7 +106,11 @@ export default function AdvertisementCard({
           navigate(`/ad-details/${id}`);
         }}
       >
-        <Typography variant="h6" color={theme.palette.LIGHT_BLUE_or_DARK_BLUE}>
+        <Typography
+          variant="h6"
+          // sx={{ whiteSpace: "nowrap" }}
+          color={theme.palette.LIGHT_BLUE_or_DARK_BLUE}
+        >
           {title}
         </Typography>
         <Box
