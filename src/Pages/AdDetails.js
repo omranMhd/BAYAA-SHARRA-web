@@ -1,6 +1,6 @@
 import React from "react";
 import { useParams } from "react-router-dom";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import MainAppBar from "../Components/MainAppBar";
 import { useTheme } from "@mui/material/styles";
 import Box from "@mui/material/Box";
@@ -36,6 +36,7 @@ import axiosInstance from "../Axios/axiosInstance";
 
 function AdDetails() {
   let params = useParams();
+  let { adId } = useParams();
   const theme = useTheme();
   const [isAdinMyFavoriteList, setIsAdinMyFavoriteList] = useState(false);
   const [isAdLiked, setIsAdLiked] = useState(false);
@@ -56,6 +57,15 @@ function AdDetails() {
   });
 
   console.log("bbb :", adDetailsResponse?.data.data);
+
+  const { data: similarAds } = useQuery("similar-ads", () => {
+    const token = localStorage.getItem("token");
+
+    axiosInstance.defaults.headers.common["Authorization"] = `Bearer ${token}`;
+    return axiosInstance.get(`/similar-ads/${params.adId}`);
+  });
+
+  console.log("similarAds", similarAds);
 
   const { isLoading: isAdInFavoriteList, data: isAdExistInFavoriteList } =
     useQuery(
@@ -1130,7 +1140,27 @@ function AdDetails() {
                 padding: "20px",
               }}
             >
-              {Array.from({ length: 3 }).map((n) => {
+              {similarAds?.data.data.map((ad) => {
+                return (
+                  <AdvertisementCard
+                    image={`http://127.0.0.1:8000/storage/${ad.cardPhoto}`}
+                    // image="/slide3.jpg"
+                    // title="200 sqm furnished apartment we  we "
+                    title={ad.title}
+                    price={ad.price}
+                    newPrice={ad.newPrice}
+                    currency={ad.currency}
+                    adderss={`${JSON.parse(ad.address).country} - ${
+                      JSON.parse(ad.address).city
+                    }`}
+                    sellOrRent={ad.sellOrRent}
+                    cardWidth="auto"
+                    id={ad.id}
+                  />
+                );
+              })}
+
+              {/* {Array.from({ length: 3 }).map((n) => {
                 return (
                   <AdvertisementCard
                     image="http://127.0.0.1:8000/storage/advertisements_photoes/kbPVC8DFSeyWQGSjqIlADafdx2wt3q55U9ZAbhzZ.jpg"
@@ -1145,7 +1175,7 @@ function AdDetails() {
                     cardWidth="auto"
                   />
                 );
-              })}
+              })} */}
             </Box>
           </Grid>
         </Grid>

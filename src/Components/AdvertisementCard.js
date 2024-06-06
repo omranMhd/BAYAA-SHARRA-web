@@ -13,6 +13,7 @@ import Typography from "@mui/material/Typography";
 import FavoriteIcon from "@mui/icons-material/Favorite";
 import ShareIcon from "@mui/icons-material/Share";
 import LocationOnOutlinedIcon from "@mui/icons-material/LocationOnOutlined";
+import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
 import FavoriteBorder from "@mui/icons-material/FavoriteBorder";
 import Favorite from "@mui/icons-material/Favorite";
 import Checkbox from "@mui/material/Checkbox";
@@ -34,14 +35,46 @@ export default function AdvertisementCard({
   sellOrRent,
   id,
   cardWidth,
+  isAdInFavoriteListProp,
 }) {
   const theme = useTheme();
   const navigate = useNavigate();
-  const [favoriteChecked, setFavoriteChecked] = useState(false);
+  const [isAdinMyFavoriteList, setIsAdinMyFavoriteList] = useState(
+    isAdInFavoriteListProp
+  );
+
   // this custom hook to check if user loged in or not
   const isUserLogedin = useUserLogedin();
 
-  console.log("fffffffff", isUserLogedin);
+  const removeAdvertFromFavoriteList = useMutation(
+    () => {
+      // هون لازم نتحقق اذا كانت هي المعلومات موجودة اولا قبل استخدامها
+      const token = localStorage.getItem("token");
+      const user_id = JSON.parse(localStorage.getItem("user")).id;
+
+      axiosInstance.defaults.headers.common[
+        "Authorization"
+      ] = `Bearer ${token}`;
+
+      return axiosInstance.delete(`/remove-ad-favorite/${user_id}/${id}`);
+    },
+    {
+      onSuccess: (response) => {
+        // Handle the response data here
+        console.log("onSuccess response", response);
+
+        setIsAdinMyFavoriteList(false);
+      },
+      onError: (error) => {
+        // Handle any errors here
+        console.error("onError", error);
+      },
+      onSettled: () => {
+        // This will run after the mutation is either successful or fails
+        console.log("Mutation has completed");
+      },
+    }
+  );
 
   const addAdvertToFavoriteList = useMutation(
     () => {
@@ -59,12 +92,7 @@ export default function AdvertisementCard({
       onSuccess: (response) => {
         // Handle the response data here
         console.log("onSuccess response", response);
-        if (response.status == 201) {
-          setFavoriteChecked(true);
-        } else if (response.status == 200) {
-          setFavoriteChecked(false);
-        }
-        // setFavoriteChecked
+        setIsAdinMyFavoriteList(true);
       },
       onError: (error) => {
         // Handle any errors here
@@ -102,8 +130,11 @@ export default function AdvertisementCard({
           padding: "10px",
         }}
         onClick={() => {
-          // alert(id);
-          navigate(`/ad-details/${id}`);
+          // هون خدعة لحل مشكلة التنقل من اعلان لاعلان لاجبار الصفحة على التحديث
+          // عن طريق التوجه الى صفحة أخرى بديلة ومن ثم داخل هذه الصفحة اقوم بالرجوع الى صفحة تفاصيل اعلان
+
+          // navigate(`/ad-details/${id}`);
+          navigate(`/test-nav/${id}`);
         }}
       >
         <Typography
@@ -147,11 +178,7 @@ export default function AdvertisementCard({
           {adderss}
         </Box>
       </CardContent>
-      {/* <Checkbox
-        icon={<FavoriteBorder />}
-        checkedIcon={<Favorite />}
-        sx={{ color: theme.palette.DARK_BLUE_or_LIGHT_BLUE }}
-      /> */}
+
       <CardActions
         disableSpacing
         sx={{
@@ -160,17 +187,36 @@ export default function AdvertisementCard({
           padding: "1px",
         }}
       >
-        {isUserLogedin && (
-          <Checkbox
-            icon={<FavoriteBorder />}
-            checkedIcon={<Favorite />}
-            sx={{ color: theme.palette.LIGHT_BLUE_or_DARK_BLUE }}
-            onClick={() => {
-              addAdvertToFavoriteList.mutate();
-            }}
-            checked={favoriteChecked}
-          />
-        )}
+        {
+          isUserLogedin &&
+            (isAdinMyFavoriteList ? (
+              <IconButton
+                onClick={() => {
+                  removeAdvertFromFavoriteList.mutate();
+                }}
+              >
+                <FavoriteIcon />
+              </IconButton>
+            ) : (
+              <IconButton
+                onClick={() => {
+                  addAdvertToFavoriteList.mutate();
+                }}
+              >
+                <FavoriteBorderIcon />
+              </IconButton>
+            ))
+
+          // <Checkbox
+          //   icon={<FavoriteBorder />}
+          //   checkedIcon={<Favorite />}
+          //   sx={{ color: theme.palette.LIGHT_BLUE_or_DARK_BLUE }}
+          //   onClick={() => {
+          //     addAdvertToFavoriteList.mutate();
+          //   }}
+          //   checked={favoriteChecked}
+          // />
+        }
 
         <Typography sx={{ margin: "5px", color: theme.palette.BLACK_or_WHITE }}>
           10 minute ago

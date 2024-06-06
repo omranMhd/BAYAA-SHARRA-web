@@ -11,7 +11,12 @@ function AdvertisementsCardsViewer() {
   const { isLoading: mainCategoriesIsLoading, data: advertisements } = useQuery(
     "get-advertisements",
     () => {
-      return axiosInstance.get("/all-advertisements");
+      const user_id = JSON.parse(localStorage.getItem("user")).id;
+      if (user_id != null || user_id != undefined) {
+        return axiosInstance.get(`/all-advertisements/${user_id}`);
+      } else {
+        return axiosInstance.get("/all-advertisements");
+      }
     }
   );
 
@@ -43,6 +48,7 @@ function AdvertisementsCardsViewer() {
               sellOrRent={ad.sellOrRent}
               id={ad.id}
               cardWidth="350px"
+              isAdInFavoriteListProp={ad.isAdInFavoriteList}
             />
           );
         })}

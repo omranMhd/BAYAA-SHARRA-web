@@ -3,6 +3,7 @@ import Home from "../Pages/Home";
 import Login from "../Pages/Login";
 import Register from "../Pages/Register";
 import NewAd from "../Pages/NewAd";
+import TestNav from "../Pages/TestNav";
 import AdDetails from "../Pages/AdDetails";
 import Profile from "../Pages/Profile";
 import VerevicationCode from "../Pages/VerevicationCode";
@@ -36,6 +37,14 @@ const routes = createBrowserRouter([
     element: (
       <ProtectedRoute userShouldBe="logedin">
         <NewAd />
+      </ProtectedRoute>
+    ),
+  },
+  {
+    path: "/test-nav/:adId",
+    element: (
+      <ProtectedRoute userShouldBe="logedin">
+        <TestNav />
       </ProtectedRoute>
     ),
   },
