@@ -28,6 +28,30 @@ function App() {
     typography: {
       fontFamily: ["Kanit", "Rubik"].join(","),
     },
+    components: {
+      MuiCssBaseline: {
+        styleOverrides: `
+          /* Custom scrollbar styles */
+          ::-webkit-scrollbar {
+            width: 15px; /* Width of the scrollbar */
+          }
+  
+          ::-webkit-scrollbar-track {
+            background: #ffff; /* Color of the tracking area */
+          }
+  
+          ::-webkit-scrollbar-thumb {
+            background-color: #153258; /* Background color of the scroll thumb */
+            border-radius: 20px; /* Roundness of the scroll thumb */
+            // border: 3px solid #f1f1f1; /* Creates padding around scroll thumb */
+          }
+  
+          ::-webkit-scrollbar-thumb:hover {
+            background-color: #153258; /* Color of the scroll thumb on hover */
+          }
+        `,
+      },
+    },
   });
   return (
     <>

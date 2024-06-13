@@ -1,11 +1,11 @@
 import React from "react";
-import NavBar from "../Components/NavBar";
+import MainAppBar from "../Components/MainAppBar";
 
 function NoMatch() {
   return (
     <>
-      <NavBar />
-      <h1>NoMatch</h1>
+      <MainAppBar />
+      <img alt="page not found" src="/404.png" width={"100%"} />{" "}
     </>
   );
 }

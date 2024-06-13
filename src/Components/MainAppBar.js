@@ -408,7 +408,13 @@ function MainAppBar() {
           </Button>
           <Box sx={{ display: { xs: "none", md: "flex" } }}>
             <Tooltip title={t("favorites")} arrow>
-              <IconButton aria-label="translate" size="large">
+              <IconButton
+                aria-label="translate"
+                size="large"
+                onClick={() => {
+                  navigate("/favorite-ads");
+                }}
+              >
                 <FavoriteIcon
                   sx={{
                     color: "#153258",
@@ -487,7 +493,10 @@ function MainAppBar() {
                 onClick={handleProfileMenuOpen}
                 color="inherit"
               >
-                <Avatar alt="Remy Sharp" src={`http://127.0.0.1:8000/storage/${user.image}`} />
+                <Avatar
+                  alt="Remy Sharp"
+                  src={`http://127.0.0.1:8000/storage/${user.image}`}
+                />
               </IconButton>
             ) : (
               <Tooltip title={t("login")} arrow>

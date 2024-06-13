@@ -4,6 +4,7 @@ import { Grid, Typography } from "@mui/material";
 import HomeIcon from "@mui/icons-material/Home";
 import Divider from "@mui/material/Divider";
 import { useTheme } from "@mui/material/styles";
+import { useTranslation } from "react-i18next";
 
 // import { styled } from '@mui/system';
 
@@ -15,6 +16,7 @@ import { useTheme } from "@mui/material/styles";
 //     },
 //   });
 function GridItem({ label, value }) {
+  const { t, i18n } = useTranslation();
   const theme = useTheme();
   return (
     <Grid item xs={6} sx={{ display: "flex", flexDirection: "column" }}>
@@ -23,10 +25,10 @@ function GridItem({ label, value }) {
           <HomeIcon
             sx={{
               color: theme.palette.LIGHT_BLUE,
-              marginX:"10px"
+              marginX: "10px",
             }}
           />{" "}
-          <Typography>{label} :</Typography>
+          <Typography>{t(label)} :</Typography>
         </Box>
         <Box>{value}</Box>
       </Box>
@@ -39,8 +41,12 @@ function GridItem({ label, value }) {
 
 function AdditionalAdvertisementInfo({ adCategory, additionalInfo }) {
   return (
-    <Box>
-      <Typography>{adCategory}</Typography>
+    <Box
+      sx={{
+        mt: "10px",
+      }}
+    >
+      {/* <Typography>{adCategory}</Typography> */}
       {adCategory === "Apartment" && (
         <Box>
           <Grid
@@ -50,8 +56,8 @@ function AdditionalAdvertisementInfo({ adCategory, additionalInfo }) {
               marginBottom: "10px",
             }}
           >
-            <GridItem label={"Area"} value={additionalInfo.area} />
-            <GridItem label={"Floor"} value={additionalInfo.floor} />
+            <GridItem label={"area"} value={additionalInfo.area} />
+            <GridItem label={"floor"} value={additionalInfo.floor} />
           </Grid>
           <Grid
             container
@@ -60,8 +66,8 @@ function AdditionalAdvertisementInfo({ adCategory, additionalInfo }) {
               marginBottom: "10px",
             }}
           >
-            <GridItem label={"Room Count"} value={additionalInfo.roomCount} />
-            <GridItem label={"Cladding"} value={additionalInfo.cladding} />
+            <GridItem label={"roomCount"} value={additionalInfo.roomCount} />
+            <GridItem label={"cladding"} value={additionalInfo.cladding} />
           </Grid>
           <Grid
             container
@@ -71,10 +77,7 @@ function AdditionalAdvertisementInfo({ adCategory, additionalInfo }) {
             }}
           >
             <GridItem label={"ownership"} value={additionalInfo.ownership} />
-            <GridItem
-              label={"Sell Or Rent"}
-              value={additionalInfo.sellOrRent}
-            />
+            <GridItem label={"sellOrRent"} value={additionalInfo.sellOrRent} />
           </Grid>
           <Grid
             container
@@ -83,7 +86,7 @@ function AdditionalAdvertisementInfo({ adCategory, additionalInfo }) {
               marginBottom: "10px",
             }}
           >
-            <GridItem label={"Direction"} value={additionalInfo.direction} />
+            <GridItem label={"direction"} value={additionalInfo.direction} />
           </Grid>
         </Box>
       )}
@@ -96,8 +99,8 @@ function AdditionalAdvertisementInfo({ adCategory, additionalInfo }) {
               marginBottom: "10px",
             }}
           >
-            <GridItem label={"Area"} value={additionalInfo.area} />
-            <GridItem label={"Floor Count"} value={additionalInfo.floorCount} />
+            <GridItem label={"area"} value={additionalInfo.area} />
+            <GridItem label={"floorsCount"} value={additionalInfo.floorCount} />
           </Grid>
           <Grid
             container
@@ -106,8 +109,8 @@ function AdditionalAdvertisementInfo({ adCategory, additionalInfo }) {
               marginBottom: "10px",
             }}
           >
-            <GridItem label={"Room Count"} value={additionalInfo.roomCount} />
-            <GridItem label={"Cladding"} value={additionalInfo.cladding} />
+            <GridItem label={"roomCount"} value={additionalInfo.roomCount} />
+            <GridItem label={"cladding"} value={additionalInfo.cladding} />
           </Grid>
           <Grid
             container
@@ -116,11 +119,8 @@ function AdditionalAdvertisementInfo({ adCategory, additionalInfo }) {
               marginBottom: "10px",
             }}
           >
-            <GridItem label={"Ownership"} value={additionalInfo.ownership} />
-            <GridItem
-              label={"Sell Or Rent"}
-              value={additionalInfo.sellOrRent}
-            />
+            <GridItem label={"ownership"} value={additionalInfo.ownership} />
+            <GridItem label={"sellOrRent"} value={additionalInfo.sellOrRent} />
           </Grid>
           <Grid
             container
@@ -129,7 +129,7 @@ function AdditionalAdvertisementInfo({ adCategory, additionalInfo }) {
               marginBottom: "10px",
             }}
           >
-            <GridItem label={"Direction"} value={additionalInfo.direction} />
+            <GridItem label={"direction"} value={additionalInfo.direction} />
           </Grid>
         </Box>
       )}
@@ -142,7 +142,7 @@ function AdditionalAdvertisementInfo({ adCategory, additionalInfo }) {
               marginBottom: "10px",
             }}
           >
-            <GridItem label={"Area"} value={additionalInfo.area} />
+            <GridItem label={"area"} value={additionalInfo.area} />
             <GridItem label={"ownership"} value={additionalInfo.ownership} />
           </Grid>
           <Grid
@@ -152,10 +152,7 @@ function AdditionalAdvertisementInfo({ adCategory, additionalInfo }) {
               marginBottom: "10px",
             }}
           >
-            <GridItem
-              label={"Sell Or Rent"}
-              value={additionalInfo.sellOrRent}
-            />
+            <GridItem label={"sellOrRent"} value={additionalInfo.sellOrRent} />
           </Grid>
         </Box>
       )}
@@ -168,8 +165,8 @@ function AdditionalAdvertisementInfo({ adCategory, additionalInfo }) {
               marginBottom: "10px",
             }}
           >
-            <GridItem label={"Area"} value={additionalInfo.area} />
-            <GridItem label={"Floor"} value={additionalInfo.floor} />
+            <GridItem label={"area"} value={additionalInfo.area} />
+            <GridItem label={"floor"} value={additionalInfo.floor} />
           </Grid>
           <Grid
             container
@@ -179,7 +176,7 @@ function AdditionalAdvertisementInfo({ adCategory, additionalInfo }) {
             }}
           >
             <GridItem label={"ownership"} value={additionalInfo.ownership} />
-            <GridItem label={"Cladding"} value={additionalInfo.cladding} />
+            <GridItem label={"cladding"} value={additionalInfo.cladding} />
           </Grid>
           <Grid
             container
@@ -188,10 +185,7 @@ function AdditionalAdvertisementInfo({ adCategory, additionalInfo }) {
               marginBottom: "10px",
             }}
           >
-            <GridItem
-              label={"Sell Or Rent"}
-              value={additionalInfo.sellOrRent}
-            />
+            <GridItem label={"sellOrRent"} value={additionalInfo.sellOrRent} />
           </Grid>
         </Box>
       )}
@@ -204,8 +198,8 @@ function AdditionalAdvertisementInfo({ adCategory, additionalInfo }) {
               marginBottom: "10px",
             }}
           >
-            <GridItem label={"Area"} value={additionalInfo.area} />
-            <GridItem label={"Floor"} value={additionalInfo.floor} />
+            <GridItem label={"area"} value={additionalInfo.area} />
+            <GridItem label={"floor"} value={additionalInfo.floor} />
           </Grid>
           <Grid
             container
@@ -214,8 +208,8 @@ function AdditionalAdvertisementInfo({ adCategory, additionalInfo }) {
               marginBottom: "10px",
             }}
           >
-            <GridItem label={"Room Count"} value={additionalInfo.roomCount} />
-            <GridItem label={"Cladding"} value={additionalInfo.cladding} />
+            <GridItem label={"roomCount"} value={additionalInfo.roomCount} />
+            <GridItem label={"cladding"} value={additionalInfo.cladding} />
           </Grid>
           <Grid
             container
@@ -225,10 +219,7 @@ function AdditionalAdvertisementInfo({ adCategory, additionalInfo }) {
             }}
           >
             <GridItem label={"ownership"} value={additionalInfo.ownership} />
-            <GridItem
-              label={"Sell Or Rent"}
-              value={additionalInfo.sellOrRent}
-            />
+            <GridItem label={"sellOrRent"} value={additionalInfo.sellOrRent} />
           </Grid>
           <Grid
             container
@@ -237,7 +228,7 @@ function AdditionalAdvertisementInfo({ adCategory, additionalInfo }) {
               marginBottom: "10px",
             }}
           >
-            <GridItem label={"Direction"} value={additionalInfo.direction} />
+            <GridItem label={"direction"} value={additionalInfo.direction} />
           </Grid>
         </Box>
       )}
@@ -250,8 +241,8 @@ function AdditionalAdvertisementInfo({ adCategory, additionalInfo }) {
               marginBottom: "10px",
             }}
           >
-            <GridItem label={"Area"} value={additionalInfo.area} />
-            <GridItem label={"Floor"} value={additionalInfo.floor} />
+            <GridItem label={"area"} value={additionalInfo.area} />
+            <GridItem label={"floor"} value={additionalInfo.floor} />
           </Grid>
           <Grid
             container
@@ -260,8 +251,8 @@ function AdditionalAdvertisementInfo({ adCategory, additionalInfo }) {
               marginBottom: "10px",
             }}
           >
-            <GridItem label={"Room Count"} value={additionalInfo.roomCount} />
-            <GridItem label={"Cladding"} value={additionalInfo.cladding} />
+            <GridItem label={"roomCount"} value={additionalInfo.roomCount} />
+            <GridItem label={"cladding"} value={additionalInfo.cladding} />
           </Grid>
           <Grid
             container
@@ -271,10 +262,7 @@ function AdditionalAdvertisementInfo({ adCategory, additionalInfo }) {
             }}
           >
             <GridItem label={"ownership"} value={additionalInfo.ownership} />
-            <GridItem
-              label={"Sell Or Rent"}
-              value={additionalInfo.sellOrRent}
-            />
+            <GridItem label={"sellOrRent"} value={additionalInfo.sellOrRent} />
           </Grid>
         </Box>
       )}
@@ -287,8 +275,8 @@ function AdditionalAdvertisementInfo({ adCategory, additionalInfo }) {
               marginBottom: "10px",
             }}
           >
-            <GridItem label={"Area"} value={additionalInfo.area} />
-            <GridItem label={"Floor Count"} value={additionalInfo.floorCount} />
+            <GridItem label={"area"} value={additionalInfo.area} />
+            <GridItem label={"floorsCount"} value={additionalInfo.floorCount} />
           </Grid>
           <Grid
             container
@@ -297,8 +285,8 @@ function AdditionalAdvertisementInfo({ adCategory, additionalInfo }) {
               marginBottom: "10px",
             }}
           >
-            <GridItem label={"Room Count"} value={additionalInfo.roomCount} />
-            <GridItem label={"Cladding"} value={additionalInfo.cladding} />
+            <GridItem label={"roomCount"} value={additionalInfo.roomCount} />
+            <GridItem label={"cladding"} value={additionalInfo.cladding} />
           </Grid>
           <Grid
             container
@@ -308,10 +296,7 @@ function AdditionalAdvertisementInfo({ adCategory, additionalInfo }) {
             }}
           >
             <GridItem label={"ownership"} value={additionalInfo.ownership} />
-            <GridItem
-              label={"Sell Or Rent"}
-              value={additionalInfo.sellOrRent}
-            />
+            <GridItem label={"sellOrRent"} value={additionalInfo.sellOrRent} />
           </Grid>
           <Grid
             container
@@ -320,7 +305,7 @@ function AdditionalAdvertisementInfo({ adCategory, additionalInfo }) {
               marginBottom: "10px",
             }}
           >
-            <GridItem label={"Direction"} value={additionalInfo.direction} />
+            <GridItem label={"direction"} value={additionalInfo.direction} />
           </Grid>
         </Box>
       )}
@@ -342,10 +327,10 @@ function AdditionalAdvertisementInfo({ adCategory, additionalInfo }) {
             }}
           >
             <GridItem
-              label={"Model"}
+              label={"model"}
               value={`${additionalInfo.brand} ${additionalInfo.model}`}
             />
-            <GridItem label={"Color"} value={additionalInfo.color} />
+            <GridItem label={"vehicleColor"} value={additionalInfo.color} />
           </Grid>
           <Grid
             container
@@ -354,9 +339,9 @@ function AdditionalAdvertisementInfo({ adCategory, additionalInfo }) {
               marginBottom: "10px",
             }}
           >
-            <GridItem label={"Gear"} value={additionalInfo.gear} />
+            <GridItem label={"gear"} value={additionalInfo.gear} />
             <GridItem
-              label={"Manufacture Year"}
+              label={"manufactureYear"}
               value={additionalInfo.manufactureYear}
             />
           </Grid>
@@ -368,11 +353,11 @@ function AdditionalAdvertisementInfo({ adCategory, additionalInfo }) {
             }}
           >
             <GridItem
-              label={"Traveled Distance"}
+              label={"traveledDistance"}
               value={additionalInfo.traveledDistance}
             />
             <GridItem
-              label={"Engine Capacity"}
+              label={"engineCapacity"}
               value={additionalInfo.engineCapacity}
             />
           </Grid>
@@ -383,11 +368,8 @@ function AdditionalAdvertisementInfo({ adCategory, additionalInfo }) {
               marginBottom: "10px",
             }}
           >
-            <GridItem label={"Fuel"} value={additionalInfo.fuel} />
-            <GridItem
-              label={"Sell Or Rent"}
-              value={additionalInfo.sellOrRent}
-            />
+            <GridItem label={"fuel"} value={additionalInfo.fuel} />
+            <GridItem label={"sellOrRent"} value={additionalInfo.sellOrRent} />
           </Grid>
           <Grid
             container
@@ -397,7 +379,7 @@ function AdditionalAdvertisementInfo({ adCategory, additionalInfo }) {
             }}
           >
             <GridItem
-              label={"Paint Status"}
+              label={"paintStatus"}
               value={additionalInfo.paintStatus}
             />
           </Grid>
@@ -430,10 +412,10 @@ function AdditionalAdvertisementInfo({ adCategory, additionalInfo }) {
             }}
           >
             <GridItem
-              label={"Model"}
+              label={"model"}
               value={`${additionalInfo.brand} ${additionalInfo.category}`}
             />
-            <GridItem label={"Status"} value={additionalInfo.status} />
+            <GridItem label={"deviceStatus"} value={additionalInfo.status} />
           </Grid>
           <Grid
             container
@@ -442,8 +424,8 @@ function AdditionalAdvertisementInfo({ adCategory, additionalInfo }) {
               marginBottom: "10px",
             }}
           >
-            <GridItem label={"Ram"} value={additionalInfo.ram} />
-            <GridItem label={"Hard"} value={additionalInfo.hard} />
+            <GridItem label={"ram"} value={additionalInfo.ram} />
+            <GridItem label={"hard"} value={additionalInfo.hard} />
           </Grid>
           <Grid
             container
@@ -453,7 +435,7 @@ function AdditionalAdvertisementInfo({ adCategory, additionalInfo }) {
             }}
           >
             <GridItem
-              label={"Battery Status"}
+              label={"batteryStatus"}
               value={additionalInfo.batteryStatus}
             />
           </Grid>
@@ -469,10 +451,10 @@ function AdditionalAdvertisementInfo({ adCategory, additionalInfo }) {
             }}
           >
             <GridItem
-              label={"Model"}
+              label={"model"}
               value={`${additionalInfo.brand} ${additionalInfo.category}`}
             />
-            <GridItem label={"Status"} value={additionalInfo.status} />
+            <GridItem label={"deviceStatus"} value={additionalInfo.status} />
           </Grid>
           <Grid
             container
@@ -481,8 +463,8 @@ function AdditionalAdvertisementInfo({ adCategory, additionalInfo }) {
               marginBottom: "10px",
             }}
           >
-            <GridItem label={"Ram"} value={additionalInfo.ram} />
-            <GridItem label={"Hard"} value={additionalInfo.hard} />
+            <GridItem label={"computerRam"} value={additionalInfo.ram} />
+            <GridItem label={"computerHard"} value={additionalInfo.hard} />
           </Grid>
           <Grid
             container
@@ -492,10 +474,10 @@ function AdditionalAdvertisementInfo({ adCategory, additionalInfo }) {
             }}
           >
             <GridItem
-              label={"Battery Status"}
+              label={"batteryStatus"}
               value={additionalInfo.batteryStatus}
             />
-            <GridItem label={"Processor"} value={additionalInfo.processor} />
+            <GridItem label={"processor"} value={additionalInfo.processor} />
           </Grid>
           <Grid
             container
@@ -504,8 +486,21 @@ function AdditionalAdvertisementInfo({ adCategory, additionalInfo }) {
               marginBottom: "10px",
             }}
           >
-            <GridItem label={"Screen Type"} value={additionalInfo.screenType} />
-            <GridItem label={"Screen Size"} value={additionalInfo.screenSize} />
+            <GridItem label={"screenType"} value={additionalInfo.screenType} />
+            <GridItem label={"screenSize"} value={additionalInfo.screenSize} />
+          </Grid>
+        </Box>
+      )}
+      {adCategory === "Accessories" && (
+        <Box>
+          <Grid
+            container
+            spacing={3}
+            sx={{
+              marginBottom: "10px",
+            }}
+          >
+            <GridItem label={"deviceType"} value={additionalInfo.deviceType} />
           </Grid>
         </Box>
       )}
@@ -529,7 +524,7 @@ function AdditionalAdvertisementInfo({ adCategory, additionalInfo }) {
             }}
           >
             <GridItem
-              label={"Device Status"}
+              label={"deviceStatus"}
               value={additionalInfo.deviceStatus}
             />
           </Grid>
@@ -546,7 +541,7 @@ function AdditionalAdvertisementInfo({ adCategory, additionalInfo }) {
               marginBottom: "10px",
             }}
           >
-            <GridItem label={"status"} value={additionalInfo.status} />
+            <GridItem label={"furnitureStatus"} value={additionalInfo.status} />
             <GridItem label={"material"} value={additionalInfo.material} />
           </Grid>
         </Box>
@@ -560,8 +555,8 @@ function AdditionalAdvertisementInfo({ adCategory, additionalInfo }) {
               marginBottom: "10px",
             }}
           >
-            <GridItem label={"status"} value={additionalInfo.status} />
-            <GridItem label={"Type"} value={additionalInfo.type} />
+            <GridItem label={"clothesStatus"} value={additionalInfo.status} />
+            <GridItem label={"clothesType"} value={additionalInfo.type} />
           </Grid>
         </Box>
       )}

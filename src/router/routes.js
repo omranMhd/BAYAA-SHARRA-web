@@ -6,6 +6,7 @@ import NewAd from "../Pages/NewAd";
 import TestNav from "../Pages/TestNav";
 import AdDetails from "../Pages/AdDetails";
 import Profile from "../Pages/Profile";
+import FavoriteAds from "../Pages/FavoriteAds";
 import VerevicationCode from "../Pages/VerevicationCode";
 import NoMatch from "../Pages/NoMatch";
 import ProtectedRoute from "../Components/ProtectedRoute";
@@ -41,14 +42,6 @@ const routes = createBrowserRouter([
     ),
   },
   {
-    path: "/test-nav/:adId",
-    element: (
-      <ProtectedRoute userShouldBe="logedin">
-        <TestNav />
-      </ProtectedRoute>
-    ),
-  },
-  {
     path: "/ad-details/:adId",
     element: (
       <ProtectedRoute userShouldBe="logedin">
@@ -61,6 +54,14 @@ const routes = createBrowserRouter([
     element: (
       <ProtectedRoute userShouldBe="registered">
         <VerevicationCode />
+      </ProtectedRoute>
+    ),
+  },
+  {
+    path: "/favorite-ads",
+    element: (
+      <ProtectedRoute userShouldBe="logedin">
+        <FavoriteAds />
       </ProtectedRoute>
     ),
   },

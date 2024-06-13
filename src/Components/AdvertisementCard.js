@@ -22,8 +22,9 @@ import { useTheme } from "@mui/material/styles";
 import { useNavigate } from "react-router-dom";
 import { useQuery, useMutation } from "react-query";
 import axiosInstance from "../Axios/axiosInstance";
-
+import { useTranslation } from "react-i18next";
 import useUserLogedin from "../Custom Hooks/useUserLogedin";
+import moment from "moment";
 
 export default function AdvertisementCard({
   image,
@@ -33,10 +34,13 @@ export default function AdvertisementCard({
   currency,
   adderss,
   sellOrRent,
+  date,
+  paymentMethodRent,
   id,
   cardWidth,
   isAdInFavoriteListProp,
 }) {
+  const { t, i18n } = useTranslation();
   const theme = useTheme();
   const navigate = useNavigate();
   const [isAdinMyFavoriteList, setIsAdinMyFavoriteList] = useState(
@@ -104,11 +108,48 @@ export default function AdvertisementCard({
       },
     }
   );
+  const adjustDateToTranslate = (datePhrase) => {
+    if (
+      [
+        "a few seconds ago",
+        "a minute ago",
+        "an hour ago",
+        "a day ago",
+        "a month ago",
+        "a year ago",
+      ].includes(datePhrase)
+    ) {
+      return t(datePhrase);
+    } else {
+      const digitRegex = /\d+/g;
+      const number = Number(datePhrase.match(digitRegex)[0]);
+      let phraseWithoutNumbers = datePhrase.replace(/\d/g, "").trim();
+      let phraseWithoutAgo = phraseWithoutNumbers.replace("ago", "").trim();
+
+      if (phraseWithoutAgo === "minutes") {
+        return t("minutes ago", { count: number });
+      } else if (phraseWithoutAgo === "hours") {
+        return t("hours ago", { count: number });
+      } else if (phraseWithoutAgo === "days") {
+        return t("days ago", { count: number });
+      } else if (phraseWithoutAgo === "months") {
+        return t("months ago", { count: number });
+      } else if (phraseWithoutAgo === "years") {
+        return t("years ago", { count: number });
+      }
+
+      // console.log("number :", number);
+      // console.log("phraseWithoutNumbers :", phraseWithoutNumbers);
+      // // console.log("phraseWithoutAgo :", phraseWithoutAgo);
+      // return datePhrase;
+    }
+  };
 
   return (
     <Card
       sx={{
-        // direction:"rtl",
+        direction: i18n.language === "en" ? "ltr" : "rtl",
+
         width: cardWidth === "auto" ? null : cardWidth,
         // height: "350px",
         borderRadius: "25px",
@@ -133,14 +174,14 @@ export default function AdvertisementCard({
           // هون خدعة لحل مشكلة التنقل من اعلان لاعلان لاجبار الصفحة على التحديث
           // عن طريق التوجه الى صفحة أخرى بديلة ومن ثم داخل هذه الصفحة اقوم بالرجوع الى صفحة تفاصيل اعلان
 
-          // navigate(`/ad-details/${id}`);
-          navigate(`/test-nav/${id}`);
+          navigate(`/ad-details/${id}`);
+          // navigate(`/test-nav/${id}`);
         }}
       >
         <Typography
           variant="h6"
           // sx={{ whiteSpace: "nowrap" }}
-          color={theme.palette.LIGHT_BLUE_or_DARK_BLUE}
+          color={theme.palette.LIGHT_BLUE}
         >
           {title}
         </Typography>
@@ -150,7 +191,7 @@ export default function AdvertisementCard({
             color: theme.palette.BLACK_or_WHITE,
           }}
         >
-          {newPrice != null && (
+          {/* {newPrice != null && (
             <>
               <del style={{ color: "red" }}>{`${newPrice
                 ?.toString()
@@ -161,7 +202,98 @@ export default function AdvertisementCard({
 
           {`${price
             ?.toString()
-            .replace(/\B(?=(\d{3})+(?!\d))/g, ",")} ${currency}`}
+            .replace(/\B(?=(\d{3})+(?!\d))/g, ",")} ${currency}`} */}
+
+          {/* price and newPrice if exist */}
+          {price != null &&
+            (newPrice == null ? (
+              // اذا ماكان في سعر جديد
+              <Box
+                sx={{
+                  display: "flex",
+                  alignItems: "center",
+                  // border: "1px solid red",
+                }}
+              >
+                {/* price */}
+                <Box
+                  sx={
+                    {
+                      // border: "1px solid blue",
+                    }
+                  }
+                >
+                  <Typography variant="h6">
+                    {`${price
+                      ?.toString()
+                      .replace(/\B(?=(\d{3})+(?!\d))/g, ",")} ${currency}`}
+                  </Typography>
+                </Box>
+                {/* طريقة الدفع في حال كان اجار */}
+                <Typography>
+                  {sellOrRent === "rent" &&
+                    `${
+                      i18n.language === "en" ? "/" : "\\"
+                    } ${paymentMethodRent}`}
+                </Typography>
+              </Box>
+            ) : (
+              // اذا كان في سعر جديد
+              <Box
+                sx={{
+                  display: "flex",
+                  alignItems: "center",
+                  // border: "1px solid red",
+                }}
+              >
+                {/* old price */}
+                <Box
+                  sx={
+                    {
+                      // border: "1px solid blue",
+                    }
+                  }
+                >
+                  <Typography variant="h6">
+                    <>
+                      <del style={{ color: "red" }}>{`${price
+                        ?.toString()
+                        .replace(/\B(?=(\d{3})+(?!\d))/g, ",")} `}</del>{" "}
+                      {` ${currency}`}
+                    </>
+                  </Typography>
+                </Box>
+                <Typography
+                  sx={{
+                    color: theme.palette.LIGHT_BLUE,
+                  }}
+                >
+                  -
+                </Typography>
+                {/* new price */}
+                <Box
+                  sx={
+                    {
+                      // border: "1px solid blue",
+                    }
+                  }
+                >
+                  <Typography variant="h6">
+                    {`${newPrice
+                      ?.toString()
+                      .replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
+                                 ${currency}`}
+                  </Typography>
+                </Box>
+                {/* طريقة الدفع في حال كان اجار */}
+                <Typography>
+                  {sellOrRent === "rent" &&
+                    `${
+                      i18n.language === "en" ? "/" : "\\"
+                    } ${paymentMethodRent}`}
+                </Typography>
+              </Box>
+            ))}
         </Box>
         <Box
           sx={{
@@ -172,10 +304,16 @@ export default function AdvertisementCard({
         >
           <LocationOnOutlinedIcon
             sx={{
-              color: theme.palette.LIGHT_BLUE_or_DARK_BLUE,
+              color: theme.palette.LIGHT_BLUE,
             }}
-          />{" "}
-          {adderss}
+          />
+          <Typography>
+            {i18n.language == "en" ? adderss.country_en : adderss.country_ar}
+          </Typography>
+          {" - "}
+          <Typography>
+            {i18n.language == "en" ? adderss.city_en : adderss.city_ar}
+          </Typography>
         </Box>
       </CardContent>
 
@@ -195,7 +333,11 @@ export default function AdvertisementCard({
                   removeAdvertFromFavoriteList.mutate();
                 }}
               >
-                <FavoriteIcon />
+                <FavoriteIcon
+                  sx={{
+                    color: theme.palette.LIGHT_BLUE,
+                  }}
+                />
               </IconButton>
             ) : (
               <IconButton
@@ -203,7 +345,11 @@ export default function AdvertisementCard({
                   addAdvertToFavoriteList.mutate();
                 }}
               >
-                <FavoriteBorderIcon />
+                <FavoriteBorderIcon
+                  sx={{
+                    color: theme.palette.LIGHT_BLUE,
+                  }}
+                />
               </IconButton>
             ))
 
@@ -219,7 +365,7 @@ export default function AdvertisementCard({
         }
 
         <Typography sx={{ margin: "5px", color: theme.palette.BLACK_or_WHITE }}>
-          10 minute ago
+          {adjustDateToTranslate(moment(date).fromNow())}
         </Typography>
       </CardActions>
       {sellOrRent != null && (
@@ -235,7 +381,7 @@ export default function AdvertisementCard({
             left: "10px",
           }}
         >
-          {sellOrRent}
+          {t(sellOrRent)}
         </Box>
       )}
     </Card>
