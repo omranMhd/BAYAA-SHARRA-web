@@ -18,9 +18,15 @@ function FuelTextFieldSelect({ register, errors }) {
       error={!!errors.fuel}
       helperText={errors.fuel?.message}
     >
-      <MenuItem value={"penzen"}>penzen</MenuItem>
-      <MenuItem value={"diesel"}>diesel</MenuItem>
-      <MenuItem value={"electricity"}>electricity</MenuItem>
+      <MenuItem value={"penzen"}>
+        {i18n.language === "en" ? "penzen" : "بنزين"}
+      </MenuItem>
+      <MenuItem value={"diesel"}>
+        {i18n.language === "en" ? "diesel" : "مازوت"}
+      </MenuItem>
+      <MenuItem value={"electricity"}>
+        {i18n.language === "en" ? "electricity" : "كهرباء"}
+      </MenuItem>
     </TextField>
   );
 }

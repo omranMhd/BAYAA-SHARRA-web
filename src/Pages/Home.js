@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 
 import MainAppBar from "../Components/MainAppBar";
 import AdvertisementsCardsViewer from "../Components/AdvertisementsCardsViewer";
@@ -11,25 +11,37 @@ import SideFilters from "../Components/SideFilters";
 import Grid from "@mui/material/Grid";
 
 import { useTheme } from "@mui/material/styles";
+import ShareAdvertisementsContext from "../Contexts/ShareAdvertisementsContext";
 
 function Home() {
   const theme = useTheme();
+  const [ads, setAds] = useState([]);
   console.log("aaaaaaaaaaaaaaaaaaaa :", theme.palette.mode);
   return (
     <>
-      <MainAppBar />
-      <MainSlider />
-      <CategoriesSlider />
+      <ShareAdvertisementsContext.Provider value={{ ads, setAds }}>
+        <MainAppBar />
+        <MainSlider />
+        <CategoriesSlider />
 
-      <Grid container spacing={1} /*sx={{direction: "rtl"}}*/>
-        <Grid item xs={9}>
-          <AdvertisementsCardsViewer />
+        <Grid container spacing={1} /*sx={{direction: "rtl"}}*/>
+          <Grid item xs={9}>
+            <AdvertisementsCardsViewer />
+          </Grid>
+          <Grid
+            item
+            xs={3}
+            sx={{
+              backgroundColor: theme.palette.DARK_BLUE_or_LIGHT_BLUE,
+              height:"1000px",
+              overflowY:"auto"
+            }}
+          >
+            <SideFilters />
+          </Grid>
         </Grid>
-        <Grid item xs={3} sx={{ backgroundColor: theme.palette.DARK_BLUE_or_LIGHT_BLUE }}>
-          <SideFilters />
-        </Grid>
-      </Grid>
-      <Footer />
+        <Footer />
+      </ShareAdvertisementsContext.Provider>
     </>
   );
 }

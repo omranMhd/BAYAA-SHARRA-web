@@ -18,9 +18,15 @@ function DeviceTypeTextFieldSelect({ register, errors }) {
       error={!!errors.deviceType}
       helperText={errors.deviceType?.message}
     >
-      <MenuItem value={"Tablet"}>Tablet</MenuItem>
-      <MenuItem value={"Mobile"}>Mobile</MenuItem>
-      <MenuItem value={"Computer"}>Computer</MenuItem>
+      <MenuItem value={"Tablet"}>
+        {i18n.language === "en" ? "Tablet" : "تابليت"}
+      </MenuItem>
+      <MenuItem value={"Mobile"}>
+        {i18n.language === "en" ? "Mobile" : "موبايل"}
+      </MenuItem>
+      <MenuItem value={"Computer"}>
+        {i18n.language === "en" ? "Computer" : "كومبيوتر"}
+      </MenuItem>
     </TextField>
   );
 }

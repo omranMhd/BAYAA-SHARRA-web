@@ -156,7 +156,7 @@ function AdditionalAdvertisementInfo({ adCategory, additionalInfo }) {
           </Grid>
         </Box>
       )}
-      {adCategory === "Commercial store" && (
+      {adCategory === "Store" && (
         <Box>
           <Grid
             container

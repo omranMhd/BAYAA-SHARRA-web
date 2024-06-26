@@ -18,8 +18,12 @@ function BatteryStatusTextFieldSelect({ register, errors }) {
       error={!!errors.batteryStatus}
       helperText={errors.batteryStatus?.message}
     >
-      <MenuItem value={"original"}>original</MenuItem>
-      <MenuItem value={"replaced"}>replaced</MenuItem>
+      <MenuItem value={"original"}>
+        {i18n.language === "en" ? "original" : "أساسية"}
+      </MenuItem>
+      <MenuItem value={"replaced"}>
+        {i18n.language === "en" ? "replaced" : "مستبدلة"}
+      </MenuItem>
     </TextField>
   );
 }

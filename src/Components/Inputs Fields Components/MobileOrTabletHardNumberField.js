@@ -11,7 +11,7 @@ function MobileOrTabletHardNumberField({ register, errors, subCategory }) {
       fullWidth
       id="mobOrTabHard"
       // label="mobOrTabRam"
-      label={subCategory === "Mobile" ? t("mobileHard") : t("tabletHard")}
+      label={subCategory === "Mobile" ? t("hard") : t("hard")}
       size="small"
       margin="normal"
       {...register("mobOrTabHard")}

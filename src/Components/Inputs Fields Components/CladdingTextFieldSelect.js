@@ -18,11 +18,21 @@ function CladdingTextFieldSelect({ register, errors }) {
       error={!!errors.cladding}
       helperText={errors.cladding?.message}
     >
-      <MenuItem value={"deluxe"}>deluxe</MenuItem>
-      <MenuItem value={"new"}>new</MenuItem>
-      <MenuItem value={"good"}>good</MenuItem>
-      <MenuItem value={"old"}>old</MenuItem>
-      <MenuItem value={"chassis"}>chassis</MenuItem>
+      <MenuItem value={"deluxe"}>
+        {i18n.language === "en" ? "deluxe" : "ديلوكس"}
+      </MenuItem>
+      <MenuItem value={"new"}>
+        {i18n.language === "en" ? "new" : "جديد"}
+      </MenuItem>
+      <MenuItem value={"good"}>
+        {i18n.language === "en" ? "good" : "جيدة"}
+      </MenuItem>
+      <MenuItem value={"old"}>
+        {i18n.language === "en" ? "old" : "قديم"}
+      </MenuItem>
+      <MenuItem value={"chassis"}>
+        {i18n.language === "en" ? "chassis" : "هيكل"}
+      </MenuItem>
     </TextField>
   );
 }

@@ -18,8 +18,12 @@ function ScreenTypeTextFieldSelect({ register, errors }) {
       error={!!errors.screenType}
       helperText={errors.screenType?.message}
     >
-      <MenuItem value={"touch"}>touch</MenuItem>
-      <MenuItem value={"normal"}>normal</MenuItem>
+      <MenuItem value={"touch"}>
+        {i18n.language === "en" ? "touch" : "لمس"}
+      </MenuItem>
+      <MenuItem value={"normal"}>
+        {i18n.language === "en" ? "normal" : "عادي"}
+      </MenuItem>
     </TextField>
   );
 }

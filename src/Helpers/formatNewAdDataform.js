@@ -78,7 +78,7 @@ function convertNewAdData(data) {
       filterFields.direction = data.direction;
       if (data.sellOrRent === "rent")
         filterFields.paymentMethodRent = data.paymentMethodRent;
-    } else if (data.subCategory === "Commercial store") {
+    } else if (data.subCategory === "Store") {
       filterFields.area = data.area;
       filterFields.floor = data.floor;
       filterFields.cladding = data.cladding;
@@ -210,4 +210,248 @@ function convertNewAdData(data) {
   return { advertisement, filterFields, photoes };
 }
 
-export { convertNewAdData };
+function convertFilterData(data) {
+  const filterObject = {};
+  filterObject.country = data.country;
+  filterObject.city = data.city;
+
+  if (data.category === "RealEstates") {
+    filterObject.sellOrRent = data.sellOrRent;
+    filterObject.category = data.subCategory;
+    if (data.subCategory === "Apartment") {
+      filterObject.areaFrom = data.areaFrom;
+      filterObject.areaTo = data.areaTo;
+
+      filterObject.ownership = data.ownership;
+
+      filterObject.priceFrom = data.priceFrom;
+      filterObject.priceTo = data.priceTo;
+      filterObject.currency = data.currency;
+      filterObject.direction = data.direction;
+      filterObject.roomCount = data.roomCount;
+      filterObject.floor = data.floor;
+      filterObject.cladding = data.cladding;
+    }
+    if (data.subCategory === "Farm") {
+      filterObject.areaFrom = data.areaFrom;
+      filterObject.areaTo = data.areaTo;
+
+      filterObject.ownership = data.ownership;
+
+      filterObject.priceFrom = data.priceFrom;
+      filterObject.priceTo = data.priceTo;
+      filterObject.currency = data.currency;
+      filterObject.direction = data.direction;
+      filterObject.roomCount = data.roomCount;
+      filterObject.floorsCount = data.floorsCount;
+      filterObject.cladding = data.cladding;
+    }
+    if (data.subCategory === "Land") {
+      filterObject.areaFrom = data.areaFrom;
+      filterObject.areaTo = data.areaTo;
+
+      filterObject.ownership = data.ownership;
+
+      filterObject.priceFrom = data.priceFrom;
+      filterObject.priceTo = data.priceTo;
+      filterObject.currency = data.currency;
+    }
+    if (data.subCategory === "Store") {
+      filterObject.areaFrom = data.areaFrom;
+      filterObject.areaTo = data.areaTo;
+
+      filterObject.ownership = data.ownership;
+
+      filterObject.priceFrom = data.priceFrom;
+      filterObject.priceTo = data.priceTo;
+      filterObject.currency = data.currency;
+      filterObject.floor = data.floor;
+      filterObject.cladding = data.cladding;
+    }
+    if (data.subCategory === "Office") {
+      filterObject.areaFrom = data.areaFrom;
+      filterObject.areaTo = data.areaTo;
+
+      filterObject.ownership = data.ownership;
+
+      filterObject.priceFrom = data.priceFrom;
+      filterObject.priceTo = data.priceTo;
+      filterObject.currency = data.currency;
+      filterObject.direction = data.direction;
+      filterObject.floor = data.floor;
+      filterObject.roomCount = data.roomCount;
+      filterObject.cladding = data.cladding;
+    }
+    if (data.subCategory === "Chalet") {
+      filterObject.areaFrom = data.areaFrom;
+      filterObject.areaTo = data.areaTo;
+
+      filterObject.ownership = data.ownership;
+
+      filterObject.priceFrom = data.priceFrom;
+      filterObject.priceTo = data.priceTo;
+      filterObject.currency = data.currency;
+
+      filterObject.floor = data.floor;
+      filterObject.roomCount = data.roomCount;
+      filterObject.cladding = data.cladding;
+    }
+    if (data.subCategory === "Villa") {
+      filterObject.areaFrom = data.areaFrom;
+      filterObject.areaTo = data.areaTo;
+
+      filterObject.ownership = data.ownership;
+
+      filterObject.priceFrom = data.priceFrom;
+      filterObject.priceTo = data.priceTo;
+      filterObject.currency = data.currency;
+
+      filterObject.direction = data.direction;
+      filterObject.floorsCount = data.floorsCount;
+      filterObject.roomCount = data.roomCount;
+      filterObject.cladding = data.cladding;
+    }
+  }
+  if (data.category === "vehicles") {
+    filterObject.category = data.subCategory;
+    if (
+      [
+        "Car",
+        "Motorcycle",
+        "Truck",
+        "Bus",
+        "Jabala",
+        "Crane",
+        "Bulldozer",
+      ].includes(data.subCategory)
+    ) {
+      filterObject.sellOrRent = data.sellOrRent;
+      filterObject.vehicleBrand = data.vehicleBrand;
+      filterObject.vehicleModel = data.vehicleModel;
+      filterObject.paintStatus = data.paintStatus;
+      filterObject.vehicleColor = data.vehicleColor;
+      filterObject.gear = data.gear;
+      filterObject.fuel = data.fuel;
+      filterObject.priceFrom = data.priceFrom;
+      filterObject.priceTo = data.priceTo;
+      filterObject.currency = data.currency;
+    } else if (data.subCategory === "Spare parts") {
+      filterObject.sparePartVehicleType = data.sparePartVehicleType;
+      filterObject.sparePartStatus = data.sparePartStatus;
+      filterObject.priceFrom = data.priceFrom;
+      filterObject.priceTo = data.priceTo;
+      filterObject.currency = data.currency;
+    }
+  }
+  if (data.category === "Electrical Electronic Devices") {
+    filterObject.category = data.subCategory;
+    filterObject.priceFrom = data.priceFrom;
+    filterObject.priceTo = data.priceTo;
+    filterObject.currency = data.currency;
+    if (data.subCategory === "Mobile" || data.subCategory === "Tablet") {
+      filterObject.mobOrTabBrand = data.mobOrTabBrand;
+      filterObject.mobOrTabCategory = data.mobOrTabCategory;
+      filterObject.deviceStatus = data.deviceStatus;
+      filterObject.batteryStatus = data.batteryStatus;
+    }
+    if (data.subCategory === "Computer") {
+      filterObject.computerBrand = data.computerBrand;
+      filterObject.computerCategory = data.computerCategory;
+      filterObject.deviceStatus = data.deviceStatus;
+      filterObject.processor = data.processor;
+      filterObject.screenType = data.screenType;
+      filterObject.screenSize = data.screenSize;
+    }
+    if (data.subCategory === "Accessories") {
+      filterObject.accessoriesDeviceType = data.accessoriesDeviceType;
+    }
+    if (
+      [
+        "Refrigerator",
+        "Washing Machine",
+        "Fan",
+        "Heater",
+        "Blenders juicers",
+        "Oven Microwave",
+        "Screen",
+        "Receiver",
+        "Solar Energy",
+      ].includes(data.subCategory)
+    ) {
+      filterObject.deviceStatus = data.deviceStatus;
+    }
+  }
+  if (data.category === "Furniture") {
+    filterObject.category = data.subCategory;
+    filterObject.priceFrom = data.priceFrom;
+    filterObject.priceTo = data.priceTo;
+    filterObject.currency = data.currency;
+    filterObject.material = data.material;
+    filterObject.furnitureStatus = data.furnitureStatus;
+  }
+  if (data.category === "Clothing and fashion") {
+    filterObject.category = data.subCategory;
+    filterObject.priceFrom = data.priceFrom;
+    filterObject.priceTo = data.priceTo;
+    filterObject.currency = data.currency;
+    filterObject.clothesType = data.clothesType;
+    filterObject.clothesStatus = data.clothesStatus;
+  }
+  if (data.category === "Animals") {
+    filterObject.category = data.subCategory;
+    filterObject.priceFrom = data.priceFrom;
+    filterObject.priceTo = data.priceTo;
+    filterObject.currency = data.currency;
+  }
+  if (data.category === "Personal Collections") {
+    filterObject.category = data.subCategory;
+    filterObject.priceFrom = data.priceFrom;
+    filterObject.priceTo = data.priceTo;
+    filterObject.currency = data.currency;
+  }
+  if (data.category === "Food and drinks") {
+    filterObject.category = data.subCategory;
+    filterObject.priceFrom = data.priceFrom;
+    filterObject.priceTo = data.priceTo;
+    filterObject.currency = data.currency;
+  }
+  if (data.category === "Books and hobbies") {
+    filterObject.category = data.subCategory;
+    filterObject.priceFrom = data.priceFrom;
+    filterObject.priceTo = data.priceTo;
+    filterObject.currency = data.currency;
+  }
+  if (data.category === "Children equipment") {
+    filterObject.category = data.category;
+    filterObject.priceFrom = data.priceFrom;
+    filterObject.priceTo = data.priceTo;
+    filterObject.currency = data.currency;
+  }
+  if (data.category === "Sports and clubs") {
+    filterObject.category = data.category;
+    filterObject.priceFrom = data.priceFrom;
+    filterObject.priceTo = data.priceTo;
+    filterObject.currency = data.currency;
+  }
+  if (data.category === "Industrial equipment") {
+    filterObject.category = data.category;
+    filterObject.priceFrom = data.priceFrom;
+    filterObject.priceTo = data.priceTo;
+    filterObject.currency = data.currency;
+  }
+  if (data.category === "Jobs") {
+    filterObject.category = data.category;
+  }
+  if (data.category === "Services") {
+    filterObject.category = data.category;
+  }
+
+  // remove all key that have null values
+  const filteredObject = Object.fromEntries(
+    Object.entries(filterObject).filter(([key, value]) => value !== null)
+  );
+
+  return filteredObject;
+}
+
+export { convertNewAdData, convertFilterData };

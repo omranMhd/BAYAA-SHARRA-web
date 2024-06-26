@@ -19,10 +19,27 @@ function ComputerBrandTextFieldSelect({ register, errors, subCategory }) {
       error={!!errors.computerBrand}
       helperText={errors.computerBrand?.message}
     >
-      <MenuItem value={"Samsung"}>Samsung</MenuItem>
-      <MenuItem value={"HP"}>HP</MenuItem>
-      <MenuItem value={"ASUS"}>ASUS</MenuItem>
-      <MenuItem value={"Toshiba"}>Toshiba</MenuItem>
+      <MenuItem value={"mac"}>
+        {i18n.language === "en" ? "MAC" : "ماك"}
+      </MenuItem>
+      <MenuItem value={"asus"}>
+        {i18n.language === "en" ? "ASUS" : "أزوس"}
+      </MenuItem>
+      <MenuItem value={"dell"}>
+        {i18n.language === "en" ? "DELL" : "ديل"}
+      </MenuItem>
+      <MenuItem value={"hp"}>
+        {i18n.language === "en" ? "HP" : "إتش بي"}
+      </MenuItem>
+      <MenuItem value={"toshiba"}>
+        {i18n.language === "en" ? "TOSHIBA" : "توشيبا"}
+      </MenuItem>
+      <MenuItem value={"acer"}>
+        {i18n.language === "en" ? "ACER" : "ايسر"}
+      </MenuItem>
+      <MenuItem value={"lenovo"}>
+        {i18n.language === "en" ? "LENOVO" : "لينوفو"}
+      </MenuItem>
     </TextField>
   );
 }

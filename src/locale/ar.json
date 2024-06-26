@@ -1,7 +1,7 @@
 {
     "categories": "الأصناف",
-    "vehicles": "المركبات",
-    "RealEstates": "العقارات",
+    "vehicles": "مركبات",
+    "RealEstates": "عقارات",
     "Electrical Electronic Devices": "أجهزة كهربائية وإلكترونية",
     "Furniture": "أثاث ومفروشات",
     "Animals": "حيوانات",
@@ -135,5 +135,16 @@
     "a month ago": "منذ شهر",
     "months ago": "منذ {{count}} شهور",
     "a year ago": "منذ سنة",
-    "years ago": "منذ {{count}} سنوات"
+    "years ago": "منذ {{count}} سنوات",
+    "There Is No Advertisements": "لا يوجد إعلانات لعرضها",
+    "all advertisements": "كل الإعلانات",
+    "filter": "تصفية",
+    "mobile": "موبايل",
+    "computer": "كومبيوتر",
+    "area from": "الحد الأدنى من المساحة",
+    "area to": "الحد الأعلى من المساحة",
+    "price from": "الحد الأدنى من السعر",
+    "price to": "الحد الأعلى من السعر",
+    "reset": "إعادة تهيئة",
+    "filters": "الفلاتر"
 }

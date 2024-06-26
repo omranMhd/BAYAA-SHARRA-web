@@ -13,7 +13,7 @@ import FloorNumberField from "../Components/Inputs Fields Components/FloorNumber
 import FloorCountNumberField from "../Components/Inputs Fields Components/FloorCountNumberField";
 import RoomCountNumberField from "../Components/Inputs Fields Components/RoomCountNumberField";
 import DirectionTextFieldSelect from "../Components/Inputs Fields Components/DirectionTextFieldSelect";
-import OwnershipTextField from "../Components/Inputs Fields Components/OwnershipTextField";
+import OwnershipTextFieldSelect from "../Components/Inputs Fields Components/OwnershipTextFieldSelect";
 import VehicleBrandTextFieldSelect from "../Components/Inputs Fields Components/VehicleBrandTextFieldSelect";
 import VehicleModelTextFieldSelect from "../Components/Inputs Fields Components/VehicleModelTextFieldSelect";
 import PaintStatusTextFieldSelect from "../Components/Inputs Fields Components/PaintStatusTextFieldSelect";
@@ -46,6 +46,7 @@ import ClothesTypeTextFieldSelect from "../Components/Inputs Fields Components/C
 import MapContainer from "../Components/MapContainer";
 
 import CircularProgress from "@mui/material/CircularProgress";
+import Checkbox from "@mui/material/Checkbox";
 import MenuItem from "@mui/material/MenuItem";
 import { useNavigate } from "react-router-dom";
 import { useTheme } from "@mui/material/styles";
@@ -71,6 +72,7 @@ import FormControl from "@mui/material/FormControl";
 
 function NewAd() {
   const { t, i18n } = useTranslation();
+  const [isConfirm, setIsConfirm] = useState(false);
   const [subCategories, setSubCategories] = useState(null);
   const [selectedPhotoes, setselectedPhotoes] = useState(
     Array.from({ length: 6 })
@@ -185,6 +187,25 @@ function NewAd() {
   );
   console.log(",,,,,,,,,,,,,,,,,,,,,,,,,,,,", mainCategoriesResponse?.data);
 
+  const { data: vehiclesBrandsResponse } = useQuery(
+    "vehicles-brands",
+    () => {
+      const token = localStorage.getItem("token");
+
+      axiosInstance.defaults.headers.common[
+        "Authorization"
+      ] = `Bearer ${token}`;
+      return axiosInstance.get("/vehicles-brands");
+    },
+    {
+      select: (data) => {
+        return data.data;
+      },
+    }
+  );
+
+  console.log("vvvvvvvvvvv :", vehiclesBrandsResponse?.data);
+
   const getSubCategoriesByIdMutation = useMutation(
     (id) => axiosInstance.get(`/sub-categories/${id}`),
     {
@@ -216,6 +237,7 @@ function NewAd() {
       onSuccess: (response) => {
         // Handle the response data here
         console.log("onSuccess response", response);
+        navigate("/");
       },
       onError: (error) => {
         // Handle any errors here
@@ -638,7 +660,7 @@ function NewAd() {
                   </Grid>
                   {/* ownership */}
                   <Grid item xs={12} sm={6}>
-                    <OwnershipTextField register={register} errors={errors} />
+                    <OwnershipTextFieldSelect register={register} errors={errors} />
                   </Grid>
                 </Grid>
                 <Grid container spacing={1}>
@@ -699,7 +721,7 @@ function NewAd() {
                 <Grid container spacing={2}>
                   {/* ownership */}
                   <Grid item xs={12} sm={6}>
-                    <OwnershipTextField register={register} errors={errors} />
+                    <OwnershipTextFieldSelect register={register} errors={errors} />
                   </Grid>
 
                   {/* floor */}
@@ -753,7 +775,7 @@ function NewAd() {
                 <Grid container spacing={1}>
                   {/* ownership */}
                   <Grid item xs={12} sm={6}>
-                    <OwnershipTextField register={register} errors={errors} />
+                    <OwnershipTextFieldSelect register={register} errors={errors} />
                   </Grid>
                   {/* direction */}
                   <Grid item xs={12} sm={6}>
@@ -803,8 +825,8 @@ function NewAd() {
                 </Grid>
               </Box>
             )}
-            {/* Commercial store */}
-            {watch("subCategory") === "Commercial store" && (
+            {/* Store */}
+            {watch("subCategory") === "Store" && (
               <Box>
                 <Grid container spacing={2}>
                   {/* area */}
@@ -819,7 +841,7 @@ function NewAd() {
                 <Grid container spacing={2}>
                   {/* ownership */}
                   <Grid item xs={12} sm={6}>
-                    <OwnershipTextField register={register} errors={errors} />
+                    <OwnershipTextFieldSelect register={register} errors={errors} />
                   </Grid>
                   {/* cladding */}
                   <Grid item xs={12} sm={6}>
@@ -888,7 +910,7 @@ function NewAd() {
                 <Grid container spacing={2}>
                   {/* ownership */}
                   <Grid item xs={12} sm={6}>
-                    <OwnershipTextField register={register} errors={errors} />
+                    <OwnershipTextFieldSelect register={register} errors={errors} />
                   </Grid>
                   {/* floorsCount */}
                   <Grid item xs={12} sm={6}>
@@ -935,7 +957,7 @@ function NewAd() {
                   </Grid>
                   {/* ownership */}
                   <Grid item xs={12} sm={6}>
-                    <OwnershipTextField register={register} errors={errors} />
+                    <OwnershipTextFieldSelect register={register} errors={errors} />
                   </Grid>
                 </Grid>
 
@@ -982,7 +1004,7 @@ function NewAd() {
                 <Grid container spacing={2}>
                   {/* ownership */}
                   <Grid item xs={12} sm={12}>
-                    <OwnershipTextField register={register} errors={errors} />
+                    <OwnershipTextFieldSelect register={register} errors={errors} />
                   </Grid>
                 </Grid>
                 <Grid container spacing={2}>
@@ -1092,6 +1114,7 @@ function NewAd() {
                       <VehicleBrandTextFieldSelect
                         register={register}
                         errors={errors}
+                        brands={vehiclesBrandsResponse?.data}
                       />
                     </Grid>
                     {/* vehicleModel */}
@@ -1846,6 +1869,61 @@ function NewAd() {
             </Grid>
           </Grid>
         </Box>
+        {/* conformation */}
+        <Box
+          sx={{
+            // border: "1px solid black",
+            boxShadow:
+              theme.palette.mode === "light"
+                ? "10px 10px 10px 0px rgba(100, 100, 100, 0.50)"
+                : null,
+            backgroundColor: theme.palette.WHITE_or_BLACK,
+            borderRadius: "20px",
+            padding: "20px",
+            marginBottom: "20px",
+            // direction: i18n.language === "en" ? "ltr" : "rtl",
+            direction: "rtl",
+          }}
+        >
+          <Typography>بسم الله الرحمن الرحيم</Typography>
+          <br />
+          <Typography variant="string">قال الله تعالى:</Typography>
+          <b>
+            " وَأَوْفُواْ بِعَهْدِ اللهِ إِذَا عَاهَدتُّمْ وَلاَ تَنقُضُواْ
+            الأَيْمَانَ بَعْدَ تَوْكِيدِهَا وَقَدْ جَعَلْتُمُ اللهَ عَلَيْكُمْ
+            كَفِيلاً "
+          </b>
+          <Typography variant="string">صدق الله العظيم</Typography>
+          <br />
+          <br />
+          <Box
+            sx={{
+              display: "flex",
+            }}
+          >
+            <Checkbox
+              checked={isConfirm}
+              onChange={(event) => {
+                setIsConfirm(event.target.checked);
+              }}
+            />
+            <Box
+              sx={{
+                display: "flex",
+                flexDirection: "column",
+              }}
+            >
+              <Typography>
+                * اتعهد واقسم بالله أنا المعلن أن أدفع رسوم الموقع وهي 1% من
+                قيمة البيع سواء تم البيع عن طريق الموقع أو بسببه.
+              </Typography>
+              <Typography>
+                * كما أتعهد بدفع الرسوم خلال 10 أيام من استلام كامل مبلغ
+                المبايعة.
+              </Typography>
+            </Box>
+          </Box>
+        </Box>
         <Box
           sx={{
             direction: i18n.language === "en" ? "ltr" : "rtl",
@@ -1855,7 +1933,7 @@ function NewAd() {
             type="submit"
             variant="contained"
             sx={{ mx: 2, mb: 2 }}
-            disabled={addNewAd.isLoading}
+            disabled={addNewAd.isLoading || !isConfirm}
           >
             {addNewAd.isLoading ? (
               <CircularProgress size={25} style={{ color: "white" }} />

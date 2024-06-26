@@ -18,8 +18,12 @@ function SparePartStatusTextFieldSelect({ register, errors }) {
       error={!!errors.SparePartStatus}
       helperText={errors.SparePartStatus?.message}
     >
-      <MenuItem value={"old"}>Old</MenuItem>
-      <MenuItem value={"new"}>New</MenuItem>
+      <MenuItem value={"old"}>
+        {i18n.language === "en" ? "Old" : "مستعمل"}
+      </MenuItem>
+      <MenuItem value={"new"}>
+        {i18n.language === "en" ? "New" : "جديد"}
+      </MenuItem>
     </TextField>
   );
 }

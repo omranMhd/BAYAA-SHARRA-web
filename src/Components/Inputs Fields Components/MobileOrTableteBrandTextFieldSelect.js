@@ -23,10 +23,30 @@ function MobileOrTableteBrandTextFieldSelect({
       error={!!errors.mobOrTabBrand}
       helperText={errors.mobOrTabBrand?.message}
     >
-      <MenuItem value={"Samsung"}>Samsung</MenuItem>
-      <MenuItem value={"Apple"}>Apple</MenuItem>
-      <MenuItem value={"Huawei"}>Huawei</MenuItem>
-      <MenuItem value={"Xiaomi"}>Xiaomi</MenuItem>
+      <MenuItem value={"iphone"}>
+        {i18n.language === "en" ? "IPHONE" : "آيفون"}
+      </MenuItem>
+      <MenuItem value={"samsung"}>
+        {i18n.language === "en" ? "SAMSUNG" : "سامسونغ"}
+      </MenuItem>
+      <MenuItem value={"huawei"}>
+        {i18n.language === "en" ? "HUAWEI" : "هواوي"}
+      </MenuItem>
+      <MenuItem value={"sony"}>
+        {i18n.language === "en" ? "SONY" : "سوني"}
+      </MenuItem>
+      <MenuItem value={"blackberry"}>
+        {i18n.language === "en" ? "BLACKBERRY" : "بلاك بيري"}
+      </MenuItem>
+      <MenuItem value={"nokia"}>
+        {i18n.language === "en" ? "NOKIA" : "نوكيا"}
+      </MenuItem>
+      <MenuItem value={"htc"}>
+        {i18n.language === "en" ? "HTC" : "إتش تي سي"}
+      </MenuItem>
+      <MenuItem value={"xiaomi"}>
+        {i18n.language === "en" ? "XIAOMI" : "شاومي"}
+      </MenuItem>
     </TextField>
   );
 }

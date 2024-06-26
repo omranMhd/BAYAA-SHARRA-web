@@ -153,6 +153,7 @@ function CategoriesSlider() {
                 <CategorySlide
                   categoryName="All"
                   categoryName_ar="الكل"
+                  category_id={"all"}
                 />
               </SwiperSlide>
               {mainCategories?.data.data.map((category) => {
@@ -161,6 +162,7 @@ function CategoriesSlider() {
                     <CategorySlide
                       categoryName={category.name_en}
                       categoryName_ar={category.name_ar}
+                      category_id={category.id}
                     />
                   </SwiperSlide>
                 );

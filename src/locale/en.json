@@ -135,5 +135,16 @@
     "a month ago": "a month ago",
     "months ago": "{{count}} months ago",
     "a year ago": "a year ago",
-    "years ago": "{{count}} years ago"
+    "years ago": "{{count}} years ago",
+    "There Is No Advertisements": "There Is No Advertisements",
+    "all advertisements": "All Advertisements",
+    "filter": "Filter",
+    "mobile": "Mobile",
+    "computer": "Computer",
+    "area from": "Area From",
+    "area to": "Area To",
+    "price from": "Price From",
+    "price to": "Price To",
+    "reset": "Reset",
+    "filters": "Filters"
 }

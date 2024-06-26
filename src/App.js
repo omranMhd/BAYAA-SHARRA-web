@@ -33,7 +33,7 @@ function App() {
         styleOverrides: `
           /* Custom scrollbar styles */
           ::-webkit-scrollbar {
-            width: 15px; /* Width of the scrollbar */
+            width: 8px; /* Width of the scrollbar */
           }
   
           ::-webkit-scrollbar-track {
