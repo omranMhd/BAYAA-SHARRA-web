@@ -12,10 +12,11 @@ import Grid from "@mui/material/Grid";
 
 import { useTheme } from "@mui/material/styles";
 import ShareAdvertisementsContext from "../Contexts/ShareAdvertisementsContext";
+import SvgIcon from "@mui/material/SvgIcon";
 
 function Home() {
   const theme = useTheme();
-  const [ads, setAds] = useState([]);
+  const [ads, setAds] = useState(null);
   console.log("aaaaaaaaaaaaaaaaaaaa :", theme.palette.mode);
   return (
     <>
@@ -33,8 +34,8 @@ function Home() {
             xs={3}
             sx={{
               backgroundColor: theme.palette.DARK_BLUE_or_LIGHT_BLUE,
-              height:"1000px",
-              overflowY:"auto"
+              height: "1000px",
+              overflowY: "auto",
             }}
           >
             <SideFilters />

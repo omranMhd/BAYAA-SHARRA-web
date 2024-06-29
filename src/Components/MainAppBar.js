@@ -10,7 +10,6 @@ import InputBase from "@mui/material/InputBase";
 import Badge from "@mui/material/Badge";
 import MenuItem from "@mui/material/MenuItem";
 import Menu from "@mui/material/Menu";
-import SearchIcon from "@mui/icons-material/Search";
 import AccountCircle from "@mui/icons-material/AccountCircle";
 import NotificationsIcon from "@mui/icons-material/Notifications";
 import MoreIcon from "@mui/icons-material/MoreVert";
@@ -31,10 +30,12 @@ import { useMutation } from "react-query";
 import ThemeContext from "../Contexts/ThemeContext";
 import { useTheme } from "@mui/material/styles";
 import { useTranslation } from "react-i18next";
+import SearchInput from "./SearchInput";
 
-const Search = styled("div")(({ theme }) => ({
+const Search = styled("Box")(({ theme }) => ({
   position: "relative",
-  borderRadius: /*theme.shape.borderRadius*/ 10,
+  // borderRadius: /*theme.shape.borderRadius*/ 10,
+  borderRadius: "0px 20px 20px 0px",
   backgroundColor: /*alpha(theme.palette.common.white, 0.15)*/ "white",
   border: "1px solid #1f8ccc",
   "&:hover": {
@@ -42,16 +43,16 @@ const Search = styled("div")(({ theme }) => ({
     border: "2px solid #153258",
   },
   marginRight: theme.spacing(6),
-  marginLeft: 0,
+  marginLeft: "-10px",
   width: "100%",
-  boxShadow: "0px 4px 8px rgba(0, 0, 0, 0.5)",
+  boxShadow: "0px 7px 8px rgba(0, 0, 0, 0.5)",
   [theme.breakpoints.up("sm")]: {
     marginLeft: theme.spacing(3),
     width: "auto",
   },
 }));
 
-const SearchIconWrapper = styled("div")(({ theme }) => ({
+const SearchIconWrapper = styled("Box")(({ theme }) => ({
   padding: theme.spacing(0, 2),
   height: "100%",
   position: "absolute",
@@ -60,16 +61,19 @@ const SearchIconWrapper = styled("div")(({ theme }) => ({
   alignItems: "center",
   justifyContent: "center",
   color: "#153258",
-  // backgroundColor:"blue",
-  // borderRadius:"25px"
+  // backgroundColor: "blue",
+  // borderRadius: "25px",
 }));
 
 const StyledInputBase = styled(InputBase)(({ theme }) => ({
   color: "black",
+  // backgroundColor: "white",
+
   "& .MuiInputBase-input": {
     padding: theme.spacing(1, 1, 1, 0),
     // vertical padding + font size from searchIcon
-    paddingLeft: `calc(1em + ${theme.spacing(4)})`,
+    // paddingLeft: `calc(1em + ${theme.spacing(4)})`,
+    paddingLeft: "5px",
     transition: theme.transitions.create("width"),
     width: "100%",
     [theme.breakpoints.up("md")]: {
@@ -77,6 +81,44 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
     },
   },
 }));
+
+// const StyledInputBase = styled(InputBase)(({ theme }) => ({
+//   "label + &": {
+//     marginTop: theme.spacing(3),
+//   },
+//   "& .MuiInputBase-input": {
+//     borderRadius: 4,
+//     position: "relative",
+//     backgroundColor: theme.palette.mode === "light" ? "#F3F6F9" : "#1A2027",
+//     border: "1px solid",
+//     borderColor: theme.palette.mode === "light" ? "#E0E3E7" : "#2D3843",
+//     fontSize: 16,
+//     width: "auto",
+//     padding: "10px 12px",
+//     transition: theme.transitions.create([
+//       "border-color",
+//       "background-color",
+//       "box-shadow",
+//     ]),
+//     // Use the system font instead of the default Roboto font.
+//     fontFamily: [
+//       "-apple-system",
+//       "BlinkMacSystemFont",
+//       '"Segoe UI"',
+//       "Roboto",
+//       '"Helvetica Neue"',
+//       "Arial",
+//       "sans-serif",
+//       '"Apple Color Emoji"',
+//       '"Segoe UI Emoji"',
+//       '"Segoe UI Symbol"',
+//     ].join(","),
+//     "&:focus": {
+//       boxShadow: `${alpha(theme.palette.primary.main, 0.25)} 0 0 0 0.2rem`,
+//       borderColor: theme.palette.primary.main,
+//     },
+//   },
+// }));
 
 function MainAppBar() {
   const { t, i18n } = useTranslation();
@@ -101,6 +143,26 @@ function MainAppBar() {
   }, [setIsLogedIn]);
 
   const user = JSON.parse(localStorage.getItem("user"));
+
+  //////////////////////////////////////////////////////////
+
+  const [animate, setAnimate] = useState(false);
+
+  useEffect(() => {
+    let timer;
+    if (animate) {
+      timer = setTimeout(() => {
+        setAnimate(false); // Stop animation after completion
+      }, 500); // Duration of the animation
+    }
+    return () => clearTimeout(timer); // Cleanup on unmount
+  }, [animate]);
+
+  const handleClick = () => {
+    setAnimate(true); // Start the animation
+  };
+
+  //////////////////////////////////////////////////
 
   const postLogoutMutation = useMutation(
     () => {
@@ -382,15 +444,29 @@ function MainAppBar() {
           )}
 
           <Box sx={{ flexGrow: 1 }} />
-          <Search>
-            <SearchIconWrapper>
+          {/* Search input component */}
+          <SearchInput />
+          
+          {/* <Search> */}
+          {/* <SearchIconWrapper>
               <SearchIcon />
-            </SearchIconWrapper>
-            <StyledInputBase
+            </SearchIconWrapper> */}
+
+          {/* <StyledInputBase
               placeholder={t("search")}
               inputProps={{ "aria-label": "search" }}
-            />
-          </Search>
+              onKeyUp={(e) => {
+                if (e.key === "Enter") {
+                  alert(e.target.value);
+                  // Perform your desired action here
+                }
+              }}
+              value={searchText}
+              onChange={(e) => {
+                setSearchText(e.target.value);
+              }}
+            /> */}
+          {/* </Search> */}
           {/* <Box sx={{ flexGrow: 1 }} /> */}
           <Button
             variant="contained"
@@ -398,6 +474,7 @@ function MainAppBar() {
             sx={{
               margin: "10px",
               backgroundColor: theme.palette.LIGHT_BLUE_or_DARK_BLUE,
+              whiteSpace: "nowrap",
             }}
             endIcon={<AddIcon />}
             onClick={() => {

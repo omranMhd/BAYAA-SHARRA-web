@@ -1,4 +1,4 @@
-import React, { useState, useContext } from "react";
+import React, { useState, useContext, useEffect } from "react";
 import Box from "@mui/material/Box";
 import { Link, json } from "react-router-dom";
 import AdvertisementCard from "../Components/AdvertisementCard";
@@ -26,7 +26,11 @@ function AdvertisementsCardsViewer() {
   const [openFilterDialog, setOpenFilterDialog] = useState(false);
   const { t, i18n } = useTranslation();
 
-  const { isLoading: advertisementsIsLoading, data: advertisements } = useQuery(
+  const {
+    isLoading: advertisementsIsLoading,
+    data: advertisements,
+    refetch: refetchAllAds,
+  } = useQuery(
     `get-advertisements-${currentPage}`,
     () => {
       if (isUserLogedin) {
@@ -43,8 +47,13 @@ function AdvertisementsCardsViewer() {
         setAds(null);
       },
       refetchInterval: false, // Disables automatic refetching
+      // enabled: false,
     }
   );
+
+  // useEffect(() => {
+  //   refetchAllAds();
+  // }, []);
 
   return (
     <>
