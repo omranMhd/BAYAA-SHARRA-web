@@ -1,18 +1,30 @@
 import React from "react";
 import { Outlet, Link } from "react-router-dom";
-import NavBar from "../Components/NavBar";
+import MainAppBar from "../Components/MainAppBar";
+import Grid from "@mui/material/Grid";
+import Box from "@mui/material/Box";
+import Footer from "../Components/Footer";
+import SideMenuProfile from "../Components/SideMenuProfile";
 
 function Profile() {
   return (
     <>
-      <NavBar />
-      <h1>Profile</h1>
-      <div>
-        <Link to="my-info">my info</Link>
-        <Link to="my-ads">my ads</Link>
-        <Link to="favorates-ads">favorates-ads</Link>
-      </div>
-      <Outlet />
+      <MainAppBar />
+      <Grid container spacing={1} /*sx={{direction: "rtl"}}*/>
+        <Grid item xs={10}>
+          <Box
+            sx={{
+              // backgroundColor: "red",
+            }}
+          >
+            <Outlet />
+          </Box>
+        </Grid>
+        <Grid item xs={2}>
+          <SideMenuProfile />
+        </Grid>
+      </Grid>
+      <Footer />
     </>
   );
 }

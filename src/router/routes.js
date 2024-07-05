@@ -3,13 +3,15 @@ import Home from "../Pages/Home";
 import Login from "../Pages/Login";
 import Register from "../Pages/Register";
 import NewAd from "../Pages/NewAd";
-import TestNav from "../Pages/TestNav";
 import AdDetails from "../Pages/AdDetails";
+import UserAdDetails from "../Pages/UserAdDetails";
 import Profile from "../Pages/Profile";
 import FavoriteAds from "../Pages/FavoriteAds";
 import VerevicationCode from "../Pages/VerevicationCode";
 import NoMatch from "../Pages/NoMatch";
 import ProtectedRoute from "../Components/ProtectedRoute";
+import UserInfo from "../Components/UserInfo";
+import UserAdvertisements from "../Components/UserAdvertisements";
 
 //we can create routes using array of objects
 const routes = createBrowserRouter([
@@ -74,17 +76,17 @@ const routes = createBrowserRouter([
     ),
     children: [
       {
-        path: "my-info",
-        element: <h2>my info</h2>,
-      },
-      {
-        path: "my-ads",
-        element: <h2>my Ads</h2>,
-      },
-      {
-        path: "favorates-ads",
-        element: <h2>my favorates</h2>,
+        path: "user-info",
+        element: <UserInfo />,
         index: true,
+      },
+      {
+        path: "user-advertisements",
+        element: <UserAdvertisements />,
+      },
+      {
+        path: "user-ad-details/:adId",
+        element: <UserAdDetails />,
       },
     ],
   },

@@ -12,9 +12,10 @@ import { useTranslation } from "react-i18next";
 import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
 import KeyboardArrowUpIcon from "@mui/icons-material/KeyboardArrowUp";
 
-function RealestateItem({ category_name, category_id }) {
+function RealestateItem({ category_name, category_id, image }) {
   const isUserLogedin = useUserLogedin();
   const { ads, setAds } = useContext(ShareAdvertisementsContext);
+  const { t, i18n } = useTranslation();
   const {
     isLoading: realestatesdAdsIsLoading,
     data: realestatesAds,
@@ -48,34 +49,33 @@ function RealestateItem({ category_name, category_id }) {
     }
   );
   return (
-    <Box
-      sx={{
-        borderRadius: "10px",
-        backgroundColor: "whitesmoke",
-        color: "black",
-        width: "75px",
-        height: "75px",
-        display: "flex",
-        justifyContent: "center",
-        alignItems: "center",
-        margin: "5px",
-        cursor: "pointer",
-        whiteSpace: "nowrap",
-        ":hover": {
-          border: "2px solid black",
-        },
-      }}
-      onClick={() => {
-        refetchRealEstate();
-      }}
-    >
-      {category_name}
-    </Box>
+    <Tooltip title={t(category_name)} arrow>
+      <Box
+        sx={{
+          cursor: "pointer",
+          ":hover": {
+            border: "2px solid black",
+          },
+          backgroundImage: `url(/realestateCategoriesPhoto/${image})`,
+          backgroundSize: "cover", // Cover the entire Box with the image
+          backgroundPosition: "center",
+          borderRadius: "10px",
+          width: "75px",
+          height: "75px",
+          margin: "5px",
+          // boxSizing: "content-box"
+        }}
+        onClick={() => {
+          refetchRealEstate();
+        }}
+      ></Box>
+    </Tooltip>
   );
 }
-function VehicleBrand({ brandPhoto, brandName }) {
+function VehicleBrand({ brandPhoto, brandName, brandNameAr }) {
   const isUserLogedin = useUserLogedin();
   const { ads, setAds } = useContext(ShareAdvertisementsContext);
+  const { t, i18n } = useTranslation();
   const {
     isLoading: brandAdsIsLoading,
     data: brandAds,
@@ -110,7 +110,7 @@ function VehicleBrand({ brandPhoto, brandName }) {
     }
   );
   return (
-    <Tooltip title={brandName} arrow>
+    <Tooltip title={i18n.language === "en" ? brandName : brandNameAr} arrow>
       <Box
         sx={{
           cursor: "pointer",
@@ -408,13 +408,41 @@ function SideFilters() {
           padding: "5px",
         }}
       >
-        <RealestateItem category_name={"Apartment"} category_id={15} />
-        <RealestateItem category_name={"Farm"} category_id={16} />
-        <RealestateItem category_name={"Land"} category_id={17} />
-        <RealestateItem category_name={"Store"} category_id={18} />
-        <RealestateItem category_name={"Office"} category_id={19} />
-        <RealestateItem category_name={"Chalet"} category_id={20} />
-        <RealestateItem category_name={"Villa"} category_id={21} />
+        <RealestateItem
+          category_name={"Apartment"}
+          category_id={15}
+          image={"apartment.png"}
+        />
+        <RealestateItem
+          category_name={"Farm"}
+          category_id={16}
+          image={"farm.png"}
+        />
+        <RealestateItem
+          category_name={"Land"}
+          category_id={17}
+          image={"land.png"}
+        />
+        <RealestateItem
+          category_name={"Store"}
+          category_id={18}
+          image={"store.png"}
+        />
+        <RealestateItem
+          category_name={"Office"}
+          category_id={19}
+          image={"office.png"}
+        />
+        <RealestateItem
+          category_name={"Chalet"}
+          category_id={20}
+          image={"shaleh.png"}
+        />
+        <RealestateItem
+          category_name={"Villa"}
+          category_id={21}
+          image={"villa.png"}
+        />
       </Box>
 
       <Typography
@@ -439,6 +467,7 @@ function SideFilters() {
                 <VehicleBrand
                   brandPhoto={brand.brand.en}
                   brandName={brand.brand.en}
+                  brandNameAr={brand.brand.ar}
                 />
               </>
             );
@@ -464,7 +493,7 @@ function SideFilters() {
           }}
           startIcon={<KeyboardArrowDownIcon />}
         >
-          Show More
+          {t("Show More")}
         </Button>
       ) : (
         <Button
@@ -485,7 +514,7 @@ function SideFilters() {
           }}
           startIcon={<KeyboardArrowUpIcon />}
         >
-          Show Less
+          {t("Show Less")}
         </Button>
       )}
 
@@ -509,14 +538,17 @@ function SideFilters() {
           padding: "5px",
         }}
       >
-        <MobileBrands image={"/iphone.png"} brand={"IPHONE"} />
-        <MobileBrands image={"/samsung.png"} brand={"SAMSUNG"} />
-        <MobileBrands image={"/huawei.png"} brand={"HUAWEI"} />
-        <MobileBrands image={"/sony.png"} brand={"SONY"} />
-        <MobileBrands image={"/blackberry.png"} brand={"BLACKBERRY"} />
-        <MobileBrands image={"/nokia.png"} brand={"NOKIA"} />
-        <MobileBrands image={"/htc.png"} brand={"HTC"} />
-        <MobileBrands image={"/xiaomi.png"} brand={"XIAOMI"} />
+        <MobileBrands image={"mobileBrands/iphone.png"} brand={"IPHONE"} />
+        <MobileBrands image={"mobileBrands/samsung.png"} brand={"SAMSUNG"} />
+        <MobileBrands image={"mobileBrands/huawei.png"} brand={"HUAWEI"} />
+        <MobileBrands image={"mobileBrands/sony.png"} brand={"SONY"} />
+        <MobileBrands
+          image={"mobileBrands/blackberry.png"}
+          brand={"BLACKBERRY"}
+        />
+        <MobileBrands image={"mobileBrands/nokia.png"} brand={"NOKIA"} />
+        <MobileBrands image={"mobileBrands/htc.png"} brand={"HTC"} />
+        <MobileBrands image={"mobileBrands/xiaomi.png"} brand={"XIAOMI"} />
       </Box>
       <Typography
         sx={{ textAlign: "center", backgroundColor: "black", color: "wheat" }}
@@ -531,13 +563,16 @@ function SideFilters() {
           padding: "5px",
         }}
       >
-        <ComputerBrands image={"/iphone.png"} brand={"IPHONE"} />
-        <ComputerBrands image={"/asus.png"} brand={"ASUS"} />
-        <ComputerBrands image={"/dell.png"} brand={"DELL"} />
-        <ComputerBrands image={"/hp.png"} brand={"HP"} />
-        <ComputerBrands image={"/toshiba.png"} brand={"TOSHIBA"} />
-        <ComputerBrands image={"/acer.png"} brand={"ACER"} />
-        <ComputerBrands image={"/lenovo.png"} brand={"LENOVO"} />
+        <ComputerBrands image={"computerBrands/iphone.png"} brand={"IPHONE"} />
+        <ComputerBrands image={"computerBrands/asus.png"} brand={"ASUS"} />
+        <ComputerBrands image={"computerBrands/dell.png"} brand={"DELL"} />
+        <ComputerBrands image={"computerBrands/hp.png"} brand={"HP"} />
+        <ComputerBrands
+          image={"computerBrands/toshiba.png"}
+          brand={"TOSHIBA"}
+        />
+        <ComputerBrands image={"computerBrands/acer.png"} brand={"ACER"} />
+        <ComputerBrands image={"computerBrands/lenovo.png"} brand={"LENOVO"} />
       </Box>
       <Typography
         sx={{ textAlign: "center", backgroundColor: "black", color: "wheat" }}
@@ -552,12 +587,30 @@ function SideFilters() {
           padding: "5px",
         }}
       >
-        <FurnitureItem image={"/bedroom.png"} category={"Bedroom"} />
-        <FurnitureItem image={"/bed.png"} category={"Bed"} />
-        <FurnitureItem image={"/capinet.png"} category={"Cabinet"} />
-        <FurnitureItem image={"/chair.png"} category={"Chair"} />
-        <FurnitureItem image={"/kanab.png"} category={"Sofa"} />
-        <FurnitureItem image={"/table.png"} category={"Table"} />
+        <FurnitureItem
+          image={"furnitrueCategoriesPhoto/bedroom.png"}
+          category={"Bedroom"}
+        />
+        <FurnitureItem
+          image={"furnitrueCategoriesPhoto/bed.png"}
+          category={"Bed"}
+        />
+        <FurnitureItem
+          image={"furnitrueCategoriesPhoto/capinet.png"}
+          category={"Cabinet"}
+        />
+        <FurnitureItem
+          image={"furnitrueCategoriesPhoto/chair.png"}
+          category={"Chair"}
+        />
+        <FurnitureItem
+          image={"furnitrueCategoriesPhoto/kanab.png"}
+          category={"Sofa"}
+        />
+        <FurnitureItem
+          image={"furnitrueCategoriesPhoto/table.png"}
+          category={"Table"}
+        />
       </Box>
       <Typography
         sx={{ textAlign: "center", backgroundColor: "black", color: "wheat" }}
@@ -572,11 +625,26 @@ function SideFilters() {
           padding: "5px",
         }}
       >
-        <AnimalsItem image={"/birds.png"} category={"Birds"} />
-        <AnimalsItem image={"/cats.png"} category={"Cat"} />
-        <AnimalsItem image={"/dogs.png"} category={"Dog"} />
-        <AnimalsItem image={"/fish.png"} category={"Fish"} />
-        <AnimalsItem image={"/maoashi.png"} category={"Livestock"} />
+        <AnimalsItem
+          image={"animalsCategoriesPhoto/birds.png"}
+          category={"Birds"}
+        />
+        <AnimalsItem
+          image={"animalsCategoriesPhoto/cats.png"}
+          category={"Cat"}
+        />
+        <AnimalsItem
+          image={"animalsCategoriesPhoto/dogs.png"}
+          category={"Dog"}
+        />
+        <AnimalsItem
+          image={"animalsCategoriesPhoto/fish.png"}
+          category={"Fish"}
+        />
+        <AnimalsItem
+          image={"animalsCategoriesPhoto/maoashi.png"}
+          category={"Livestock"}
+        />
       </Box>
     </Box>
   );

@@ -35,34 +35,34 @@ function MainSlider() {
         }}
       >
         <SwiperSlide>
-          <PhotoSlide img="/slide1.jpg" />
+          <PhotoSlide img="mainSliderPhotoes/slide1.jpg" />
         </SwiperSlide>
 
         <SwiperSlide>
-          <PhotoSlide img="/slide2.jpg" />
+          <PhotoSlide img="mainSliderPhotoes/slide2.jpg" />
         </SwiperSlide>
 
         <SwiperSlide>
-          <PhotoSlide img="/slide3.jpg" />
+          <PhotoSlide img="mainSliderPhotoes/slide3.jpg" />
         </SwiperSlide>
 
         <SwiperSlide>
-          <PhotoSlide img="/slide4.jpg" />
+          <PhotoSlide img="mainSliderPhotoes/slide4.jpg" />
         </SwiperSlide>
         <SwiperSlide>
-          <PhotoSlide img="/slide5.jpg" />
+          <PhotoSlide img="mainSliderPhotoes/slide5.jpg" />
         </SwiperSlide>
         <SwiperSlide>
-          <PhotoSlide img="/slide6.jpg" />
+          <PhotoSlide img="mainSliderPhotoes/slide10.png" />
         </SwiperSlide>
         <SwiperSlide>
-          <PhotoSlide img="/slide7.jpg" />
+          <PhotoSlide img="mainSliderPhotoes/slide7.jpg" />
         </SwiperSlide>
         <SwiperSlide>
-          <PhotoSlide img="/slide8.jpg" />
+          <PhotoSlide img="mainSliderPhotoes/slide8.jpg" />
         </SwiperSlide>
         <SwiperSlide>
-          <PhotoSlide img="/slide9.jpg" />
+          <PhotoSlide img="mainSliderPhotoes/slide9.jpg" />
         </SwiperSlide>
       </Swiper>
     </Box>

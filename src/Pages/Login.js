@@ -86,9 +86,9 @@ export default function SignIn() {
           error.response.data.message === "Invalid credentials"
         ) {
           setInvalidCredentials(true);
-          setTimeout(() => {
-            setInvalidCredentials(false);
-          }, 5000);
+          // setTimeout(() => {
+          //   setInvalidCredentials(false);
+          // }, 5000);
         }
       },
       onSettled: () => {
@@ -147,7 +147,10 @@ export default function SignIn() {
       <Snackbar
         anchorOrigin={{ vertical: "bottom", horizontal: "right" }}
         open={invalidCredentials}
-        // autoHideDuration={6000}
+        autoHideDuration={5000}
+        onClose={() => {
+          setInvalidCredentials(false);
+        }}
       >
         <Alert severity="error" variant="filled" sx={{ width: "100%" }}>
           {showEmailField

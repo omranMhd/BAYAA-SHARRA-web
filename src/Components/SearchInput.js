@@ -4,9 +4,7 @@ import Box from "@mui/material/Box";
 import { Button, Typography } from "@mui/material";
 import SearchIcon from "@mui/icons-material/Search";
 import CloseIcon from "@mui/icons-material/Close";
-import DomainIcon from "@mui/icons-material/Domain";
 import CottageIcon from "@mui/icons-material/Cottage";
-import DirectionsCarIcon from "@mui/icons-material/DirectionsCar";
 import { styled, alpha } from "@mui/material/styles";
 import InputBase from "@mui/material/InputBase";
 import IconButton from "@mui/material/IconButton";
@@ -16,10 +14,10 @@ import axiosInstance from "../Axios/axiosInstance";
 import ShareAdvertisementsContext from "../Contexts/ShareAdvertisementsContext";
 import CircularProgress from "@mui/material/CircularProgress";
 import { useNavigate } from "react-router-dom";
+import { useTranslation } from "react-i18next";
 
 /////////////////////////////////
 
-import PhotoSlide from "./PhotoSlide";
 import { Swiper, SwiperSlide } from "swiper/react";
 import {
   Pagination as SwiperPagination,
@@ -50,6 +48,7 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
 
 function SearchInput() {
   const [searchText, setSearchText] = useState("");
+  const { t, i18n } = useTranslation();
   const isUserLogedin = useUserLogedin();
   const { ads, setAds } = useContext(ShareAdvertisementsContext);
   const navigate = useNavigate();
@@ -81,6 +80,14 @@ function SearchInput() {
       },
     }
   );
+
+  const { isLoading: mainCategoriesIsLoading, data: mainCategories } = useQuery(
+    "main-categories",
+    () => {
+      return axiosInstance.get("/main-categories");
+    }
+  );
+
   return (
     <Box
       sx={{
@@ -140,7 +147,7 @@ function SearchInput() {
               left: "20px",
               pt: "6px",
               //   backgroundColor: "red",
-              width: "150px",
+              width: "250px",
               //   height: "500px",
               display: "flex",
             }}
@@ -148,14 +155,17 @@ function SearchInput() {
             {/* <DirectionsCarIcon /> */}
             {/* <CottageIcon /> */}
             {/* <DomainIcon /> */}
-            <Typography
-              sx={{
-                whiteSpace: "nowrap",
-                mr: "2px",
-              }}
-            >
-              Search
-            </Typography>
+
+            {i18n.language === "en" && (
+              <Typography
+                sx={{
+                  whiteSpace: "nowrap",
+                  mr: "2px",
+                }}
+              >
+                Search in
+              </Typography>
+            )}
 
             <Swiper
               modules={[
@@ -185,43 +195,44 @@ function SearchInput() {
                 slideShadows: true,
               }}
             >
-              <SwiperSlide>
-                <Box
-                  sx={{
-                    display: "flex",
-                    flexWrap: "nowrap",
-                    color: "#153258",
-                  }}
-                >
-                  <Typography
-                    sx={{
-                      mr: "2px",
-                    }}
-                  >
-                    RealEstaes
-                  </Typography>
-                  <CottageIcon />
-                </Box>
-              </SwiperSlide>
-              <SwiperSlide>
-                <Box
-                  sx={{
-                    display: "flex",
-                    flexWrap: "nowrap",
-                    color: "#153258",
-                  }}
-                >
-                  <Typography
-                    sx={{
-                      mr: "2px",
-                    }}
-                  >
-                    Vehicles
-                  </Typography>
-                  <DirectionsCarIcon />
-                </Box>
-              </SwiperSlide>
+              {mainCategories?.data.data.map((category) => {
+                return (
+                  <SwiperSlide id={category.id}>
+                    <Box
+                      sx={{
+                        display: "flex",
+                        justifyContent: "space-between",
+                        flexWrap: "nowrap",
+                        color: "#153258",
+                        // backgroundColor: "wheat",
+                      }}
+                    >
+                      <Typography
+                        sx={{
+                          mr: "2px",
+                          whiteSpace: "nowrap",
+                        }}
+                      >
+                        {i18n.language === "en"
+                          ? category.name_en
+                          : category.name_ar}
+                      </Typography>
+                      <CottageIcon />
+                    </Box>
+                  </SwiperSlide>
+                );
+              })}
             </Swiper>
+            {i18n.language === "ar" && (
+              <Typography
+                sx={{
+                  whiteSpace: "nowrap",
+                  mr: "2px",
+                }}
+              >
+                البحث في
+              </Typography>
+            )}
           </Box>
         )}
 
