@@ -29,7 +29,7 @@ import { useTranslation } from "react-i18next";
 
 export default function SignIn() {
   // This is to save the case where the user wants to enter an email or mobile number
-  const [showEmailField, setShowEmailField] = useState(false);
+  const [showEmailField, setShowEmailField] = useState(true);
   const [invalidCredentials, setInvalidCredentials] = useState(false);
   const [emailExist, setEmailExist] = useState(null);
   const [phoneExist, setPhoneExist] = useState(null);
@@ -165,7 +165,7 @@ export default function SignIn() {
           // backgroundImage: "url(realEstates‬.jpg)", // Set the background image
           // backgroundImage: "url('hand shake.gif')", // Set the background image
           // backgroundImage: "url(https://source.unsplash.com/random?wallpapers)", // Set the background image
-          backgroundImage: "url(slide3.jpg)", // Set the background image
+          backgroundImage: "url(mainSliderPhotoes/slide3.jpg)", // Set the background image
           backgroundSize: "cover", // Cover the entire Box with the image
           backgroundPosition: "center", // Center the image within the Box
           display: "flex",
@@ -213,7 +213,7 @@ export default function SignIn() {
             noValidate
             sx={{ mt: 1 }}
           >
-            <Box
+            {/* <Box
               sx={{
                 direction: i18n.language === "ar" ? "rtl" : "ltr",
               }}
@@ -225,7 +225,7 @@ export default function SignIn() {
                 color="primary"
                 size="small"
               />
-            </Box>
+            </Box> */}
             {showEmailField ? (
               <Grid container spacing={1}>
                 <Grid item xs={12} sm={12}>
@@ -239,7 +239,7 @@ export default function SignIn() {
                     size="small"
                     {...register("email")}
                     error={!!errors.email}
-                    helperText={errors.email?.message}
+                    helperText={t(errors.email?.message)}
                   />
                 </Grid>
               </Grid>

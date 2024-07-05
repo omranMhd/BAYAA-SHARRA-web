@@ -57,7 +57,7 @@ export default function Register() {
   }, [selectedCountry, setValue]);
 
   // This is to save the case where the user wants to enter an email or mobile number
-  const [showEmailField, setShowEmailField] = useState(false);
+  const [showEmailField, setShowEmailField] = useState(true);
 
   const [emailExist, setEmailExist] = useState(null);
   const [phoneExist, setPhoneExist] = useState(null);
@@ -182,7 +182,7 @@ export default function Register() {
           // backgroundImage: "url(realEstates‬.jpg)", // Set the background image
           // backgroundImage: "url('hand shake.gif')", // Set the background image
           // backgroundImage: "url(https://source.unsplash.com/random?wallpapers)", // Set the background image
-          backgroundImage: "url(slide3.jpg)", // Set the background image
+          backgroundImage: "url(mainSliderPhotoes/slide3.jpg)", // Set the background image
           backgroundSize: "cover", // Cover the entire Box with the image
           backgroundPosition: "center", // Center the image within the Box
           display: "flex",
@@ -267,7 +267,7 @@ export default function Register() {
                 />
               </Grid>
             </Grid>
-            <Box
+            {/* <Box
               sx={{
                 direction: i18n.language === "ar" ? "rtl" : "ltr",
               }}
@@ -279,7 +279,7 @@ export default function Register() {
                 color="primary"
                 size="small"
               />
-            </Box>
+            </Box> */}
             {showEmailField ? (
               <>
                 <TextField

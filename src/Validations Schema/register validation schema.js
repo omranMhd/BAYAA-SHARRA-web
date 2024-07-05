@@ -11,11 +11,8 @@ const schema = yup.object({
     .required("field required")
     .max(10, "more than 10 characters"),
 
-  email: yup
-    .string()
-    // .required("email is required")
-    .email("invalid email format"),
-  phone: yup.string() /*.required("phone is required")*/,
+  email: yup.string().required("field required").email("invalid email format"),
+  // phone: yup.string() /*.required("phone is required")*/,
 
   // address: yup.object().shape({
   //   country: yup.string().required("country is required "),
