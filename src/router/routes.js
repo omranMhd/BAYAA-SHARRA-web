@@ -46,9 +46,9 @@ const routes = createBrowserRouter([
   {
     path: "/ad-details/:adId",
     element: (
-      <ProtectedRoute userShouldBe="logedin">
-        <AdDetails />
-      </ProtectedRoute>
+      // <ProtectedRoute userShouldBe="logedin">
+      <AdDetails />
+      // </ProtectedRoute>
     ),
   },
   {
