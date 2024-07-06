@@ -31,28 +31,31 @@ import ThemeContext from "../Contexts/ThemeContext";
 import { useTheme } from "@mui/material/styles";
 import { useTranslation } from "react-i18next";
 import SearchInput from "./SearchInput";
+import useUserLogedin from "../Custom Hooks/useUserLogedin";
 
 function MainAppBar() {
   const { t, i18n } = useTranslation();
   const theme = useTheme();
+  // this custom hook to check if user loged in or not
+  const isUserLogedin = useUserLogedin();
+
   const { mode, setMode } = useContext(ThemeContext);
   const navigate = useNavigate();
-  // const [isLogedIn, setIsLogedIn] = useState(useIsUserLogedin());
   const [isLogedIn, setIsLogedIn] = useState(false);
 
-  useEffect(() => {
-    const user = JSON.parse(localStorage.getItem("user"));
-    const token = localStorage.getItem("token");
+  // useEffect(() => {
+  //   const user = JSON.parse(localStorage.getItem("user"));
+  //   const token = localStorage.getItem("token");
 
-    console.log("bbbbbbbbbbbbbbbbbbbbbbbbbbb :", user);
-    console.log("bbbbbbbbbbbbbbbbbbbbbbbbbbb :", token);
+  //   console.log("bbbbbbbbbbbbbbbbbbbbbbbbbbb :", user);
+  //   console.log("bbbbbbbbbbbbbbbbbbbbbbbbbbb :", token);
 
-    if (user != null && token != null) {
-      if (user.email_verified_at != null || user.phone_verified_at != null) {
-        setIsLogedIn(true);
-      }
-    }
-  }, [setIsLogedIn]);
+  //   if (user != null && token != null) {
+  //     if (user.email_verified_at != null || user.phone_verified_at != null) {
+  //       setIsLogedIn(true);
+  //     }
+  //   }
+  // }, [setIsLogedIn]);
 
   const user = JSON.parse(localStorage.getItem("user"));
 
@@ -293,7 +296,7 @@ function MainAppBar() {
         <p>{t("theme")}</p>
       </MenuItem>
 
-      {isLogedIn ? (
+      {isUserLogedin ? (
         <MenuItem onClick={handleProfileMenuOpen}>
           <IconButton
             size="large"
@@ -485,7 +488,7 @@ function MainAppBar() {
                 </Badge>
               </IconButton>
             </Tooltip>
-            {isLogedIn ? (
+            {isUserLogedin ? (
               <IconButton
                 size="large"
                 edge="end"
