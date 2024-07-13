@@ -98,6 +98,7 @@ function SearchInput() {
         padding: "1px",
         borderRadius: "20px",
         mr: "40px",
+        boxShadow: "0px 0px 1px 1px #153258",
         "&:hover": {
           // backgroundColor: alpha(theme.palette.common.white, 0.50),
           // border: "3px solid #153258",

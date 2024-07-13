@@ -1,4 +1,4 @@
-import React, { useRef } from "react";
+import React, { useRef, useState } from "react";
 import Box from "@mui/material/Box";
 import axiosInstance from "../Axios/axiosInstance";
 import { useQuery } from "react-query";
@@ -28,6 +28,7 @@ import { IconButton } from "@mui/material";
 
 function CategoriesSlider() {
   const swiperRef = useRef(null);
+  const [categoriyClicked, setCategoriyClicked] = useState(null);
   const { t, i18n } = useTranslation();
   const theme = useTheme();
   const { isLoading: mainCategoriesIsLoading, data: mainCategories } = useQuery(
@@ -44,34 +45,6 @@ function CategoriesSlider() {
         padding: "10px",
       }}
     >
-      {/* <Box
-        sx={{
-          fontSize: "30px",
-          backgroundColor: theme.palette.DARK_BLUE_or_LIGHT_BLUE,
-          color: "white",
-          textAlign: "center",
-          marginBottom: "5px",
-          // direction: "rtl"
-          width: "200px",
-          borderRadius: "50px",
-          margin:"auto"
-
-          // borderRadius: "50px",
-        }}
-      >
-        <Typography
-          variant="string"
-          // align="center"
-          sx={{
-            // ml: "20px",
-            mb: "5px",
-            // backgroundColor: "#111111",
-          }}
-        >
-          {/* CATEGORIES */}
-      {/* {t("categories")} */}
-      {/* </Typography> */}
-      {/* </Box> */}
       {mainCategoriesIsLoading ? (
         <Box
           sx={{
@@ -154,6 +127,8 @@ function CategoriesSlider() {
                   categoryName="All"
                   categoryName_ar="الكل"
                   category_id={"all"}
+                  categoriyClicked={categoriyClicked}
+                  setCategoriyClicked={setCategoriyClicked}
                 />
               </SwiperSlide>
               {mainCategories?.data.data.map((category) => {
@@ -163,6 +138,8 @@ function CategoriesSlider() {
                       categoryName={category.name_en}
                       categoryName_ar={category.name_ar}
                       category_id={category.id}
+                      categoriyClicked={categoriyClicked}
+                      setCategoriyClicked={setCategoriyClicked}
                     />
                   </SwiperSlide>
                 );

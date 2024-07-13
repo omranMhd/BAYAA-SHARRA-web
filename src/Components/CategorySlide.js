@@ -11,7 +11,13 @@ import { useQuery } from "react-query";
 import useUserLogedin from "../Custom Hooks/useUserLogedin";
 import axiosInstance from "../Axios/axiosInstance";
 
-function CategorySlide({ categoryName, categoryName_ar, category_id }) {
+function CategorySlide({
+  categoryName,
+  categoryName_ar,
+  category_id,
+  categoriyClicked,
+  setCategoriyClicked,
+}) {
   const isUserLogedin = useUserLogedin();
   const { t, i18n } = useTranslation();
   const { ads, setAds } = useContext(ShareAdvertisementsContext);
@@ -81,16 +87,22 @@ function CategorySlide({ categoryName, categoryName_ar, category_id }) {
       <Box
         sx={{
           display: "flex",
-          // flexDirection: "column",
           justifyContent: "center",
           cursor: "pointer",
-          // backgroundColor: "#7717b3",
           borderRadius: "20px",
           padding: "5px",
           border: `3px solid ${theme.palette.LIGHT_BLUE_or_DARK_BLUE}`,
+
+          backgroundColor:
+            categoriyClicked === categoryName
+              ? theme.palette.LIGHT_BLUE_or_DARK_BLUE
+              : "",
+
+          color: categoriyClicked === categoryName ? "white" : "",
         }}
         onClick={() => {
           // alert(category_id);
+          setCategoriyClicked(categoryName);
           if (categoryName === "All") {
             setAds(null);
           } else {

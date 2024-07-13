@@ -1,6 +1,9 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import Box from "@mui/material/Box";
 import PhotoSlide from "./PhotoSlide";
+import { useQuery, useMutation } from "react-query";
+import axiosInstance from "../Axios/axiosInstance";
+
 import { Swiper, SwiperSlide } from "swiper/react";
 import {
   Pagination as SwiperPagination,
@@ -11,6 +14,21 @@ import {
 } from "swiper/modules";
 
 function MainSlider() {
+  const [images, setImages] = useState([]);
+  const { data: silderImagesData, refetch: refetchSilderImages } = useQuery(
+    "user-info",
+    () => {
+      return axiosInstance.get("/silder-images");
+    },
+    {
+      onSuccess: (response) => {
+        console.log("aaaaaaaaaaaaa :", response.data);
+        setImages(response.data.data);
+      },
+      // enabled: false,
+    }
+  );
+
   return (
     <Box>
       <Swiper
@@ -34,11 +52,15 @@ function MainSlider() {
           slideShadows: true,
         }}
       >
-        <SwiperSlide>
-          <PhotoSlide img="mainSliderPhotoes/slide1.jpg" />
-        </SwiperSlide>
+        {images.map((img) => {
+          return (
+            <SwiperSlide>
+              <PhotoSlide img={`http://127.0.0.1:8000/storage/${img.url}`} />
+            </SwiperSlide>
+          );
+        })}
 
-        <SwiperSlide>
+        {/* <SwiperSlide>
           <PhotoSlide img="mainSliderPhotoes/slide2.jpg" />
         </SwiperSlide>
 
@@ -63,7 +85,7 @@ function MainSlider() {
         </SwiperSlide>
         <SwiperSlide>
           <PhotoSlide img="mainSliderPhotoes/slide9.jpg" />
-        </SwiperSlide>
+        </SwiperSlide> */}
       </Swiper>
     </Box>
   );

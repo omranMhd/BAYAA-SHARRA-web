@@ -186,5 +186,7 @@
     "Chalet": "شاليه",
     "Villa": "فيلا",
     "Show More": "عرض المزيد",
-    "Show Less": "عرض أقل"
+    "Show Less": "عرض أقل",
+    "your account is blocked,you can't do this action": "حسابك محظور , لا يمكنك القيام بهذه العملية",
+    "Reason of rejection": "سبب الرفض"
 }

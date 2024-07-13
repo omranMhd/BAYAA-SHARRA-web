@@ -178,484 +178,518 @@ function UserAdDetails() {
       {adDetailsIsLoading ? (
         <Box>...</Box>
       ) : adDetailsResponse?.data.data != undefined ? (
-        <Grid container spacing={1}>
-          <Grid
-            item
-            xs={12}
+        <Box
+          sx={{
+            // backgroundColor: "red",
+            // padding: "20px",
+            mt: "20px",
+          }}
+        >
+          <Box
             sx={{
-              // backgroundColor: "red",
-              // padding: "20px",
-              mt: "10px",
+              margin: "10px",
+              padding: "10px",
+              backgroundColor: theme.palette.DARK_BLUE_or_LIGHT_BLUE,
+              borderRadius: "10px",
+              display: "flex",
+              alignItems: "start",
+              direction: i18n.language === "en" ? "ltr" : "rtl",
             }}
           >
-            <Box
-              sx={{
-                margin: "10px",
-                padding: "10px",
-                backgroundColor: theme.palette.DARK_BLUE_or_LIGHT_BLUE,
-                borderRadius: "10px",
-              }}
-            >
-              <Tooltip title={t("edit")} arrow>
-                <IconButton
-                  onClick={() => {
-                    setOpenEditDialog(true);
-                  }}
-                >
-                  <EditIcon />
-                </IconButton>
-              </Tooltip>
-
-              <Dialog
-                open={openEditDialog}
-                onClose={() => {
-                  setOpenEditDialog(false);
+            <Tooltip title={t("edit")} arrow>
+              <IconButton
+                onClick={() => {
+                  setOpenEditDialog(true);
                 }}
-                sx={{
-                  direction: i18n.language === "en" ? "ltr" : "rtl",
-                }}
-                aria-labelledby="alert-dialog-title"
-                aria-describedby="alert-dialog-description"
-                fullWidth
-                maxWidth="sm"
               >
-                <DialogTitle id="alert-dialog-title">
-                  {t("Edit Advertisement")}
-                </DialogTitle>
-                <DialogContent>
-                  <FormControlLabel
-                    control={<Checkbox />}
-                    label={t("Advertisements is Closed")}
-                    onChange={(e) => {
-                      // alert(e.target.checked);
-                      setAdvertisementIsClosed(e.target.checked);
-                    }}
-                    value={advertisementIsClosed}
-                  />
-                  <Grid container spacing={1}>
-                    <Grid item xs={4} sm={4}>
-                      <TextField
-                        type="number"
-                        autoComplete="given-name"
-                        fullWidth
-                        id="area"
-                        label={t("price")}
-                        size="small"
-                        margin="normal"
-                        value={price}
-                        onChange={(e) => {
-                          setPrice(Number(e.target.value));
-                        }}
-                      />
-                    </Grid>
-                    <Grid item xs={4} sm={4}>
-                      <TextField
-                        type="number"
-                        autoComplete="given-name"
-                        fullWidth
-                        id="area"
-                        label={t("new price")}
-                        size="small"
-                        margin="normal"
-                        value={newPrice}
-                        onChange={(e) => {
-                          setNewPrice(Number(e.target.value));
-                        }}
-                      />
-                    </Grid>
-                    {/* currency */}
-                    <Grid item xs={4} sm={4}>
-                      <TextField
-                        select
-                        autoComplete="given-name"
-                        fullWidth
-                        id="currency"
-                        label={t("currency")}
-                        size="small"
-                        margin="normal"
-                        value={currency}
-                        onChange={(e) => {
-                          setCurrency(e.target.value);
-                          //   console.log("ff :", e.target.value);
-                        }}
-                      >
-                        {countriesInfo
-                          ?.map((country) => {
-                            return country.currency;
-                          })
-                          .map((currency) => {
-                            return (
-                              <MenuItem key={currency} value={currency}>
-                                {currency}
-                              </MenuItem>
-                            );
-                          })}
-                      </TextField>
-                    </Grid>
-                    <Grid item xs={3}></Grid>
-                  </Grid>
-                </DialogContent>
-                <DialogActions>
-                  <Button
-                    variant="outlined"
-                    onClick={() => {
-                      setOpenEditDialog(false);
-                    }}
-                  >
-                    {t("Skip")}
-                  </Button>
-                  <Button
-                    disabled={updateAdvertisementMutation.isLoading}
-                    variant="contained"
-                    sx={{
-                      mx: 1,
-                    }}
-                    onClick={() => {
-                      const data = {};
-
-                      if (price !== null && price > 0) {
-                        data.price = price;
-                      }
-                      if (newPrice !== null && newPrice > 0) {
-                        data.newPrice = newPrice;
-                      }
-                      if (currency !== null) {
-                        data.currency = currency;
-                      }
-                      if (advertisementIsClosed) {
-                        data.adStatus = "closed";
-                      }
-                      updateAdvertisementMutation.mutate(data);
-                    }}
-                  >
-                    {updateAdvertisementMutation.isLoading ? (
-                      <CircularProgress size={25} style={{ color: "white" }} />
-                    ) : (
-                      t("Save")
-                    )}
-                  </Button>
-                </DialogActions>
-              </Dialog>
-            </Box>
-
-            {/* advertisement photoes */}
+                <EditIcon />
+              </IconButton>
+            </Tooltip>
             <Box>
-              <AdvertisementPhotoesSlider
-                photoes={adDetailsResponse?.data.data.adPhotoes}
-              />
-            </Box>
-            {/* advertisement attributes */}
-            <Box
-              sx={{
-                margin: "15px",
-                padding: "10px",
-                backgroundColor: theme.palette.WHITE_or_BLACK2,
-                borderRadius: "10px",
-                direction: i18n.language == "en" ? "ltr" : "rtl",
-
-                // border: "1px solid red",
-              }}
-            >
-              <Typography sx={{ marginBottom: "20px" }} variant="h5">
-                {adDetailsResponse?.data.data.title}
-              </Typography>
-              <Typography
-                sx={{
-                  color: theme.palette.LIGHT_BLUE,
-                }}
-              >
-                {t("description")} :
-              </Typography>
-
-              <Typography sx={{ marginBottom: "20px" }}>
-                {adDetailsResponse?.data.data.description}
-              </Typography>
               <Box
                 sx={{
                   display: "flex",
-                  flexDirection: "row",
-                  justifyContent: "space-between",
-                  // justifyContent: "space-around",
-                  padding: "10px",
-                  // border:"1px solid black",
-                  borderRadius: "20px",
-                  boxShadow: "0px 2px 2px 2px black",
-                  mb: "20px",
+                  alignItems: "center",
                 }}
               >
-                <Box sx={{ display: "flex", flexDirection: "column" }}>
-                  <Box sx={{ display: "flex", flexDirection: "row" }}>
-                    <LocationOnOutlinedIcon
-                      sx={{
-                        color: theme.palette.LIGHT_BLUE,
-                      }}
-                    />
-                    <Typography>
-                      {i18n.language === "en"
-                        ? adDetailsResponse?.data.data.address.country_en
-                        : adDetailsResponse?.data.data.address.country_ar}
-                    </Typography>
-                    <Typography
-                      sx={{
-                        color: theme.palette.LIGHT_BLUE,
-                      }}
-                    >
-                      {" - "}
-                    </Typography>
-
-                    <Typography>
-                      {i18n.language === "en"
-                        ? adDetailsResponse?.data.data.address.city_en
-                        : adDetailsResponse?.data.data.address.city_ar}
-                    </Typography>
-                  </Box>
-                  {/* price and newPrice if exist */}
-                  {adDetailsResponse?.data.data.additionalAttributes != null &&
-                    (adDetailsResponse?.data.data.additionalAttributes
-                      .newPrice == null ? (
-                      // اذا ماكان في سعر جديد
-                      <Box
-                        sx={{
-                          display: "flex",
-                          alignItems: "center",
-                          // border: "1px solid red",
-                        }}
-                      >
-                        {/* price */}
-                        <Box
-                          sx={
-                            {
-                              // border: "1px solid blue",
-                              // display: "flex",
-                            }
-                          }
-                        >
-                          {/* <LocalOfferOutlinedIcon
-                              sx={{
-                                color: theme.palette.LIGHT_BLUE,
-                              }}
-                            /> */}
-                          <Typography variant="h6">
-                            {`${adDetailsResponse?.data.data.additionalAttributes.price
-                              ?.toString()
-                              .replace(/\B(?=(\d{3})+(?!\d))/g, ",")} ${
-                              adDetailsResponse?.data.data.additionalAttributes
-                                .currency
-                            }`}
-                          </Typography>
-                        </Box>
-                        {/* طريقة الدفع في حال كان اجار */}
-                        <Typography>
-                          {adDetailsResponse?.data.data.additionalAttributes
-                            .sellOrRent === "rent" &&
-                            `${i18n.language === "en" ? "/" : "\\"} ${
-                              adDetailsResponse?.data.data.additionalAttributes
-                                .paymentMethodRent
-                            }`}
-                        </Typography>
-                      </Box>
-                    ) : (
-                      // اذا كان في سعر جديد
-                      <Box
-                        sx={{
-                          display: "flex",
-                          alignItems: "center",
-                          // border: "1px solid red",
-                        }}
-                      >
-                        {/* old price */}
-                        <Box
-                          sx={
-                            {
-                              // border: "1px solid blue",
-                            }
-                          }
-                        >
-                          <Typography variant="h6">
-                            <>
-                              <del
-                                style={{ color: "red" }}
-                              >{`${adDetailsResponse?.data.data.additionalAttributes.price
-                                ?.toString()
-                                .replace(
-                                  /\B(?=(\d{3})+(?!\d))/g,
-                                  ","
-                                )} `}</del>{" "}
-                              {` ${adDetailsResponse?.data.data.additionalAttributes.currency}`}
-                            </>
-                          </Typography>
-                        </Box>
-                        <Typography
-                          sx={{
-                            color: theme.palette.LIGHT_BLUE,
-                          }}
-                        >
-                          -
-                        </Typography>
-                        {/* new price */}
-                        <Box
-                          sx={
-                            {
-                              // border: "1px solid blue",
-                            }
-                          }
-                        >
-                          <Typography variant="h6">
-                            {`${adDetailsResponse?.data.data.additionalAttributes.newPrice
-                              ?.toString()
-                              .replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
-                                 ${
-                                   adDetailsResponse?.data.data
-                                     .additionalAttributes.currency
-                                 }`}
-                          </Typography>
-                        </Box>
-                        {/* طريقة الدفع في حال كان اجار */}
-                        <Typography>
-                          {adDetailsResponse?.data.data.additionalAttributes
-                            .sellOrRent === "rent" &&
-                            `/ ${adDetailsResponse?.data.data.additionalAttributes.paymentMethodRent}`}
-                        </Typography>
-                      </Box>
-                    ))}
-
-                  {/* <Typography>{adDetailsResponse?.data.data.date}</Typography> */}
-
-                  <Box sx={{ display: "flex" }}>
-                    <AccessTimeIcon
-                      sx={{
-                        color: theme.palette.LIGHT_BLUE,
-                      }}
-                    />
-                    <Typography sx={{ mx: "5px" }}>
-                      {adjustDateToTranslate(
-                        moment(adDetailsResponse?.data.data.date).fromNow()
-                      )}
-                    </Typography>
-                  </Box>
-                </Box>
+                <Typography variant="h6" sx={{ mx: "5px" }}>
+                  {t("Paid for")} :
+                </Typography>
+                <Typography sx={{ mx: "5px" }}>
+                  {t(adDetailsResponse?.data.data.paidFor ? "YES" : "NO")}
+                </Typography>
+              </Box>
+              <Box
+                sx={{
+                  display: "flex",
+                  alignItems: "center",
+                }}
+              >
+                <Typography variant="h6" sx={{ mx: "5px" }}>
+                  {t("Status")} :
+                </Typography>
+                <Typography sx={{ mx: "5px" }}>
+                  {t(adDetailsResponse?.data.data.status)}
+                </Typography>
+              </Box>
+              {adDetailsResponse?.data.data.status === "rejected" && (
                 <Box
                   sx={{
                     display: "flex",
-                    flexDirection: "column",
+                    alignItems: "center",
                   }}
                 >
+                  <Typography variant="h6" sx={{ mx: "5px" }}>
+                    {t("Reason of rejection")} :
+                  </Typography>
+
+                  <Typography sx={{ mx: "5px" }}>
+                    {adDetailsResponse?.data.data.rejectionReason}
+                  </Typography>
+                </Box>
+              )}
+            </Box>
+
+            <Dialog
+              open={openEditDialog}
+              onClose={() => {
+                setOpenEditDialog(false);
+              }}
+              sx={{
+                direction: i18n.language === "en" ? "ltr" : "rtl",
+              }}
+              aria-labelledby="alert-dialog-title"
+              aria-describedby="alert-dialog-description"
+              fullWidth
+              maxWidth="sm"
+            >
+              <DialogTitle id="alert-dialog-title">
+                {t("Edit Advertisement")}
+              </DialogTitle>
+              <DialogContent>
+                <FormControlLabel
+                  control={<Checkbox />}
+                  label={t("Advertisements is Closed")}
+                  onChange={(e) => {
+                    // alert(e.target.checked);
+                    setAdvertisementIsClosed(e.target.checked);
+                  }}
+                  value={advertisementIsClosed}
+                />
+                <Grid container spacing={1}>
+                  <Grid item xs={4} sm={4}>
+                    <TextField
+                      type="number"
+                      autoComplete="given-name"
+                      fullWidth
+                      id="area"
+                      label={t("price")}
+                      size="small"
+                      margin="normal"
+                      value={price}
+                      onChange={(e) => {
+                        setPrice(Number(e.target.value));
+                      }}
+                    />
+                  </Grid>
+                  <Grid item xs={4} sm={4}>
+                    <TextField
+                      type="number"
+                      autoComplete="given-name"
+                      fullWidth
+                      id="area"
+                      label={t("new price")}
+                      size="small"
+                      margin="normal"
+                      value={newPrice}
+                      onChange={(e) => {
+                        setNewPrice(Number(e.target.value));
+                      }}
+                    />
+                  </Grid>
+                  {/* currency */}
+                  <Grid item xs={4} sm={4}>
+                    <TextField
+                      select
+                      autoComplete="given-name"
+                      fullWidth
+                      id="currency"
+                      label={t("currency")}
+                      size="small"
+                      margin="normal"
+                      value={currency}
+                      onChange={(e) => {
+                        setCurrency(e.target.value);
+                        //   console.log("ff :", e.target.value);
+                      }}
+                    >
+                      {countriesInfo
+                        ?.map((country) => {
+                          return country.currency;
+                        })
+                        .map((currency) => {
+                          return (
+                            <MenuItem key={currency} value={currency}>
+                              {currency}
+                            </MenuItem>
+                          );
+                        })}
+                    </TextField>
+                  </Grid>
+                  <Grid item xs={3}></Grid>
+                </Grid>
+              </DialogContent>
+              <DialogActions>
+                <Button
+                  variant="outlined"
+                  onClick={() => {
+                    setOpenEditDialog(false);
+                  }}
+                >
+                  {t("Skip")}
+                </Button>
+                <Button
+                  disabled={updateAdvertisementMutation.isLoading}
+                  variant="contained"
+                  sx={{
+                    mx: 1,
+                  }}
+                  onClick={() => {
+                    const data = {};
+
+                    if (price !== null && price > 0) {
+                      data.price = price;
+                    }
+                    if (newPrice !== null && newPrice > 0) {
+                      data.newPrice = newPrice;
+                    }
+                    if (currency !== null) {
+                      data.currency = currency;
+                    }
+                    if (advertisementIsClosed) {
+                      data.adStatus = "closed";
+                    }
+                    updateAdvertisementMutation.mutate(data);
+                  }}
+                >
+                  {updateAdvertisementMutation.isLoading ? (
+                    <CircularProgress size={25} style={{ color: "white" }} />
+                  ) : (
+                    t("Save")
+                  )}
+                </Button>
+              </DialogActions>
+            </Dialog>
+          </Box>
+
+          {/* advertisement photoes */}
+          <Box>
+            <AdvertisementPhotoesSlider
+              photoes={adDetailsResponse?.data.data.adPhotoes}
+            />
+          </Box>
+          {/* advertisement attributes */}
+          <Box
+            sx={{
+              margin: "15px",
+              padding: "10px",
+              backgroundColor: theme.palette.WHITE_or_BLACK2,
+              borderRadius: "10px",
+              direction: i18n.language == "en" ? "ltr" : "rtl",
+
+              // border: "1px solid red",
+            }}
+          >
+            <Typography sx={{ marginBottom: "20px" }} variant="h5">
+              {adDetailsResponse?.data.data.title}
+            </Typography>
+            <Typography
+              sx={{
+                color: theme.palette.LIGHT_BLUE,
+              }}
+            >
+              {t("description")} :
+            </Typography>
+
+            <Typography sx={{ marginBottom: "20px" }}>
+              {adDetailsResponse?.data.data.description}
+            </Typography>
+            <Box
+              sx={{
+                display: "flex",
+                flexDirection: "row",
+                justifyContent: "space-between",
+                // justifyContent: "space-around",
+                padding: "10px",
+                // border:"1px solid black",
+                borderRadius: "20px",
+                boxShadow: "0px 2px 2px 2px black",
+                mb: "20px",
+              }}
+            >
+              <Box sx={{ display: "flex", flexDirection: "column" }}>
+                <Box sx={{ display: "flex", flexDirection: "row" }}>
+                  <LocationOnOutlinedIcon
+                    sx={{
+                      color: theme.palette.LIGHT_BLUE,
+                    }}
+                  />
+                  <Typography>
+                    {i18n.language === "en"
+                      ? adDetailsResponse?.data.data.address.country_en
+                      : adDetailsResponse?.data.data.address.country_ar}
+                  </Typography>
                   <Typography
                     sx={{
                       color: theme.palette.LIGHT_BLUE,
                     }}
                   >
-                    {t("contactNumbers")} :
+                    {" - "}
                   </Typography>
-                  {/* first number */}
-                  <Box sx={{ display: "flex", alignItems: "center" }}>
-                    <Typography variant="h6">
-                      {adDetailsResponse?.data.data.contactNumber != null
-                        ? `${
-                            JSON.parse(
-                              adDetailsResponse?.data.data.contactNumber
-                            ).firstName
-                          }  :  ${
-                            JSON.parse(
-                              adDetailsResponse?.data.data.contactNumber
-                            ).firstPhone
-                          } `
-                        : "{}"}
-                    </Typography>
-                    <PhoneInTalkIcon
+
+                  <Typography>
+                    {i18n.language === "en"
+                      ? adDetailsResponse?.data.data.address.city_en
+                      : adDetailsResponse?.data.data.address.city_ar}
+                  </Typography>
+                </Box>
+                {/* price and newPrice if exist */}
+                {adDetailsResponse?.data.data.additionalAttributes != null &&
+                  (adDetailsResponse?.data.data.additionalAttributes.newPrice ==
+                  null ? (
+                    // اذا ماكان في سعر جديد
+                    <Box
                       sx={{
-                        color: theme.palette.LIGHT_BLUE,
-                        marginX: "10px",
+                        display: "flex",
+                        alignItems: "center",
+                        // border: "1px solid red",
                       }}
-                    />
-                  </Box>
-                  {/* second number if exist */}
-                  {adDetailsResponse?.data.data.contactNumber != null &&
-                    JSON.parse(adDetailsResponse?.data.data.contactNumber)
-                      .secondName != null && (
-                      <Box sx={{ display: "flex", alignItems: "center" }}>
-                        {adDetailsResponse?.data.data.contactNumber != null &&
-                          JSON.parse(adDetailsResponse?.data.data.contactNumber)
-                            .secondName != "" && (
-                            <>
-                              <Typography variant="h6">
-                                {adDetailsResponse?.data.data.contactNumber !=
-                                null
-                                  ? `${
-                                      JSON.parse(
-                                        adDetailsResponse?.data.data
-                                          .contactNumber
-                                      ).secondName
-                                    } : ${
-                                      JSON.parse(
-                                        adDetailsResponse?.data.data
-                                          .contactNumber
-                                      ).secondPhone
-                                    } `
-                                  : "{}"}
-                              </Typography>
-                              <PhoneInTalkIcon
-                                sx={{
-                                  color: theme.palette.LIGHT_BLUE,
-                                  marginX: "10px",
-                                }}
-                              />
-                            </>
-                          )}
+                    >
+                      {/* price */}
+                      <Box
+                        sx={
+                          {
+                            // border: "1px solid blue",
+                            // display: "flex",
+                          }
+                        }
+                      >
+                        {/* <LocalOfferOutlinedIcon
+                              sx={{
+                                color: theme.palette.LIGHT_BLUE,
+                              }}
+                            /> */}
+                        <Typography variant="h6">
+                          {`${adDetailsResponse?.data.data.additionalAttributes.price
+                            ?.toString()
+                            .replace(/\B(?=(\d{3})+(?!\d))/g, ",")} ${
+                            adDetailsResponse?.data.data.additionalAttributes
+                              .currency
+                          }`}
+                        </Typography>
                       </Box>
+                      {/* طريقة الدفع في حال كان اجار */}
+                      <Typography>
+                        {adDetailsResponse?.data.data.additionalAttributes
+                          .sellOrRent === "rent" &&
+                          `${i18n.language === "en" ? "/" : "\\"} ${
+                            adDetailsResponse?.data.data.additionalAttributes
+                              .paymentMethodRent
+                          }`}
+                      </Typography>
+                    </Box>
+                  ) : (
+                    // اذا كان في سعر جديد
+                    <Box
+                      sx={{
+                        display: "flex",
+                        alignItems: "center",
+                        // border: "1px solid red",
+                      }}
+                    >
+                      {/* old price */}
+                      <Box
+                        sx={
+                          {
+                            // border: "1px solid blue",
+                          }
+                        }
+                      >
+                        <Typography variant="h6">
+                          <>
+                            <del
+                              style={{ color: "red" }}
+                            >{`${adDetailsResponse?.data.data.additionalAttributes.price
+                              ?.toString()
+                              .replace(
+                                /\B(?=(\d{3})+(?!\d))/g,
+                                ","
+                              )} `}</del>{" "}
+                            {` ${adDetailsResponse?.data.data.additionalAttributes.currency}`}
+                          </>
+                        </Typography>
+                      </Box>
+                      <Typography
+                        sx={{
+                          color: theme.palette.LIGHT_BLUE,
+                        }}
+                      >
+                        -
+                      </Typography>
+                      {/* new price */}
+                      <Box
+                        sx={
+                          {
+                            // border: "1px solid blue",
+                          }
+                        }
+                      >
+                        <Typography variant="h6">
+                          {`${adDetailsResponse?.data.data.additionalAttributes.newPrice
+                            ?.toString()
+                            .replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
+                                 ${
+                                   adDetailsResponse?.data.data
+                                     .additionalAttributes.currency
+                                 }`}
+                        </Typography>
+                      </Box>
+                      {/* طريقة الدفع في حال كان اجار */}
+                      <Typography>
+                        {adDetailsResponse?.data.data.additionalAttributes
+                          .sellOrRent === "rent" &&
+                          `/ ${adDetailsResponse?.data.data.additionalAttributes.paymentMethodRent}`}
+                      </Typography>
+                    </Box>
+                  ))}
+
+                {/* <Typography>{adDetailsResponse?.data.data.date}</Typography> */}
+
+                <Box sx={{ display: "flex" }}>
+                  <AccessTimeIcon
+                    sx={{
+                      color: theme.palette.LIGHT_BLUE,
+                    }}
+                  />
+                  <Typography sx={{ mx: "5px" }}>
+                    {adjustDateToTranslate(
+                      moment(adDetailsResponse?.data.data.date).fromNow()
                     )}
+                  </Typography>
                 </Box>
               </Box>
               <Box
-                sx={
-                  {
-                    // height: "200px",
-                  }
-                }
+                sx={{
+                  display: "flex",
+                  flexDirection: "column",
+                }}
               >
                 <Typography
                   sx={{
                     color: theme.palette.LIGHT_BLUE,
                   }}
                 >
-                  {t("advertisementAttributes")} :
+                  {t("contactNumbers")} :
                 </Typography>
-                <AdditionalAdvertisementInfo
-                  adCategory={adDetailsResponse?.data.data.category.name_en}
-                  additionalInfo={
-                    adDetailsResponse?.data.data.additionalAttributes
-                  }
-                />
-
-                {adDetailsResponse?.data.data.location != null && (
-                  <>
-                    <Typography sx={{ marginBottom: "20px" }}>
-                      {/* {adDetailsResponse?.data.data.location} */}
-                      {t("location on map")}
-                    </Typography>
-
-                    <DisplayLocationMap
-                      location={JSON.parse(
-                        adDetailsResponse?.data.data.location
-                      )}
-                    />
-                  </>
-                )}
+                {/* first number */}
+                <Box sx={{ display: "flex", alignItems: "center" }}>
+                  <Typography variant="h6">
+                    {adDetailsResponse?.data.data.contactNumber != null
+                      ? `${
+                          JSON.parse(adDetailsResponse?.data.data.contactNumber)
+                            .firstName
+                        }  :  ${
+                          JSON.parse(adDetailsResponse?.data.data.contactNumber)
+                            .firstPhone
+                        } `
+                      : "{}"}
+                  </Typography>
+                  <PhoneInTalkIcon
+                    sx={{
+                      color: theme.palette.LIGHT_BLUE,
+                      marginX: "10px",
+                    }}
+                  />
+                </Box>
+                {/* second number if exist */}
+                {adDetailsResponse?.data.data.contactNumber != null &&
+                  JSON.parse(adDetailsResponse?.data.data.contactNumber)
+                    .secondName != null && (
+                    <Box sx={{ display: "flex", alignItems: "center" }}>
+                      {adDetailsResponse?.data.data.contactNumber != null &&
+                        JSON.parse(adDetailsResponse?.data.data.contactNumber)
+                          .secondName != "" && (
+                          <>
+                            <Typography variant="h6">
+                              {adDetailsResponse?.data.data.contactNumber !=
+                              null
+                                ? `${
+                                    JSON.parse(
+                                      adDetailsResponse?.data.data.contactNumber
+                                    ).secondName
+                                  } : ${
+                                    JSON.parse(
+                                      adDetailsResponse?.data.data.contactNumber
+                                    ).secondPhone
+                                  } `
+                                : "{}"}
+                            </Typography>
+                            <PhoneInTalkIcon
+                              sx={{
+                                color: theme.palette.LIGHT_BLUE,
+                                marginX: "10px",
+                              }}
+                            />
+                          </>
+                        )}
+                    </Box>
+                  )}
               </Box>
             </Box>
+            <Box
+              sx={
+                {
+                  // height: "200px",
+                }
+              }
+            >
+              <Typography
+                sx={{
+                  color: theme.palette.LIGHT_BLUE,
+                }}
+              >
+                {t("advertisementAttributes")} :
+              </Typography>
+              <AdditionalAdvertisementInfo
+                adCategory={adDetailsResponse?.data.data.category.name_en}
+                additionalInfo={
+                  adDetailsResponse?.data.data.additionalAttributes
+                }
+              />
 
-            {/* advertisement comments */}
-            <AdDetailsComments
-              user_id={adDetailsResponse?.data.data.owner.id}
-            />
-          </Grid>
-        </Grid>
+              {adDetailsResponse?.data.data.location != null && (
+                <>
+                  <Typography sx={{ marginBottom: "20px" }}>
+                    {/* {adDetailsResponse?.data.data.location} */}
+                    {t("location on map")}
+                  </Typography>
+
+                  <DisplayLocationMap
+                    location={JSON.parse(adDetailsResponse?.data.data.location)}
+                  />
+                </>
+              )}
+            </Box>
+          </Box>
+
+          {/* advertisement comments */}
+          <AdDetailsComments user_id={adDetailsResponse?.data.data.owner.id} />
+        </Box>
       ) : (
         <>
           <img alt="page not found" src="/404.png" width={"100%"} />
         </>
       )}
-      {/* </Box> */}
     </>
   );
 }

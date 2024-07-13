@@ -69,8 +69,11 @@ import Radio from "@mui/material/Radio";
 import RadioGroup from "@mui/material/RadioGroup";
 import FormControlLabel from "@mui/material/FormControlLabel";
 import FormControl from "@mui/material/FormControl";
+import Snackbar from "@mui/material/Snackbar";
+import Alert from "@mui/material/Alert";
 
 function NewAd() {
+  const [forbiddenAccount, setForbiddenAccount] = useState(false);
   const { t, i18n } = useTranslation();
   const [isConfirm, setIsConfirm] = useState(false);
   const [subCategories, setSubCategories] = useState(null);
@@ -242,6 +245,9 @@ function NewAd() {
       onError: (error) => {
         // Handle any errors here
         console.error("onError", error);
+        if (error.response.status === 403) {
+          setForbiddenAccount(true);
+        }
       },
       onSettled: () => {
         // This will run after the mutation is either successful or fails
@@ -330,6 +336,18 @@ function NewAd() {
 
   return (
     <Box sx={{ backgroundColor: theme.palette.BLACK2_or_BLUED_WHITE }}>
+      <Snackbar
+        anchorOrigin={{ vertical: "bottom", horizontal: "right" }}
+        open={forbiddenAccount}
+        autoHideDuration={5000}
+        onClose={() => {
+          setForbiddenAccount(false);
+        }}
+      >
+        <Alert severity="error" variant="filled" sx={{ width: "100%" }}>
+          {t("your account is blocked,you can't do this action")}
+        </Alert>
+      </Snackbar>
       <MainAppBar />
       <Box
         component="form"
@@ -660,7 +678,10 @@ function NewAd() {
                   </Grid>
                   {/* ownership */}
                   <Grid item xs={12} sm={6}>
-                    <OwnershipTextFieldSelect register={register} errors={errors} />
+                    <OwnershipTextFieldSelect
+                      register={register}
+                      errors={errors}
+                    />
                   </Grid>
                 </Grid>
                 <Grid container spacing={1}>
@@ -721,7 +742,10 @@ function NewAd() {
                 <Grid container spacing={2}>
                   {/* ownership */}
                   <Grid item xs={12} sm={6}>
-                    <OwnershipTextFieldSelect register={register} errors={errors} />
+                    <OwnershipTextFieldSelect
+                      register={register}
+                      errors={errors}
+                    />
                   </Grid>
 
                   {/* floor */}
@@ -775,7 +799,10 @@ function NewAd() {
                 <Grid container spacing={1}>
                   {/* ownership */}
                   <Grid item xs={12} sm={6}>
-                    <OwnershipTextFieldSelect register={register} errors={errors} />
+                    <OwnershipTextFieldSelect
+                      register={register}
+                      errors={errors}
+                    />
                   </Grid>
                   {/* direction */}
                   <Grid item xs={12} sm={6}>
@@ -841,7 +868,10 @@ function NewAd() {
                 <Grid container spacing={2}>
                   {/* ownership */}
                   <Grid item xs={12} sm={6}>
-                    <OwnershipTextFieldSelect register={register} errors={errors} />
+                    <OwnershipTextFieldSelect
+                      register={register}
+                      errors={errors}
+                    />
                   </Grid>
                   {/* cladding */}
                   <Grid item xs={12} sm={6}>
@@ -910,7 +940,10 @@ function NewAd() {
                 <Grid container spacing={2}>
                   {/* ownership */}
                   <Grid item xs={12} sm={6}>
-                    <OwnershipTextFieldSelect register={register} errors={errors} />
+                    <OwnershipTextFieldSelect
+                      register={register}
+                      errors={errors}
+                    />
                   </Grid>
                   {/* floorsCount */}
                   <Grid item xs={12} sm={6}>
@@ -957,7 +990,10 @@ function NewAd() {
                   </Grid>
                   {/* ownership */}
                   <Grid item xs={12} sm={6}>
-                    <OwnershipTextFieldSelect register={register} errors={errors} />
+                    <OwnershipTextFieldSelect
+                      register={register}
+                      errors={errors}
+                    />
                   </Grid>
                 </Grid>
 
@@ -1004,7 +1040,10 @@ function NewAd() {
                 <Grid container spacing={2}>
                   {/* ownership */}
                   <Grid item xs={12} sm={12}>
-                    <OwnershipTextFieldSelect register={register} errors={errors} />
+                    <OwnershipTextFieldSelect
+                      register={register}
+                      errors={errors}
+                    />
                   </Grid>
                 </Grid>
                 <Grid container spacing={2}>
