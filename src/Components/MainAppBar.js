@@ -17,7 +17,7 @@ import Avatar from "@mui/material/Avatar";
 import LanguageIcon from "@mui/icons-material/Language";
 import FavoriteIcon from "@mui/icons-material/Favorite";
 import Tooltip from "@mui/material/Tooltip";
-import { Button } from "@mui/material";
+import { Button, Divider } from "@mui/material";
 import AddIcon from "@mui/icons-material/Add";
 import LightModeIcon from "@mui/icons-material/LightMode";
 import DarkModeIcon from "@mui/icons-material/DarkMode";
@@ -26,12 +26,13 @@ import AccountCircleIcon from "@mui/icons-material/AccountCircle";
 import InputIcon from "@mui/icons-material/Input";
 import { useNavigate } from "react-router-dom";
 import axiosInstance from "../Axios/axiosInstance";
-import { useMutation } from "react-query";
+import { useMutation, useQuery } from "react-query";
 import ThemeContext from "../Contexts/ThemeContext";
 import { useTheme } from "@mui/material/styles";
 import { useTranslation } from "react-i18next";
 import SearchInput from "./SearchInput";
 import useUserLogedin from "../Custom Hooks/useUserLogedin";
+import moment from "moment";
 
 function MainAppBar() {
   const { t, i18n } = useTranslation();
@@ -42,6 +43,7 @@ function MainAppBar() {
   const { mode, setMode } = useContext(ThemeContext);
   const navigate = useNavigate();
   const [isLogedIn, setIsLogedIn] = useState(false);
+  const [notifications, setNotifications] = useState([]);
 
   // useEffect(() => {
   //   const user = JSON.parse(localStorage.getItem("user"));
@@ -92,8 +94,56 @@ function MainAppBar() {
       },
     }
   );
+  const postMakeNotificationReadMutation = useMutation(
+    (notification_id) => {
+      const token = localStorage.getItem("token");
+      axiosInstance.defaults.headers.common[
+        "Authorization"
+      ] = `Bearer ${token}`;
+
+      return axiosInstance.post(`/make-notification-read/${notification_id}`);
+    },
+    {
+      onSuccess: (response) => {
+        // Handle the response data here
+        refetchAllNotification();
+      },
+      onError: (error) => {
+        // Handle any errors here
+        console.error("onError", error);
+      },
+      onSettled: () => {
+        // This will run after the mutation is either successful or fails
+        console.log("Mutation has completed");
+      },
+    }
+  );
+
+  const {
+    isLoading: allNotificationsIsLoading,
+    data: allNotifications,
+    refetch: refetchAllNotification,
+  } = useQuery(
+    "all-notifications",
+    () => {
+      const token = localStorage.getItem("token");
+      axiosInstance.defaults.headers.common[
+        "Authorization"
+      ] = `Bearer ${token}`;
+
+      return axiosInstance.get("/all-notifications");
+    },
+    {
+      onSuccess: (response) => {
+        setNotifications(response.data);
+      },
+    }
+  );
+
+  // console.log("allNotifications :", allNotifications?.data);
 
   const [anchorEl, setAnchorEl] = useState(null);
+  const [anchorNotification, setAnchorNotification] = useState(null);
   const [anchorLangMenu, setAnchorLangMenu] = useState(null);
   const [mobileMoreAnchorEl, setMobileMoreAnchorEl] = useState(null);
 
@@ -101,9 +151,13 @@ function MainAppBar() {
   const isMobileMenuOpen = Boolean(mobileMoreAnchorEl);
 
   const isLangMenuOpen = Boolean(anchorLangMenu);
+  const isNotificationMenuOpen = Boolean(anchorNotification);
 
   const handleProfileMenuOpen = (event) => {
     setAnchorEl(event.currentTarget);
+  };
+  const handleNotificationMenuOpen = (event) => {
+    setAnchorNotification(event.currentTarget);
   };
 
   const handleLanguageMenuOpen = (event) => {
@@ -119,6 +173,11 @@ function MainAppBar() {
     setAnchorEl(null);
     handleMobileMenuClose();
   };
+  const handleNotificationMenuClose = () => {
+    // navigate("/profile");
+    setAnchorNotification(null);
+    // handleMobileMenuClose();
+  };
 
   const handleLangMenuClose = () => {
     setAnchorLangMenu(null);
@@ -126,6 +185,43 @@ function MainAppBar() {
 
   const handleMobileMenuOpen = (event) => {
     setMobileMoreAnchorEl(event.currentTarget);
+  };
+
+  const adjustDateToTranslate = (datePhrase) => {
+    if (
+      [
+        "a few seconds ago",
+        "a minute ago",
+        "an hour ago",
+        "a day ago",
+        "a month ago",
+        "a year ago",
+      ].includes(datePhrase)
+    ) {
+      return t(datePhrase);
+    } else {
+      const digitRegex = /\d+/g;
+      const number = Number(datePhrase.match(digitRegex)[0]);
+      let phraseWithoutNumbers = datePhrase.replace(/\d/g, "").trim();
+      let phraseWithoutAgo = phraseWithoutNumbers.replace("ago", "").trim();
+
+      if (phraseWithoutAgo === "minutes") {
+        return t("minutes ago", { count: number });
+      } else if (phraseWithoutAgo === "hours") {
+        return t("hours ago", { count: number });
+      } else if (phraseWithoutAgo === "days") {
+        return t("days ago", { count: number });
+      } else if (phraseWithoutAgo === "months") {
+        return t("months ago", { count: number });
+      } else if (phraseWithoutAgo === "years") {
+        return t("years ago", { count: number });
+      }
+
+      // console.log("number :", number);
+      // console.log("phraseWithoutNumbers :", phraseWithoutNumbers);
+      // // console.log("phraseWithoutAgo :", phraseWithoutAgo);
+      // return datePhrase;
+    }
   };
 
   const langMenuId = "primary-search-account-menu";
@@ -236,6 +332,144 @@ function MainAppBar() {
       </MenuItem>
     </Menu>
   );
+  const menuNotificationId = "primary-notification-menu";
+  // this main menu , it appears when user click on photo avatar
+  const renderNotificationMenu = (
+    <Menu
+      anchorEl={anchorNotification}
+      anchorOrigin={{
+        vertical: "bottom",
+        horizontal: "right",
+      }}
+      id={menuNotificationId}
+      keepMounted
+      transformOrigin={{
+        vertical: "top",
+        horizontal: "right",
+      }}
+      open={isNotificationMenuOpen}
+      onClose={handleNotificationMenuClose}
+      sx={{}}
+    >
+      <Box
+        sx={{
+          maxHeight: "250px",
+          //  height:"300px"
+        }}
+      >
+        {allNotifications?.data.data.length === 0 && (
+          <Typography>{t("You have no new notifications")}</Typography>
+        )}
+        {allNotifications?.data.data.map((notif) => {
+          return (
+            <MenuItem
+              sx={{
+                // backgroundColor: "#e9eff7",
+
+                direction: i18n.language === "en" ? "ltr" : "rtl",
+              }}
+              onClick={() => {
+                handleNotificationMenuClose();
+                postMakeNotificationReadMutation.mutate(notif.id);
+                if (
+                  notif.type ===
+                  "App\\Notifications\\AcceptancePublishingAdvertisementNotification"
+                ) {
+                  navigate(`/ad-details/${notif.data.ad_id}`);
+                  // navigate(`/profile/user-ad-details/${notif.data.ad_id}}`);
+                }
+                if (
+                  notif.type ===
+                  "App\\Notifications\\RejectAdvertisementNotification"
+                ) {
+                  navigate(`/profile/user-ad-details/${notif.data.ad_id}`);
+                }
+                if (
+                  notif.type ===
+                  "App\\Notifications\\AddNewCommentOnAdvertisementNotification"
+                ) {
+                  navigate(`/ad-details/${notif.data.ad_id}`);
+                }
+                if (
+                  notif.type ===
+                  "App\\Notifications\\ReplyOnCommentNotification"
+                ) {
+                  navigate(`/ad-details/${notif.data.ad_id}`);
+                }
+              }}
+            >
+              <Box
+                sx={{
+                  display: "flex",
+                  justifyContent: "space-between",
+                  flexDirection: "column",
+                  // alignItems: "right",
+                  // width: "100%",
+                  // width: "100%",
+                  // backgroundColor: "lightblue",
+                  // border: "1px solid red",
+                  // m: "1px",
+                  p: "2px",
+                  direction: i18n.language === "en" ? "ltr" : "rtl",
+                }}
+              >
+                <Box
+                  sx={{
+                    display: "flex",
+                    justifyContent: "space-between",
+                    alignItems: "center",
+                  }}
+                >
+                  {notif.read_at === null && (
+                    <Box
+                      sx={{
+                        width: "7px",
+                        height: "7px",
+                        backgroundColor: theme.palette.LIGHT_BLUE,
+                        borderRadius: "100%",
+                        mx: "5px",
+                      }}
+                    ></Box>
+                  )}
+                  {notif.type ===
+                    "App\\Notifications\\AddNewCommentOnAdvertisementNotification" && (
+                    <Avatar
+                      alt="Remy Sharp"
+                      src={`http://127.0.0.1:8000/storage/${notif.data.comment_owner?.image}`}
+                      sx={{
+                        mx: "5px",
+                      }}
+                    />
+                  )}
+                  {notif.type ===
+                    "App\\Notifications\\ReplyOnCommentNotification" && (
+                    <Avatar
+                      alt="Remy Sharp"
+                      src={`http://127.0.0.1:8000/storage/${notif.data.reply_owner?.image}`}
+                      sx={{
+                        mx: "5px",
+                      }}
+                    />
+                  )}
+
+                  <Typography fontWeight={notif.read_at === null && "bold"}>
+                    {i18n.language === "en"
+                      ? notif.data.message.en
+                      : notif.data.message.ar}{" "}
+                    {notif.data.ad_id}
+                  </Typography>
+                </Box>
+                <Typography fontSize={13}>
+                  {adjustDateToTranslate(moment(notif.created_at).fromNow())}
+                </Typography>
+                <Divider></Divider>
+              </Box>
+            </MenuItem>
+          );
+        })}
+      </Box>
+    </Menu>
+  );
 
   const mobileMenuId = "primary-search-account-menu-mobile";
   //this menu appears when user click on tree dots when screen is small
@@ -261,7 +495,10 @@ function MainAppBar() {
           aria-label="show 17 new notifications"
           color="inherit"
         >
-          <Badge badgeContent={17} color="error">
+          <Badge
+            badgeContent={allNotifications?.data.unReadCount}
+            color="error"
+          >
             <NotificationsIcon />
           </Badge>
         </IconButton>
@@ -478,8 +715,13 @@ function MainAppBar() {
                 size="large"
                 aria-label="show 17 new notifications"
                 // color="inherit"
+                // onClick={handleProfileMenuOpen}
+                onClick={handleNotificationMenuOpen}
               >
-                <Badge badgeContent={17} color="error">
+                <Badge
+                  badgeContent={allNotifications?.data.unReadCount}
+                  color="error"
+                >
                   <NotificationsIcon
                     sx={{
                       color: "#153258",
@@ -540,6 +782,7 @@ function MainAppBar() {
       {renderMobileMenu}
       {renderMenu}
       {languageMenu}
+      {renderNotificationMenu}
     </Box>
   );
 }

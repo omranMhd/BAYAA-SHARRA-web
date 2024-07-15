@@ -26,9 +26,9 @@ function SideMenuProfile() {
   const [newProfilePhoto, setNewProfilePhoto] = useState(null);
   const navigate = useNavigate();
 
-  useEffect(() => {
-    navigate("user-info");
-  }, []);
+  // useEffect(() => {
+  //   navigate("user-info");
+  // }, []);
   const updateUserPhotoMutation = useMutation(
     (data) => {
       const user = JSON.parse(localStorage.getItem("user"));

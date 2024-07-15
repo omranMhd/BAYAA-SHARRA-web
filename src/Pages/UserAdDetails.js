@@ -58,7 +58,7 @@ function UserAdDetails() {
       axiosInstance.defaults.headers.common[
         "Authorization"
       ] = `Bearer ${token}`;
-      return axiosInstance.get(`/ad-details/${params.adId}`);
+      return axiosInstance.get(`/user-ad-details/${params.adId}`);
     },
     {
       onSuccess: (response) => {
