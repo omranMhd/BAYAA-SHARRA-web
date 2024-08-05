@@ -10,7 +10,7 @@ import ListItemIcon from "@mui/material/ListItemIcon";
 import ListItemText from "@mui/material/ListItemText";
 import Divider from "@mui/material/Divider";
 import TextField from "@mui/material/TextField";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import axiosInstance from "../Axios/axiosInstance";
 import { useQuery, useMutation } from "react-query";
 import CircularProgress from "@mui/material/CircularProgress";
@@ -23,6 +23,7 @@ import LogoutIcon from "@mui/icons-material/Logout";
 function SideMenuProfile() {
   const { t, i18n } = useTranslation();
   const theme = useTheme();
+  const location = useLocation();
   const [newProfilePhoto, setNewProfilePhoto] = useState(null);
   const navigate = useNavigate();
 
@@ -216,8 +217,17 @@ function SideMenuProfile() {
           width: "100%",
         }}
       >
-        <Divider />
-        <ListItem disablePadding>
+        <ListItem
+          disablePadding
+          sx={
+            location.pathname === "/profile/user-info"
+              ? {
+                  backgroundColor: theme.palette.LIGHT_BLUE_or_DARK_BLUE,
+                  color: "white",
+                }
+              : {}
+          }
+        >
           <ListItemButton
             onClick={() => {
               navigate("user-info");
@@ -229,8 +239,17 @@ function SideMenuProfile() {
             <ListItemText primary={t("User Information")} />
           </ListItemButton>
         </ListItem>
-        <Divider />
-        <ListItem disablePadding>
+        <ListItem
+          disablePadding
+          sx={
+            location.pathname === "/profile/user-advertisements"
+              ? {
+                  backgroundColor: theme.palette.LIGHT_BLUE_or_DARK_BLUE,
+                  color: "white",
+                }
+              : {}
+          }
+        >
           <ListItemButton
             onClick={() => {
               navigate("user-advertisements");
@@ -242,7 +261,6 @@ function SideMenuProfile() {
             <ListItemText primary={t("User Advertisements")} />
           </ListItemButton>
         </ListItem>
-        <Divider />
         <ListItem disablePadding>
           <ListItemButton
             onClick={() => {
@@ -255,7 +273,6 @@ function SideMenuProfile() {
             <ListItemText primary={t("Log Out")} />
           </ListItemButton>
         </ListItem>
-        <Divider />
       </List>
     </Box>
   );

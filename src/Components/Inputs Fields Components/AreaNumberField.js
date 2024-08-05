@@ -1,6 +1,7 @@
 import React from "react";
 import TextField from "@mui/material/TextField";
 import { useTranslation } from "react-i18next";
+import InputAdornment from "@mui/material/InputAdornment";
 
 function AreaNumberField({ register, errors }) {
   const { t, i18n } = useTranslation();
@@ -13,6 +14,13 @@ function AreaNumberField({ register, errors }) {
       label={t("area")}
       size="small"
       margin="normal"
+      InputProps={{
+        startAdornment: (
+          <InputAdornment position="start">
+            {i18n.language === "en" ? "(m²)" : "(م²)"}
+          </InputAdornment>
+        ),
+      }}
       {...register("area")}
       error={!!errors.area}
       helperText={errors.area?.message}

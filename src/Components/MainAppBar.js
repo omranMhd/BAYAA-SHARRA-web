@@ -127,15 +127,20 @@ function MainAppBar() {
     "all-notifications",
     () => {
       const token = localStorage.getItem("token");
+      // alert(token);
       axiosInstance.defaults.headers.common[
         "Authorization"
       ] = `Bearer ${token}`;
-
-      return axiosInstance.get("/all-notifications");
+      if (token !== null) {
+        return axiosInstance.get("/all-notifications");
+      }
     },
     {
       onSuccess: (response) => {
-        setNotifications(response.data);
+        // alert("df", JSON.stringify(response));
+        if (response != undefined) {
+          setNotifications(response.data);
+        }
       },
     }
   );
@@ -370,7 +375,9 @@ function MainAppBar() {
               }}
               onClick={() => {
                 handleNotificationMenuClose();
-                postMakeNotificationReadMutation.mutate(notif.id);
+                if (notif.read_at === null) {
+                  postMakeNotificationReadMutation.mutate(notif.id);
+                }
                 if (
                   notif.type ===
                   "App\\Notifications\\AcceptancePublishingAdvertisementNotification"
@@ -404,7 +411,7 @@ function MainAppBar() {
                   justifyContent: "space-between",
                   flexDirection: "column",
                   // alignItems: "right",
-                  // width: "100%",
+                  width: "100%",
                   // width: "100%",
                   // backgroundColor: "lightblue",
                   // border: "1px solid red",
@@ -451,6 +458,26 @@ function MainAppBar() {
                       }}
                     />
                   )}
+                  {notif.type ===
+                    "App\\Notifications\\AcceptancePublishingAdvertisementNotification" && (
+                    <Avatar
+                      alt="Remy Sharp"
+                      src={`http://127.0.0.1:8000/storage/${notif.data.ad_image?.url}`}
+                      sx={{
+                        mx: "5px",
+                      }}
+                    />
+                  )}
+                  {notif.type ===
+                    "App\\Notifications\\RejectAdvertisementNotification" && (
+                    <Avatar
+                      alt="Remy Sharp"
+                      src={`http://127.0.0.1:8000/storage/${notif.data.ad_image?.url}`}
+                      sx={{
+                        mx: "5px",
+                      }}
+                    />
+                  )}
 
                   <Typography fontWeight={notif.read_at === null && "bold"}>
                     {i18n.language === "en"
@@ -489,7 +516,15 @@ function MainAppBar() {
       open={isMobileMenuOpen}
       onClose={handleMobileMenuClose}
     >
-      <MenuItem>
+      <MenuItem
+        onClick={(event) => {
+          if (isUserLogedin) {
+            handleNotificationMenuOpen(event);
+          } else {
+            navigate("/login");
+          }
+        }}
+      >
         <IconButton
           size="large"
           aria-label="show 17 new notifications"
@@ -504,7 +539,11 @@ function MainAppBar() {
         </IconButton>
         <p>{t("notifications")}</p>
       </MenuItem>
-      <MenuItem>
+      <MenuItem
+        onClick={() => {
+          navigate("/favorite-ads");
+        }}
+      >
         <IconButton size="large" aria-label="show 4 new mails" color="inherit">
           <FavoriteIcon />
         </IconButton>
@@ -589,6 +628,13 @@ function MainAppBar() {
               alt="Login"
               style={{ width: "55px", height: "50px", marginRight: "10px" }}
             />
+          </Link>
+          <Box
+            sx={{
+              display: { sm: "inline", xs: "none" },
+              // display: { sm: "none" },
+            }}
+          >
             {i18n.language === "en" && (
               <img
                 src={"/bs.png"}
@@ -596,17 +642,17 @@ function MainAppBar() {
                 style={{ width: "120px", height: "25px", marginBottom: "10px" }}
               />
             )}
-          </Link>
-          {i18n.language === "ar" && (
-            <Typography
-              variant="h6"
-              noWrap
-              component="div"
-              sx={{ display: { xs: "none", sm: "block" }, color: "#153258" }}
-            >
-              {t("bayaa sharra")}
-            </Typography>
-          )}
+            {i18n.language === "ar" && (
+              <Typography
+                variant="h6"
+                noWrap
+                component="div"
+                sx={{ display: { xs: "none", sm: "block" }, color: "#153258" }}
+              >
+                {t("bayaa sharra")}
+              </Typography>
+            )}
+          </Box>
 
           <Box sx={{ flexGrow: 1 }} />
           {/* Search input component */}
@@ -640,6 +686,7 @@ function MainAppBar() {
               margin: "10px",
               backgroundColor: theme.palette.LIGHT_BLUE_or_DARK_BLUE,
               whiteSpace: "nowrap",
+              display: { xs: "none", lg: "flex" },
             }}
             endIcon={<AddIcon />}
             onClick={() => {
@@ -648,7 +695,23 @@ function MainAppBar() {
           >
             {t("add post")}
           </Button>
-          <Box sx={{ display: { xs: "none", md: "flex" } }}>
+          <Button
+            variant="contained"
+            // color={theme.palette.DARK_BLUE}
+            sx={{
+              margin: "10px",
+              backgroundColor: theme.palette.LIGHT_BLUE_or_DARK_BLUE,
+              whiteSpace: "nowrap",
+              display: { sm: "flex", lg: "none" },
+            }}
+            onClick={() => {
+              navigate("/new-ad");
+            }}
+          >
+            <AddIcon />
+          </Button>
+          {/* <Box sx={{ display: { xs: "none", md: "flex" } }}> */}
+          <Box sx={{ display: { xs: "none", lg: "flex" } }}>
             <Tooltip title={t("favorites")} arrow>
               <IconButton
                 aria-label="translate"
@@ -716,7 +779,13 @@ function MainAppBar() {
                 aria-label="show 17 new notifications"
                 // color="inherit"
                 // onClick={handleProfileMenuOpen}
-                onClick={handleNotificationMenuOpen}
+                onClick={(event) => {
+                  if (isUserLogedin) {
+                    handleNotificationMenuOpen(event);
+                  } else {
+                    navigate("/login");
+                  }
+                }}
               >
                 <Badge
                   badgeContent={allNotifications?.data.unReadCount}
@@ -765,7 +834,8 @@ function MainAppBar() {
               </Tooltip>
             )}
           </Box>
-          <Box sx={{ display: { xs: "flex", md: "none" } }}>
+          {/* <Box sx={{ display: { xs: "flex", md: "none" } }}> */}
+          <Box sx={{ display: { sm: "flex", lg: "none" } }}>
             <IconButton
               size="large"
               aria-label="show more"
@@ -774,7 +844,7 @@ function MainAppBar() {
               onClick={handleMobileMenuOpen}
               color="inherit"
             >
-              <MoreIcon />
+              <MoreIcon sx={{ color: theme.palette.LIGHT_BLUE }} />
             </IconButton>
           </Box>
         </Toolbar>

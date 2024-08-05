@@ -85,6 +85,95 @@ function NewAd() {
   const navigate = useNavigate();
   const theme = useTheme();
 
+  const [mobOrTabBrands, setMobOrTabBrands] = useState([
+    {
+      brand: {
+        en: "iphone",
+        ar: "آيفون",
+      },
+      categories: [
+        {
+          en: "14",
+          ar: "14",
+        },
+        {
+          en: "14 Plus",
+          ar: "14 بلاس",
+        },
+        {
+          en: "14 Pro",
+          ar: "14 برو",
+        },
+      ],
+    },
+    {
+      brand: {
+        en: "samsung",
+        ar: "سامسونغ",
+      },
+      categories: [
+        {
+          en: "A12",
+          ar: "A12",
+        },
+        {
+          en: "J5",
+          ar: "J5",
+        },
+        {
+          en: "A13",
+          ar: "A13",
+        },
+        {
+          en: "Note5",
+          ar: "نوت 5",
+        },
+      ],
+    },
+    {
+      brand: {
+        en: "huawei",
+        ar: "هواوي",
+      },
+      categories: [],
+    },
+    {
+      brand: {
+        en: "sony",
+        ar: "سوني",
+      },
+      categories: [],
+    },
+    {
+      brand: {
+        en: "blackberry",
+        ar: "بلاك بيري",
+      },
+      categories: [],
+    },
+    {
+      brand: {
+        en: "nokia",
+        ar: "نوكيا",
+      },
+      categories: [],
+    },
+    {
+      brand: {
+        en: "htc",
+        ar: "إتش تي سي",
+      },
+      categories: [],
+    },
+    {
+      brand: {
+        en: "xiaomi",
+        ar: "شاومي",
+      },
+      categories: [],
+    },
+  ]);
+
   const form = useForm({
     defaultValues: {
       // Basic feilds
@@ -173,6 +262,8 @@ function NewAd() {
   const { errors } = formState;
   const selectedCountry = watch("country");
   const selectedCity = watch("city");
+  const selectedVehicleBrand = watch("vehicleBrand");
+  const selectedMobOrTabBrand = watch("mobOrTabBrand");
 
   //watch all values of form
   console.log("all values of form", watch());
@@ -207,7 +298,21 @@ function NewAd() {
     }
   );
 
-  console.log("vvvvvvvvvvv :", vehiclesBrandsResponse?.data);
+  const modelsCorrespondingToTheSelectedVehicleBrand =
+    vehiclesBrandsResponse?.data.find(
+      (brand) => brand.brand.en === selectedVehicleBrand
+    )?.models;
+
+  const categoriesCorrespondingToTheSelectedMobOrTabBrand = mobOrTabBrands.find(
+    (brand) => brand.brand.en === selectedMobOrTabBrand
+  )?.categories;
+
+  // console.log("vvvvvvvvvvv :", vehiclesBrandsResponse?.data);
+  // console.log("vvvvvvvvvvv :", modelsCorrespondingToTheSelectedVehicleBrand);
+  console.log(
+    "vvvvvvvvvvv :",
+    categoriesCorrespondingToTheSelectedMobOrTabBrand
+  );
 
   const getSubCategoriesByIdMutation = useMutation(
     (id) => axiosInstance.get(`/sub-categories/${id}`),
@@ -1161,6 +1266,7 @@ function NewAd() {
                       <VehicleModelTextFieldSelect
                         register={register}
                         errors={errors}
+                        models={modelsCorrespondingToTheSelectedVehicleBrand}
                       />
                     </Grid>
                   </Grid>
@@ -1254,8 +1360,8 @@ function NewAd() {
           </Box>
         )}
 
-        {/* Electrical Electronic Devices attributes */}
-        {watch("category") === "Electrical Electronic Devices" && (
+        {/* Devices attributes */}
+        {watch("category") === "Devices" && (
           <Box
             sx={{
               // border: "1px solid black",
@@ -1292,6 +1398,9 @@ function NewAd() {
                         register={register}
                         errors={errors}
                         subCategory={watch("subCategory")}
+                        categoriesList={
+                          categoriesCorrespondingToTheSelectedMobOrTabBrand
+                        }
                       />
                     </Grid>
                   </Grid>

@@ -3,6 +3,7 @@ import Box from "@mui/material/Box";
 import PhotoSlide from "./PhotoSlide";
 import { useQuery, useMutation } from "react-query";
 import axiosInstance from "../Axios/axiosInstance";
+import Skeleton from "@mui/material/Skeleton";
 
 import { Swiper, SwiperSlide } from "swiper/react";
 import {
@@ -15,14 +16,18 @@ import {
 
 function MainSlider() {
   const [images, setImages] = useState([]);
-  const { data: silderImagesData, refetch: refetchSilderImages } = useQuery(
-    "user-info",
+  const {
+    data: silderImagesData,
+    refetch: refetchSilderImages,
+    isLoading,
+  } = useQuery(
+    "silder-images",
     () => {
       return axiosInstance.get("/silder-images");
     },
     {
       onSuccess: (response) => {
-        console.log("aaaaaaaaaaaaa :", response.data);
+        // console.log("aaaaaaaaaaaaa :", response.data);
         setImages(response.data.data);
       },
       // enabled: false,
@@ -30,64 +35,59 @@ function MainSlider() {
   );
 
   return (
-    <Box>
-      <Swiper
-        modules={[SwiperPagination, Scrollbar, A11y, EffectCoverflow, Autoplay]}
-        effect={"coverflow"}
-        spaceBetween={50}
-        slidesPerView={1}
-        loop={true}
-        onSlideChange={() => console.log("slide change")}
-        onSwiper={(swiper) => console.log(swiper)}
-        autoplay={{
-          delay: 5000,
-          disableOnInteraction: false,
-        }}
-        fadeEffect={{ crossFade: true }} // Additional options for the fade effect
-        coverflowEffect={{
-          rotate: 50,
-          stretch: 0,
-          depth: 100,
-          modifier: 1,
-          slideShadows: true,
-        }}
-      >
-        {images.map((img) => {
-          return (
-            <SwiperSlide>
-              <PhotoSlide img={`http://127.0.0.1:8000/storage/${img.url}`} />
-            </SwiperSlide>
-          );
-        })}
-
-        {/* <SwiperSlide>
-          <PhotoSlide img="mainSliderPhotoes/slide2.jpg" />
-        </SwiperSlide>
-
-        <SwiperSlide>
-          <PhotoSlide img="mainSliderPhotoes/slide3.jpg" />
-        </SwiperSlide>
-
-        <SwiperSlide>
-          <PhotoSlide img="mainSliderPhotoes/slide4.jpg" />
-        </SwiperSlide>
-        <SwiperSlide>
-          <PhotoSlide img="mainSliderPhotoes/slide5.jpg" />
-        </SwiperSlide>
-        <SwiperSlide>
-          <PhotoSlide img="mainSliderPhotoes/slide10.png" />
-        </SwiperSlide>
-        <SwiperSlide>
-          <PhotoSlide img="mainSliderPhotoes/slide7.jpg" />
-        </SwiperSlide>
-        <SwiperSlide>
-          <PhotoSlide img="mainSliderPhotoes/slide8.jpg" />
-        </SwiperSlide>
-        <SwiperSlide>
-          <PhotoSlide img="mainSliderPhotoes/slide9.jpg" />
-        </SwiperSlide> */}
-      </Swiper>
-    </Box>
+    <>
+      {isLoading ? (
+        <Skeleton
+          variant="rectangular"
+          width={"98%"}
+          height={"460px"}
+          sx={{
+            borderRadius: "10px",
+            margin: "10px",
+          }}
+        />
+      ) : (
+        <Box>
+          <Swiper
+            modules={[
+              SwiperPagination,
+              Scrollbar,
+              A11y,
+              EffectCoverflow,
+              Autoplay,
+            ]}
+            effect={"coverflow"}
+            spaceBetween={50}
+            slidesPerView={1}
+            loop={true}
+            // onSlideChange={() => console.log("slide change")}
+            // onSwiper={(swiper) => console.log(swiper)}
+            autoplay={{
+              delay: 5000,
+              disableOnInteraction: false,
+            }}
+            fadeEffect={{ crossFade: true }} // Additional options for the fade effect
+            coverflowEffect={{
+              rotate: 50,
+              stretch: 0,
+              depth: 100,
+              modifier: 1,
+              slideShadows: true,
+            }}
+          >
+            {images.map((img) => {
+              return (
+                <SwiperSlide>
+                  <PhotoSlide
+                    img={`http://127.0.0.1:8000/storage/${img.url}`}
+                  />
+                </SwiperSlide>
+              );
+            })}
+          </Swiper>
+        </Box>
+      )}
+    </>
   );
 }
 

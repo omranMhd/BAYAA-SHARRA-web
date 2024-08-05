@@ -28,7 +28,36 @@ function GridItem({ label, value }) {
               marginX: "10px",
             }}
           />{" "}
-          <Typography>{t(label)} :</Typography>
+          <Typography>
+            {t(label)}{" "}
+            {label === "area" ? (i18n.language === "en" ? "(m²)" : "(م²)") : ""}
+            {label === "traveledDistance"
+              ? i18n.language === "en"
+                ? "(km)"
+                : "(كم)"
+              : ""}
+            {label === "ram"
+              ? i18n.language === "en"
+                ? "(GB)"
+                : "(غيغابايت)"
+              : ""}
+            {label === "hard"
+              ? i18n.language === "en"
+                ? "(GB)"
+                : "(غيغابايت)"
+              : ""}
+            {label === "computerHard"
+              ? i18n.language === "en"
+                ? "(GB)"
+                : "(غيغابايت)"
+              : ""}
+            {label === "computerRam"
+              ? i18n.language === "en"
+                ? "(GB)"
+                : "(غيغابايت)"
+              : ""}
+            :
+          </Typography>
         </Box>
         <Box>{value}</Box>
       </Box>

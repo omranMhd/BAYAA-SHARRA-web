@@ -7,6 +7,7 @@ function MobileOrTableteCategoryTextFieldSelect({
   register,
   errors,
   subCategory,
+  categoriesList,
 }) {
   const { t, i18n } = useTranslation();
 
@@ -16,16 +17,22 @@ function MobileOrTableteCategoryTextFieldSelect({
       autoComplete="given-name"
       fullWidth
       id="mobOrTabCategory"
-      label={subCategory === "Mobile" ? t("mobileCategory") : t("tabletCategory")}
+      label={
+        subCategory === "Mobile" ? t("mobileCategory") : t("tabletCategory")
+      }
       size="small"
       margin="normal"
       {...register("mobOrTabCategory")}
       error={!!errors.mobOrTabCategory}
       helperText={errors.mobOrTabCategory?.message}
     >
-      <MenuItem value={"J5"}>J5</MenuItem>
-      <MenuItem value={"Note 11 pro"}>Note 11 pro</MenuItem>
-      <MenuItem value={"S23 ultra"}>S23 ultra</MenuItem>
+      {categoriesList?.map((c) => {
+        return (
+          <MenuItem value={c.en}>
+            {i18n.language === "en" ? c.en : c.ar}
+          </MenuItem>
+        );
+      })}
     </TextField>
   );
 }

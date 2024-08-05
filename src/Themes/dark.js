@@ -7,7 +7,8 @@ const dark = {
   WHITE: "#FFFFFF",
   BLACK: "#000000",
   WHITE_or_BLACK: "#000000",
-  WHITE_or_BLACK2: "#121212",
+  // WHITE_or_BLACK2: "#121212",
+  WHITE_or_BLACK2: "#2b2b2b",
   BLACK_or_WHITE: "#FFFFFF", // or #000000
   WHITE_or_DARK_BLUE: "#153258", // or #FFFFFF
   DARK_BLUE: "#153258",

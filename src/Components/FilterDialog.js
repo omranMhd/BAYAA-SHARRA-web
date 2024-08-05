@@ -23,12 +23,101 @@ import { convertFilterData } from "../Helpers/formatNewAdDataform";
 import useUserLogedin from "../Custom Hooks/useUserLogedin";
 import ShareAdvertisementsContext from "../Contexts/ShareAdvertisementsContext";
 import CircularProgress from "@mui/material/CircularProgress";
+import InputAdornment from "@mui/material/InputAdornment";
 
 function FilterDialog({ openFilterDialog, setOpenFilterDialog }) {
   const { t, i18n } = useTranslation();
   const isUserLogedin = useUserLogedin();
   const { ads, setAds } = useContext(ShareAdvertisementsContext);
   const [subCategories, setSubCategories] = useState(null);
+  const [mobOrTabBrands, setMobOrTabBrands] = useState([
+    {
+      brand: {
+        en: "iphone",
+        ar: "آيفون",
+      },
+      categories: [
+        {
+          en: "14",
+          ar: "14",
+        },
+        {
+          en: "14 Plus",
+          ar: "14 بلاس",
+        },
+        {
+          en: "14 Pro",
+          ar: "14 برو",
+        },
+      ],
+    },
+    {
+      brand: {
+        en: "samsung",
+        ar: "سامسونغ",
+      },
+      categories: [
+        {
+          en: "A12",
+          ar: "A12",
+        },
+        {
+          en: "J5",
+          ar: "J5",
+        },
+        {
+          en: "A13",
+          ar: "A13",
+        },
+        {
+          en: "Note5",
+          ar: "نوت 5",
+        },
+      ],
+    },
+    {
+      brand: {
+        en: "huawei",
+        ar: "هواوي",
+      },
+      categories: [],
+    },
+    {
+      brand: {
+        en: "sony",
+        ar: "سوني",
+      },
+      categories: [],
+    },
+    {
+      brand: {
+        en: "blackberry",
+        ar: "بلاك بيري",
+      },
+      categories: [],
+    },
+    {
+      brand: {
+        en: "nokia",
+        ar: "نوكيا",
+      },
+      categories: [],
+    },
+    {
+      brand: {
+        en: "htc",
+        ar: "إتش تي سي",
+      },
+      categories: [],
+    },
+    {
+      brand: {
+        en: "xiaomi",
+        ar: "شاومي",
+      },
+      categories: [],
+    },
+  ]);
   const [filtersValues, setFiltersValues] = useState({
     category: null,
     subCategory: null,
@@ -115,6 +204,15 @@ function FilterDialog({ openFilterDialog, setOpenFilterDialog }) {
       },
     }
   );
+
+  const modelsCorrespondingToTheSelectedVehicleBrand =
+    vehiclesBrandsResponse?.data.find(
+      (brand) => brand.brand.en === filtersValues.vehicleBrand
+    )?.models;
+
+  const categoriesCorrespondingToTheSelectedMobOrTabBrand = mobOrTabBrands.find(
+    (brand) => brand.brand.en === filtersValues.mobOrTabBrand
+  )?.categories;
   // const {
   //   isLoading: realestatesdAdsIsLoading,
   //   data: realestatesAds,
@@ -465,6 +563,13 @@ function FilterDialog({ openFilterDialog, setOpenFilterDialog }) {
                     label={t("area from")}
                     size="small"
                     margin="normal"
+                    InputProps={{
+                      startAdornment: (
+                        <InputAdornment position="start">
+                          {i18n.language === "en" ? "(m²)" : "(م²)"}
+                        </InputAdornment>
+                      ),
+                    }}
                     value={filtersValues.areaFrom}
                     onChange={(e) => {
                       setFiltersValues({
@@ -485,6 +590,13 @@ function FilterDialog({ openFilterDialog, setOpenFilterDialog }) {
                     label={t("area to")}
                     size="small"
                     margin="normal"
+                    InputProps={{
+                      startAdornment: (
+                        <InputAdornment position="start">
+                          {i18n.language === "en" ? "(m²)" : "(م²)"}
+                        </InputAdornment>
+                      ),
+                    }}
                     value={filtersValues.areaTo}
                     onChange={(e) => {
                       setFiltersValues({
@@ -806,9 +918,15 @@ function FilterDialog({ openFilterDialog, setOpenFilterDialog }) {
                         //   console.log("ff :", e.target.value);
                       }}
                     >
-                      <MenuItem value={"RIO"}>RIO</MenuItem>
-                      <MenuItem value={"SONATA"}>SONATA</MenuItem>
-                      <MenuItem value={"AZERA"}>AZERA</MenuItem>
+                      {modelsCorrespondingToTheSelectedVehicleBrand?.map(
+                        (model) => {
+                          return (
+                            <MenuItem key={model.en} value={model.en}>
+                              {i18n.language === "en" ? model.en : model.ar}
+                            </MenuItem>
+                          );
+                        }
+                      )}
                     </TextField>
                   </Grid>
                 </Grid>
@@ -1127,7 +1245,7 @@ function FilterDialog({ openFilterDialog, setOpenFilterDialog }) {
                 </Grid>
               </>
             )}
-          {filtersValues.category === "Electrical Electronic Devices" && (
+          {filtersValues.category === "Devices" && (
             <>
               <Grid container spacing={2}>
                 {/*price from  */}
@@ -1230,10 +1348,18 @@ function FilterDialog({ openFilterDialog, setOpenFilterDialog }) {
                           //   console.log("ff :", e.target.value);
                         }}
                       >
-                        <MenuItem value={"Samsung"}>Samsung</MenuItem>
-                        <MenuItem value={"Apple"}>Apple</MenuItem>
-                        <MenuItem value={"Huawei"}>Huawei</MenuItem>
-                        <MenuItem value={"Xiaomi"}>Xiaomi</MenuItem>
+                        {mobOrTabBrands.map((brand) => {
+                          return (
+                            <MenuItem
+                              key={brand.brand.en}
+                              value={brand.brand.en}
+                            >
+                              {i18n.language === "en"
+                                ? brand.brand.en
+                                : brand.brand.ar}
+                            </MenuItem>
+                          );
+                        })}
                       </TextField>
                     </Grid>
                     {/* mobOrTabCategory */}
@@ -1259,9 +1385,15 @@ function FilterDialog({ openFilterDialog, setOpenFilterDialog }) {
                           //   console.log("ff :", e.target.value);
                         }}
                       >
-                        <MenuItem value={"J5"}>J5</MenuItem>
-                        <MenuItem value={"Note 11 pro"}>Note 11 pro</MenuItem>
-                        <MenuItem value={"S23 ultra"}>S23 ultra</MenuItem>
+                        {categoriesCorrespondingToTheSelectedMobOrTabBrand?.map(
+                          (c) => {
+                            return (
+                              <MenuItem value={c.en}>
+                                {i18n.language === "en" ? c.en : c.ar}
+                              </MenuItem>
+                            );
+                          }
+                        )}
                       </TextField>
                     </Grid>
                   </Grid>

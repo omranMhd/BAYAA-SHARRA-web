@@ -37,7 +37,7 @@ function CategoriesSlider() {
       return axiosInstance.get("/main-categories");
     }
   );
-  console.log("bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb :", mainCategories?.data.data);
+  // console.log("bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb :", mainCategories?.data.data);
   return (
     <Box
       sx={{
@@ -52,9 +52,10 @@ function CategoriesSlider() {
             justifyContent: "space-around",
           }}
         >
-          {[...Array(7)].map(() => {
+          {[...Array(7)].map((index) => {
             return (
               <Box
+                key={index}
                 sx={{
                   display: "flex",
                   flexDirection: "column",
@@ -82,7 +83,7 @@ function CategoriesSlider() {
               sx={{
                 height: "4px",
                 width: "10%",
-                backgroundColor: theme.palette.DARK_BLUE_or_LIGHT_BLUE,
+                backgroundColor: theme.palette.LIGHT_BLUE,
                 borderRadius: "4px",
               }}
             ></Box>
@@ -119,8 +120,8 @@ function CategoriesSlider() {
               // navigation={true} // Enable navigation
               // slidesPerView={7}
               slidesPerView={5}
-              onSlideChange={() => console.log("slide change")}
-              onSwiper={(swiper) => console.log(swiper)}
+              // onSlideChange={() => console.log("slide change")}
+              // onSwiper={(swiper) => console.log(swiper)}
             >
               <SwiperSlide>
                 <CategorySlide
@@ -133,7 +134,7 @@ function CategoriesSlider() {
               </SwiperSlide>
               {mainCategories?.data.data.map((category) => {
                 return (
-                  <SwiperSlide>
+                  <SwiperSlide key={category.id}>
                     <CategorySlide
                       categoryName={category.name_en}
                       categoryName_ar={category.name_ar}

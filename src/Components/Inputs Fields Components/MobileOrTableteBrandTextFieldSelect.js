@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import TextField from "@mui/material/TextField";
 import MenuItem from "@mui/material/MenuItem";
 import { useTranslation } from "react-i18next";
@@ -8,6 +8,94 @@ function MobileOrTableteBrandTextFieldSelect({
   errors,
   subCategory,
 }) {
+  const [brands, setBrands] = useState([
+    {
+      brand: {
+        en: "iphone",
+        ar: "آيفون",
+      },
+      category: [
+        {
+          en: "14",
+          ar: "14",
+        },
+        {
+          en: "14 Plus",
+          ar: "14 بلاس",
+        },
+        {
+          en: "14 Pro",
+          ar: "14 برو",
+        },
+      ],
+    },
+    {
+      brand: {
+        en: "samsung",
+        ar: "سامسونغ",
+      },
+      category: [
+        {
+          en: "A12",
+          ar: "A12",
+        },
+        {
+          en: "J5",
+          ar: "J5",
+        },
+        {
+          en: "A13",
+          ar: "A13",
+        },
+        {
+          en: "Note5",
+          ar: "نوت 5",
+        },
+      ],
+    },
+    {
+      brand: {
+        en: "huawei",
+        ar: "هواوي",
+      },
+      category: [],
+    },
+    {
+      brand: {
+        en: "sony",
+        ar: "سوني",
+      },
+      category: [],
+    },
+    {
+      brand: {
+        en: "blackberry",
+        ar: "بلاك بيري",
+      },
+      category: [],
+    },
+    {
+      brand: {
+        en: "nokia",
+        ar: "نوكيا",
+      },
+      category: [],
+    },
+    {
+      brand: {
+        en: "htc",
+        ar: "إتش تي سي",
+      },
+      category: [],
+    },
+    {
+      brand: {
+        en: "xiaomi",
+        ar: "شاومي",
+      },
+      category: [],
+    },
+  ]);
   const { t, i18n } = useTranslation();
 
   return (
@@ -23,6 +111,14 @@ function MobileOrTableteBrandTextFieldSelect({
       error={!!errors.mobOrTabBrand}
       helperText={errors.mobOrTabBrand?.message}
     >
+      {brands.map((brand) => {
+        return (
+          <MenuItem key={brand.brand.en} value={brand.brand.en}>
+            {i18n.language === "en" ? brand.brand.en : brand.brand.ar}
+          </MenuItem>
+        );
+      })}
+      {/*       
       <MenuItem value={"iphone"}>
         {i18n.language === "en" ? "IPHONE" : "آيفون"}
       </MenuItem>
@@ -46,7 +142,7 @@ function MobileOrTableteBrandTextFieldSelect({
       </MenuItem>
       <MenuItem value={"xiaomi"}>
         {i18n.language === "en" ? "XIAOMI" : "شاومي"}
-      </MenuItem>
+      </MenuItem> */}
     </TextField>
   );
 }

@@ -154,7 +154,7 @@ export default function AdvertisementCard({
         // height: "350px",
         borderRadius: "25px",
         margin: 1,
-        // backgroundColor: theme.palette.WHITE,
+        backgroundColor: theme.palette.WHITE_or_BLACK2,
         // boxShadow: "10px 10px 5px 0px rgba(0, 0, 0, 0.50)",
         "&:hover": {
           boxShadow: "0px 10px 10px 0px rgba(0, 0, 100, 0.50)", // Add a shadow on hover
@@ -223,7 +223,7 @@ export default function AdvertisementCard({
                     }
                   }
                 >
-                  <Typography variant="h6">
+                  <Typography >
                     {`${price
                       ?.toString()
                       .replace(/\B(?=(\d{3})+(?!\d))/g, ",")} ${currency}`}
@@ -254,7 +254,7 @@ export default function AdvertisementCard({
                     }
                   }
                 >
-                  <Typography variant="h6">
+                  <Typography >
                     <>
                       <del style={{ color: "red" }}>{`${price
                         ?.toString()
@@ -278,7 +278,7 @@ export default function AdvertisementCard({
                     }
                   }
                 >
-                  <Typography variant="h6">
+                  <Typography >
                     {`${newPrice
                       ?.toString()
                       .replace(/\B(?=(\d{3})+(?!\d))/g, ",")}

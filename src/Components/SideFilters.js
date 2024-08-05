@@ -14,6 +14,7 @@ import KeyboardArrowUpIcon from "@mui/icons-material/KeyboardArrowUp";
 
 function RealestateItem({ category_name, category_id, image }) {
   const isUserLogedin = useUserLogedin();
+  const theme = useTheme();
   const { ads, setAds } = useContext(ShareAdvertisementsContext);
   const { t, i18n } = useTranslation();
   const {
@@ -53,8 +54,9 @@ function RealestateItem({ category_name, category_id, image }) {
       <Box
         sx={{
           cursor: "pointer",
+          border: `1px solid ${theme.palette.LIGHT_BLUE_or_DARK_BLUE}`,
           ":hover": {
-            border: "2px solid black",
+            border: `3px solid ${theme.palette.LIGHT_BLUE_or_DARK_BLUE}`,
           },
           backgroundImage: `url(/realestateCategoriesPhoto/${image})`,
           backgroundSize: "cover", // Cover the entire Box with the image
@@ -74,6 +76,7 @@ function RealestateItem({ category_name, category_id, image }) {
 }
 function VehicleBrand({ brandPhoto, brandName, brandNameAr }) {
   const isUserLogedin = useUserLogedin();
+  const theme = useTheme();
   const { ads, setAds } = useContext(ShareAdvertisementsContext);
   const { t, i18n } = useTranslation();
   const {
@@ -114,8 +117,9 @@ function VehicleBrand({ brandPhoto, brandName, brandNameAr }) {
       <Box
         sx={{
           cursor: "pointer",
+          border: `1px solid ${theme.palette.LIGHT_BLUE_or_DARK_BLUE}`,
           ":hover": {
-            border: "2px solid black",
+            border: `3px solid ${theme.palette.LIGHT_BLUE_or_DARK_BLUE}`,
           },
           backgroundImage: `url(/vehiclesBrands/${brandPhoto}.png)`,
           backgroundSize: "cover", // Cover the entire Box with the image
@@ -136,6 +140,7 @@ function VehicleBrand({ brandPhoto, brandName, brandNameAr }) {
 
 function FurnitureItem({ image, category }) {
   const isUserLogedin = useUserLogedin();
+  const theme = useTheme();
   const { ads, setAds } = useContext(ShareAdvertisementsContext);
   const {
     isLoading: furnitureAdsIsLoading,
@@ -173,8 +178,9 @@ function FurnitureItem({ image, category }) {
     <Box
       sx={{
         cursor: "pointer",
+        border: `1px solid ${theme.palette.LIGHT_BLUE_or_DARK_BLUE}`,
         ":hover": {
-          border: "2px solid black",
+          border: `3px solid ${theme.palette.LIGHT_BLUE_or_DARK_BLUE}`,
         },
         backgroundImage: `url(${image})`,
         backgroundSize: "cover", // Cover the entire Box with the image
@@ -194,6 +200,7 @@ function FurnitureItem({ image, category }) {
 
 function AnimalsItem({ image, category }) {
   const isUserLogedin = useUserLogedin();
+  const theme = useTheme();
   const { ads, setAds } = useContext(ShareAdvertisementsContext);
   const {
     isLoading: animalAdsIsLoading,
@@ -231,8 +238,9 @@ function AnimalsItem({ image, category }) {
     <Box
       sx={{
         cursor: "pointer",
+        border: `1px solid ${theme.palette.LIGHT_BLUE_or_DARK_BLUE}`,
         ":hover": {
-          border: "2px solid black",
+          border: `3px solid ${theme.palette.LIGHT_BLUE_or_DARK_BLUE}`,
         },
         backgroundImage: `url(${image})`,
         backgroundSize: "cover", // Cover the entire Box with the image
@@ -252,6 +260,7 @@ function AnimalsItem({ image, category }) {
 
 function MobileBrands({ image, brand }) {
   const isUserLogedin = useUserLogedin();
+  const theme = useTheme();
   const { ads, setAds } = useContext(ShareAdvertisementsContext);
   const {
     isLoading: animalAdsIsLoading,
@@ -290,8 +299,9 @@ function MobileBrands({ image, brand }) {
     <Box
       sx={{
         cursor: "pointer",
+        border: `1px solid ${theme.palette.LIGHT_BLUE_or_DARK_BLUE}`,
         ":hover": {
-          border: "2px solid black",
+          border: `3px solid ${theme.palette.LIGHT_BLUE_or_DARK_BLUE}`,
         },
         backgroundImage: `url(${image})`,
         backgroundSize: "cover", // Cover the entire Box with the image
@@ -310,6 +320,7 @@ function MobileBrands({ image, brand }) {
 }
 function ComputerBrands({ image, brand }) {
   const isUserLogedin = useUserLogedin();
+  const theme = useTheme();
   const { ads, setAds } = useContext(ShareAdvertisementsContext);
   const {
     isLoading: animalAdsIsLoading,
@@ -348,8 +359,9 @@ function ComputerBrands({ image, brand }) {
     <Box
       sx={{
         cursor: "pointer",
+        border: `1px solid ${theme.palette.LIGHT_BLUE_or_DARK_BLUE}`,
         ":hover": {
-          border: "2px solid black",
+          border: `3px solid ${theme.palette.LIGHT_BLUE_or_DARK_BLUE}`,
         },
         backgroundImage: `url(${image})`,
         backgroundSize: "cover", // Cover the entire Box with the image
@@ -393,10 +405,15 @@ function SideFilters() {
         display: "flex",
         flexDirection: "column",
         alignContent: "center",
+        position: "sticky",
+        top: 5,
       }}
     >
       <Typography
-        sx={{ textAlign: "center", backgroundColor: "black", color: "wheat" }}
+        sx={{
+          textAlign: "center",
+          color: theme.palette.LIGHT_BLUE_or_DARK_BLUE,
+        }}
       >
         {t("RealEstates")}
       </Typography>
@@ -446,7 +463,10 @@ function SideFilters() {
       </Box>
 
       <Typography
-        sx={{ textAlign: "center", backgroundColor: "black", color: "wheat" }}
+        sx={{
+          textAlign: "center",
+          color: theme.palette.LIGHT_BLUE_or_DARK_BLUE,
+        }}
       >
         {t("vehicles")}
       </Typography>
@@ -478,15 +498,15 @@ function SideFilters() {
         <Button
           variant="outlined"
           sx={{
-            color: "#fff",
-            border: "1px solid #fff ",
+            // color: "#fff",
+            border: `1px solid ${theme.palette.LIGHT_BLUE_or_DARK_BLUE}`,
+            // ":hover": {
+            //   border: `2px solid ${theme.palette.LIGHT_BLUE_or_DARK_BLUE}`,
+            // },
             width: "75%",
             marginX: "auto",
             mt: "10px",
             mb: "10px",
-            ":hover": {
-              borderColor: "#000", // Change border color on hover
-            },
           }}
           onClick={() => {
             setShowedVehicleBrands(vehiclesBrandsResponse?.data.length);
@@ -499,15 +519,18 @@ function SideFilters() {
         <Button
           variant="outlined"
           sx={{
-            color: "#fff",
-            border: "1px solid #fff ",
+            // color: "#fff",
+            border: `1px solid ${theme.palette.LIGHT_BLUE_or_DARK_BLUE}`,
+            // ":hover": {
+            //   border: `3px solid ${theme.palette.LIGHT_BLUE_or_DARK_BLUE}`,
+            // },
             width: "75%",
             marginX: "auto",
             mt: "10px",
             mb: "10px",
-            ":hover": {
-              borderColor: "#000", // Change border color on hover
-            },
+            // ":hover": {
+            //   borderColor: "#000", // Change border color on hover
+            // },
           }}
           onClick={() => {
             setShowedVehicleBrands(12);
@@ -526,7 +549,10 @@ function SideFilters() {
         Show Less
       </Button> */}
       <Typography
-        sx={{ textAlign: "center", backgroundColor: "black", color: "wheat" }}
+        sx={{
+          textAlign: "center",
+          color: theme.palette.LIGHT_BLUE_or_DARK_BLUE,
+        }}
       >
         {t("mobile")}
       </Typography>
@@ -551,7 +577,10 @@ function SideFilters() {
         <MobileBrands image={"mobileBrands/xiaomi.png"} brand={"XIAOMI"} />
       </Box>
       <Typography
-        sx={{ textAlign: "center", backgroundColor: "black", color: "wheat" }}
+        sx={{
+          textAlign: "center",
+          color: theme.palette.LIGHT_BLUE_or_DARK_BLUE,
+        }}
       >
         {t("computer")}
       </Typography>
@@ -575,7 +604,10 @@ function SideFilters() {
         <ComputerBrands image={"computerBrands/lenovo.png"} brand={"LENOVO"} />
       </Box>
       <Typography
-        sx={{ textAlign: "center", backgroundColor: "black", color: "wheat" }}
+        sx={{
+          textAlign: "center",
+          color: theme.palette.LIGHT_BLUE_or_DARK_BLUE,
+        }}
       >
         {t("Furniture")}
       </Typography>
@@ -613,7 +645,10 @@ function SideFilters() {
         />
       </Box>
       <Typography
-        sx={{ textAlign: "center", backgroundColor: "black", color: "wheat" }}
+        sx={{
+          textAlign: "center",
+          color: theme.palette.LIGHT_BLUE_or_DARK_BLUE,
+        }}
       >
         {t("Animals")}
       </Typography>

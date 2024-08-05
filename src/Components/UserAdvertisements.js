@@ -19,8 +19,15 @@ import DeleteOutlineIcon from "@mui/icons-material/DeleteOutline";
 import { tableCellClasses } from "@mui/material/TableCell";
 import LinearProgress from "@mui/material/LinearProgress";
 import ReportGmailerrorredIcon from "@mui/icons-material/ReportGmailerrorred";
+import Dialog from "@mui/material/Dialog";
+import DialogActions from "@mui/material/DialogActions";
+import DialogContent from "@mui/material/DialogContent";
+import DialogTitle from "@mui/material/DialogTitle";
+import CircularProgress from "@mui/material/CircularProgress";
 
 function UserAdvertisements() {
+  const [openDeleteDialog, setOpenDeleteDialog] = useState(false);
+  const [deletedAdId, setdeletedAdId] = useState(null);
   const { t, i18n } = useTranslation();
   const navigate = useNavigate();
   const theme = useTheme();
@@ -67,6 +74,8 @@ function UserAdvertisements() {
       onError: (error) => {
         // Handle any errors here
         console.error("onError", error);
+        setdeletedAdId(null);
+        setOpenDeleteDialog(false);
 
         // email or phone already been taken
       },
@@ -221,7 +230,9 @@ function UserAdvertisements() {
                     <IconButton
                       id={ad.id}
                       onClick={() => {
-                        deleteAdvertisementMutation.mutate(ad.id);
+                        // deleteAdvertisementMutation.mutate(ad.id);
+                        setdeletedAdId(ad.id);
+                        setOpenDeleteDialog(true);
                       }}
                     >
                       <DeleteOutlineIcon
@@ -244,6 +255,50 @@ function UserAdvertisements() {
           </Table>
         </Box>
       )}
+      {/* تأكيد حذف اعلان */}
+      <Dialog
+        open={openDeleteDialog}
+        onClose={() => {
+          setOpenDeleteDialog(false);
+        }}
+        sx={{
+          direction: i18n.language === "en" ? "ltr" : "rtl",
+        }}
+        aria-labelledby="alert-dialog-title"
+        aria-describedby="alert-dialog-description"
+        fullWidth
+        maxWidth="sm"
+      >
+        <DialogTitle id="alert-dialog-title">
+          {t("Are you sure you want to delete this Ad")}
+        </DialogTitle>
+
+        <DialogActions>
+          <Button
+            variant="outlined"
+            onClick={() => {
+              setOpenDeleteDialog(false);
+              setdeletedAdId(null);
+            }}
+          >
+            {t("Skip")}
+          </Button>
+          <Button
+            disabled={deleteAdvertisementMutation.isLoading}
+            variant="contained"
+            onClick={() => {
+              deleteAdvertisementMutation.mutate(deletedAdId);
+            }}
+            autoFocus
+          >
+            {deleteAdvertisementMutation.isLoading ? (
+              <CircularProgress size={25} style={{ color: "white" }} />
+            ) : (
+              t("delete")
+            )}
+          </Button>
+        </DialogActions>
+      </Dialog>
     </>
     // </TableContainer>
   );

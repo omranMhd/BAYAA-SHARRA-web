@@ -22,8 +22,8 @@ const routes = createBrowserRouter([
       // return fetch(`/fake/api/teams/${params.teamId}.json`, {
       //   signal: request.signal,
       // });
-      console.log(request);
-      console.log(params);
+      // console.log(request);
+      // console.log(params);
       return "this from loader function";
     },
   },

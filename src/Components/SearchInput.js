@@ -137,6 +137,8 @@ function SearchInput() {
           display: "flex",
           flexWrap: "nowrap",
           position: "relative",
+          // border: "1px solid red",
+          // direction: i18n.language === "en" ? "ltr" : "rtl",
         }}
       >
         {searchText === "" && (
@@ -147,10 +149,13 @@ function SearchInput() {
               zIndex: "0",
               left: "20px",
               pt: "6px",
-              //   backgroundColor: "red",
-              width: "250px",
+              // backgroundColor: "red",
+              // border: "1px solid red",
+              // width: "250px",
+              width: "90%",
               //   height: "500px",
               display: "flex",
+              justifyContent: "left",
             }}
           >
             {/* <DirectionsCarIcon /> */}
@@ -181,8 +186,8 @@ function SearchInput() {
               slidesPerView={1}
               loop={true}
               //   direction={"vertical"}
-              onSlideChange={() => console.log("slide change")}
-              onSwiper={(swiper) => console.log(swiper)}
+              // onSlideChange={() => console.log("slide change")}
+              // onSwiper={(swiper) => console.log(swiper)}
               autoplay={{
                 delay: 2000,
                 disableOnInteraction: false,
@@ -202,10 +207,13 @@ function SearchInput() {
                     <Box
                       sx={{
                         display: "flex",
-                        justifyContent: "space-between",
+                        // justifyContent: "space-between",
+                        justifyContent: "right",
                         flexWrap: "nowrap",
                         color: "#153258",
                         // backgroundColor: "wheat",
+                        // border: "1px solid blue",
+                        width:"60%"
                       }}
                     >
                       <Typography
