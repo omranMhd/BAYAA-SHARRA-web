@@ -213,5 +213,7 @@
     "Fee Calculation": "حساب الرسوم",
     "The fee due is 1% of the total amount": "قيمة الرسوم المستحقة هي 1% من كامل المبلغ",
     "full price": "كامل المبلغ",
-    "required fees": "الرسوم المستحقة"
+    "required fees": "الرسوم المستحقة",
+    "delete account": "حذف حسابي",
+    "Are you sure you want to delete your account": "هل أنت متأكد من حذف حسابك"
 }

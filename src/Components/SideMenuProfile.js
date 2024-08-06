@@ -19,6 +19,10 @@ import { useTheme } from "@mui/material/styles";
 import AccountCircleIcon from "@mui/icons-material/AccountCircle";
 import WallpaperIcon from "@mui/icons-material/Wallpaper";
 import LogoutIcon from "@mui/icons-material/Logout";
+import DeleteOutlineIcon from "@mui/icons-material/DeleteOutline";
+import Dialog from "@mui/material/Dialog";
+import DialogTitle from "@mui/material/DialogTitle";
+import DialogActions from "@mui/material/DialogActions";
 
 function SideMenuProfile() {
   const { t, i18n } = useTranslation();
@@ -26,6 +30,7 @@ function SideMenuProfile() {
   const location = useLocation();
   const [newProfilePhoto, setNewProfilePhoto] = useState(null);
   const navigate = useNavigate();
+  const [openDeleteDialog, setOpenDeleteDialog] = useState(false);
 
   // useEffect(() => {
   //   navigate("user-info");
@@ -91,6 +96,37 @@ function SideMenuProfile() {
         localStorage.removeItem("token");
 
         // // after that go to verevication-code page
+        navigate("/");
+      },
+      onError: (error) => {
+        // Handle any errors here
+        console.error("onError", error);
+      },
+      onSettled: () => {
+        // This will run after the mutation is either successful or fails
+        console.log("Mutation has completed");
+      },
+    }
+  );
+
+  const deleteUserAcount = useMutation(
+    () => {
+      // هون لازم نتحقق اذا كانت هي المعلومات موجودة اولا قبل استخدامها
+      const token = localStorage.getItem("token");
+
+      axiosInstance.defaults.headers.common[
+        "Authorization"
+      ] = `Bearer ${token}`;
+
+      return axiosInstance.delete("/delete-account");
+    },
+    {
+      onSuccess: (response) => {
+        // Handle the response data here
+        console.log("onSuccess response", response);
+        // queryClient.invalidateQueries("advertisement-comments");
+        localStorage.removeItem("user");
+        localStorage.removeItem("token");
         navigate("/");
       },
       onError: (error) => {
@@ -261,6 +297,28 @@ function SideMenuProfile() {
             <ListItemText primary={t("User Advertisements")} />
           </ListItemButton>
         </ListItem>
+        <ListItem
+          disablePadding
+          // sx={
+          //   location.pathname === "/profile/user-advertisements"
+          //     ? {
+          //         backgroundColor: theme.palette.LIGHT_BLUE_or_DARK_BLUE,
+          //         color: "white",
+          //       }
+          //     : {}
+          // }
+        >
+          <ListItemButton
+            onClick={() => {
+              setOpenDeleteDialog(true);
+            }}
+          >
+            <ListItemIcon>
+              <DeleteOutlineIcon />
+            </ListItemIcon>
+            <ListItemText primary={t("delete account")} />
+          </ListItemButton>
+        </ListItem>
         <ListItem disablePadding>
           <ListItemButton
             onClick={() => {
@@ -274,6 +332,50 @@ function SideMenuProfile() {
           </ListItemButton>
         </ListItem>
       </List>
+
+      {/* تأكيد حذف حساب المستخدم */}
+      <Dialog
+        open={openDeleteDialog}
+        onClose={() => {
+          setOpenDeleteDialog(false);
+        }}
+        sx={{
+          direction: i18n.language === "en" ? "ltr" : "rtl",
+        }}
+        aria-labelledby="alert-dialog-title"
+        aria-describedby="alert-dialog-description"
+        fullWidth
+        maxWidth="sm"
+      >
+        <DialogTitle id="alert-dialog-title">
+          {t("Are you sure you want to delete your account")}
+        </DialogTitle>
+
+        <DialogActions>
+          <Button
+            variant="outlined"
+            onClick={() => {
+              setOpenDeleteDialog(false);
+            }}
+          >
+            {t("Skip")}
+          </Button>
+          <Button
+            disabled={deleteUserAcount.isLoading}
+            variant="contained"
+            onClick={() => {
+              deleteUserAcount.mutate();
+            }}
+            autoFocus
+          >
+            {deleteUserAcount.isLoading ? (
+              <CircularProgress size={25} style={{ color: "white" }} />
+            ) : (
+              t("delete")
+            )}
+          </Button>
+        </DialogActions>
+      </Dialog>
     </Box>
   );
 }

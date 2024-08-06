@@ -213,5 +213,7 @@
     "Fee Calculation": "Fee Calculation",
     "The fee due is 1% of the total amount": "The fee due is 1% of the total amount",
     "full price": "Full Price",
-    "required fees": "Required Fees"
+    "required fees": "Required Fees",
+    "delete account": "Delete Account",
+    "Are you sure you want to delete your account": "Are you sure you want to delete your account"
 }
