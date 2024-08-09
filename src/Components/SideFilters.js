@@ -406,7 +406,7 @@ function SideFilters() {
         flexDirection: "column",
         alignContent: "center",
         position: "sticky",
-        top: 5,
+        top: "70px",
       }}
     >
       <Typography

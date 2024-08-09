@@ -1,4 +1,4 @@
-import React, { useRef, useState } from "react";
+import React, { useRef, useState, useEffect } from "react";
 import Box from "@mui/material/Box";
 import axiosInstance from "../Axios/axiosInstance";
 import { useQuery } from "react-query";
@@ -31,6 +31,25 @@ function CategoriesSlider() {
   const [categoriyClicked, setCategoriyClicked] = useState(null);
   const { t, i18n } = useTranslation();
   const theme = useTheme();
+  const [width, setWidth] = useState(window.innerWidth);
+
+  useEffect(() => {
+    const handleResize = () => setWidth(window.innerWidth);
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize); // Cleanup listener on unmount
+  }, []); // Empty dependency array means this effect runs once on mount and cleanup on unmount
+
+  const slidesPerViewCount = () => {
+    if (width > 1200) {
+      return 5;
+    } else if (width <= 1200 && width > 900) {
+      return 4;
+    } else if (width <= 900 && width > 600) {
+      return 3;
+    } else if (width <= 600) {
+      return 2;
+    }
+  };
   const { isLoading: mainCategoriesIsLoading, data: mainCategories } = useQuery(
     "main-categories",
     () => {
@@ -119,7 +138,8 @@ function CategoriesSlider() {
               spaceBetween={10}
               // navigation={true} // Enable navigation
               // slidesPerView={7}
-              slidesPerView={5}
+              // slidesPerView={width < 600 ? 5 : 0}
+              slidesPerView={slidesPerViewCount()}
               // onSlideChange={() => console.log("slide change")}
               // onSwiper={(swiper) => console.log(swiper)}
             >
