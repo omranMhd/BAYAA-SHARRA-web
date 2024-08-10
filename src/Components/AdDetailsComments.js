@@ -33,6 +33,10 @@ function AdDetailsComments({ user_id }) {
   const [repliedCommentId, setRepliedCommentId] = useState(null);
   const [openReplyDialog, setOpenReplyDialog] = useState(false);
   const [reply, setReply] = useState("");
+  const [openDeleteCommentDialog, setOpenDeleteCommentDialog] = useState(false);
+  const [deletedCommentId, setDeletedCommentId] = useState(null);
+  const [openDeleteReplyDialog, setOpenDeleteReplyDialog] = useState(false);
+  const [deletedReplyId, setDeletedReplyId] = useState(null);
 
   const {
     isLoading: advertisementCommentsIsLoading,
@@ -83,6 +87,8 @@ function AdDetailsComments({ user_id }) {
         // Handle the response data here
         console.log("onSuccess response", response);
         // queryClient.invalidateQueries("advertisement-comments");
+        setDeletedCommentId(null);
+        setOpenDeleteCommentDialog(false);
 
         refetchadvertisementComments();
       },
@@ -116,6 +122,8 @@ function AdDetailsComments({ user_id }) {
         // queryClient.invalidateQueries("advertisement-comments");
 
         refetchadvertisementComments();
+        setDeletedReplyId(null);
+        setOpenDeleteReplyDialog(false);
       },
       onError: (error) => {
         // Handle any errors here
@@ -282,7 +290,9 @@ function AdDetailsComments({ user_id }) {
                       color="primary"
                       size="small"
                       onClick={() => {
-                        deleteComment.mutate(comment.id);
+                        setOpenDeleteCommentDialog(true);
+                        setDeletedCommentId(comment.id);
+                        // deleteComment.mutate(comment.id);
                       }}
                     >
                       <DeleteOutlineIcon />
@@ -385,7 +395,9 @@ function AdDetailsComments({ user_id }) {
                         color="primary"
                         size="small"
                         onClick={() => {
-                          deleteReply.mutate(comment.reply.id);
+                          setDeletedReplyId(comment.reply.id);
+                          setOpenDeleteReplyDialog(true);
+                          // deleteReply.mutate(comment.reply.id);
                         }}
                       >
                         <DeleteOutlineIcon />
@@ -508,6 +520,98 @@ function AdDetailsComments({ user_id }) {
           </Button>
         </>
       )}
+      {/* تأكيد حذف تعليق  */}
+      <Dialog
+        open={openDeleteCommentDialog}
+        onClose={() => {
+          setOpenDeleteCommentDialog(false);
+          setDeletedCommentId(null);
+        }}
+        sx={{
+          direction: i18n.language === "en" ? "ltr" : "rtl",
+        }}
+        aria-labelledby="alert-dialog-title"
+        aria-describedby="alert-dialog-description"
+        fullWidth
+        maxWidth="sm"
+      >
+        <DialogTitle id="alert-dialog-title">
+          {t("Are you sure you want to delete this comment")}
+        </DialogTitle>
+
+        <DialogActions>
+          <Button
+            variant="outlined"
+            onClick={() => {
+              setOpenDeleteCommentDialog(false);
+              setDeletedCommentId(null);
+            }}
+          >
+            {t("Skip")}
+          </Button>
+          <Button
+            disabled={deleteComment.isLoading}
+            variant="contained"
+            onClick={() => {
+              // alert(deletedCommentId);
+              deleteComment.mutate(deletedCommentId);
+            }}
+            autoFocus
+          >
+            {deleteComment.isLoading ? (
+              <CircularProgress size={25} style={{ color: "white" }} />
+            ) : (
+              t("delete")
+            )}
+          </Button>
+        </DialogActions>
+      </Dialog>
+      {/* تأكيد حذف رد على تعليق  */}
+      <Dialog
+        open={openDeleteReplyDialog}
+        onClose={() => {
+          setOpenDeleteReplyDialog(false);
+          setDeletedReplyId(null);
+        }}
+        sx={{
+          direction: i18n.language === "en" ? "ltr" : "rtl",
+        }}
+        aria-labelledby="alert-dialog-title"
+        aria-describedby="alert-dialog-description"
+        fullWidth
+        maxWidth="sm"
+      >
+        <DialogTitle id="alert-dialog-title">
+          {t("Are you sure you want to delete this reply")}
+        </DialogTitle>
+
+        <DialogActions>
+          <Button
+            variant="outlined"
+            onClick={() => {
+              setOpenDeleteReplyDialog(false);
+              setDeletedReplyId(null);
+            }}
+          >
+            {t("Skip")}
+          </Button>
+          <Button
+            disabled={deleteReply.isLoading}
+            variant="contained"
+            onClick={() => {
+              // alert(deletedCommentId);
+              deleteReply.mutate(deletedReplyId);
+            }}
+            autoFocus
+          >
+            {deleteReply.isLoading ? (
+              <CircularProgress size={25} style={{ color: "white" }} />
+            ) : (
+              t("delete")
+            )}
+          </Button>
+        </DialogActions>
+      </Dialog>
     </Box>
   );
 }

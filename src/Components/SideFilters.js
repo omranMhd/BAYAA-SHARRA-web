@@ -138,19 +138,20 @@ function VehicleBrand({ brandPhoto, brandName, brandNameAr }) {
   );
 }
 
-function FurnitureItem({ image, category }) {
+function FurnitureItem({ image, categoryEn, categoryAr }) {
   const isUserLogedin = useUserLogedin();
   const theme = useTheme();
+  const { t, i18n } = useTranslation();
   const { ads, setAds } = useContext(ShareAdvertisementsContext);
   const {
     isLoading: furnitureAdsIsLoading,
     data: furnitureAds,
     refetch: refetchFurniture,
   } = useQuery(
-    `furniture-ads-${category}`,
+    `furniture-ads-${categoryEn}`,
     () => {
       const queryParams = new URLSearchParams({
-        category,
+        category: categoryEn,
       });
 
       if (isUserLogedin) {
@@ -175,42 +176,46 @@ function FurnitureItem({ image, category }) {
     }
   );
   return (
-    <Box
-      sx={{
-        cursor: "pointer",
-        border: `1px solid ${theme.palette.LIGHT_BLUE_or_DARK_BLUE}`,
-        ":hover": {
-          border: `3px solid ${theme.palette.LIGHT_BLUE_or_DARK_BLUE}`,
-        },
-        backgroundImage: `url(${image})`,
-        backgroundSize: "cover", // Cover the entire Box with the image
-        backgroundPosition: "center",
-        borderRadius: "10px",
-        width: "75px",
-        height: "75px",
-        margin: "5px",
-        // boxSizing: "content-box"
-      }}
-      onClick={() => {
-        refetchFurniture();
-      }}
-    ></Box>
+    // <Tooltip title={i18n.language === "en" ? brandName : brandNameAr} arrow>
+    <Tooltip title={i18n.language === "en" ? categoryEn : categoryAr} arrow>
+      <Box
+        sx={{
+          cursor: "pointer",
+          border: `1px solid ${theme.palette.LIGHT_BLUE_or_DARK_BLUE}`,
+          ":hover": {
+            border: `3px solid ${theme.palette.LIGHT_BLUE_or_DARK_BLUE}`,
+          },
+          backgroundImage: `url(${image})`,
+          backgroundSize: "cover", // Cover the entire Box with the image
+          backgroundPosition: "center",
+          borderRadius: "10px",
+          width: "75px",
+          height: "75px",
+          margin: "5px",
+          // boxSizing: "content-box"
+        }}
+        onClick={() => {
+          refetchFurniture();
+        }}
+      ></Box>
+    </Tooltip>
   );
 }
 
-function AnimalsItem({ image, category }) {
+function AnimalsItem({ image, categoryEn, categoryAr }) {
   const isUserLogedin = useUserLogedin();
   const theme = useTheme();
+  const { t, i18n } = useTranslation();
   const { ads, setAds } = useContext(ShareAdvertisementsContext);
   const {
     isLoading: animalAdsIsLoading,
     data: animalAds,
     refetch: refetchAnimal,
   } = useQuery(
-    `animals-ads-${category}`,
+    `animals-ads-${categoryEn}`,
     () => {
       const queryParams = new URLSearchParams({
-        category,
+        category: categoryEn,
       });
 
       if (isUserLogedin) {
@@ -235,43 +240,46 @@ function AnimalsItem({ image, category }) {
     }
   );
   return (
-    <Box
-      sx={{
-        cursor: "pointer",
-        border: `1px solid ${theme.palette.LIGHT_BLUE_or_DARK_BLUE}`,
-        ":hover": {
-          border: `3px solid ${theme.palette.LIGHT_BLUE_or_DARK_BLUE}`,
-        },
-        backgroundImage: `url(${image})`,
-        backgroundSize: "cover", // Cover the entire Box with the image
-        backgroundPosition: "center",
-        borderRadius: "10px",
-        width: "75px",
-        height: "75px",
-        margin: "5px",
-        // boxSizing: "content-box"
-      }}
-      onClick={() => {
-        refetchAnimal();
-      }}
-    ></Box>
+    <Tooltip title={i18n.language === "en" ? categoryEn : categoryAr} arrow>
+      <Box
+        sx={{
+          cursor: "pointer",
+          border: `1px solid ${theme.palette.LIGHT_BLUE_or_DARK_BLUE}`,
+          ":hover": {
+            border: `3px solid ${theme.palette.LIGHT_BLUE_or_DARK_BLUE}`,
+          },
+          backgroundImage: `url(${image})`,
+          backgroundSize: "cover", // Cover the entire Box with the image
+          backgroundPosition: "center",
+          borderRadius: "10px",
+          width: "75px",
+          height: "75px",
+          margin: "5px",
+          // boxSizing: "content-box"
+        }}
+        onClick={() => {
+          refetchAnimal();
+        }}
+      ></Box>
+    </Tooltip>
   );
 }
 
-function MobileBrands({ image, brand }) {
+function MobileBrands({ image, brandEn, brandAr }) {
   const isUserLogedin = useUserLogedin();
   const theme = useTheme();
+  const { t, i18n } = useTranslation();
   const { ads, setAds } = useContext(ShareAdvertisementsContext);
   const {
     isLoading: animalAdsIsLoading,
     data: animalAds,
     refetch: refetchAnimal,
   } = useQuery(
-    `mobile-ads-${brand}`,
+    `mobile-ads-${brandEn}`,
     () => {
       const queryParams = new URLSearchParams({
         category: "Mobile",
-        mobOrTabBrand: brand,
+        mobOrTabBrand: brandEn,
       });
 
       if (isUserLogedin) {
@@ -296,42 +304,45 @@ function MobileBrands({ image, brand }) {
     }
   );
   return (
-    <Box
-      sx={{
-        cursor: "pointer",
-        border: `1px solid ${theme.palette.LIGHT_BLUE_or_DARK_BLUE}`,
-        ":hover": {
-          border: `3px solid ${theme.palette.LIGHT_BLUE_or_DARK_BLUE}`,
-        },
-        backgroundImage: `url(${image})`,
-        backgroundSize: "cover", // Cover the entire Box with the image
-        backgroundPosition: "center",
-        borderRadius: "10px",
-        width: "75px",
-        height: "75px",
-        margin: "5px",
-        // boxSizing: "content-box"
-      }}
-      onClick={() => {
-        refetchAnimal();
-      }}
-    ></Box>
+    <Tooltip title={i18n.language === "en" ? brandEn : brandAr} arrow>
+      <Box
+        sx={{
+          cursor: "pointer",
+          border: `1px solid ${theme.palette.LIGHT_BLUE_or_DARK_BLUE}`,
+          ":hover": {
+            border: `3px solid ${theme.palette.LIGHT_BLUE_or_DARK_BLUE}`,
+          },
+          backgroundImage: `url(${image})`,
+          backgroundSize: "cover", // Cover the entire Box with the image
+          backgroundPosition: "center",
+          borderRadius: "10px",
+          width: "75px",
+          height: "75px",
+          margin: "5px",
+          // boxSizing: "content-box"
+        }}
+        onClick={() => {
+          refetchAnimal();
+        }}
+      ></Box>
+    </Tooltip>
   );
 }
-function ComputerBrands({ image, brand }) {
+function ComputerBrands({ image, brandEn, brandAr }) {
   const isUserLogedin = useUserLogedin();
   const theme = useTheme();
+  const { t, i18n } = useTranslation();
   const { ads, setAds } = useContext(ShareAdvertisementsContext);
   const {
     isLoading: animalAdsIsLoading,
     data: animalAds,
     refetch: refetchAnimal,
   } = useQuery(
-    `computer-ads-${brand}`,
+    `computer-ads-${brandEn}`,
     () => {
       const queryParams = new URLSearchParams({
         category: "Computer",
-        computerBrand: brand,
+        computerBrand: brandEn,
       });
 
       if (isUserLogedin) {
@@ -356,26 +367,28 @@ function ComputerBrands({ image, brand }) {
     }
   );
   return (
-    <Box
-      sx={{
-        cursor: "pointer",
-        border: `1px solid ${theme.palette.LIGHT_BLUE_or_DARK_BLUE}`,
-        ":hover": {
-          border: `3px solid ${theme.palette.LIGHT_BLUE_or_DARK_BLUE}`,
-        },
-        backgroundImage: `url(${image})`,
-        backgroundSize: "cover", // Cover the entire Box with the image
-        backgroundPosition: "center",
-        borderRadius: "10px",
-        width: "75px",
-        height: "75px",
-        margin: "5px",
-        // boxSizing: "content-box"
-      }}
-      onClick={() => {
-        refetchAnimal();
-      }}
-    ></Box>
+    <Tooltip title={i18n.language === "en" ? brandEn : brandAr} arrow>
+      <Box
+        sx={{
+          cursor: "pointer",
+          border: `1px solid ${theme.palette.LIGHT_BLUE_or_DARK_BLUE}`,
+          ":hover": {
+            border: `3px solid ${theme.palette.LIGHT_BLUE_or_DARK_BLUE}`,
+          },
+          backgroundImage: `url(${image})`,
+          backgroundSize: "cover", // Cover the entire Box with the image
+          backgroundPosition: "center",
+          borderRadius: "10px",
+          width: "75px",
+          height: "75px",
+          margin: "5px",
+          // boxSizing: "content-box"
+        }}
+        onClick={() => {
+          refetchAnimal();
+        }}
+      ></Box>
+    </Tooltip>
   );
 }
 function SideFilters() {
@@ -564,17 +577,46 @@ function SideFilters() {
           padding: "5px",
         }}
       >
-        <MobileBrands image={"mobileBrands/iphone.png"} brand={"IPHONE"} />
-        <MobileBrands image={"mobileBrands/samsung.png"} brand={"SAMSUNG"} />
-        <MobileBrands image={"mobileBrands/huawei.png"} brand={"HUAWEI"} />
-        <MobileBrands image={"mobileBrands/sony.png"} brand={"SONY"} />
+        <MobileBrands
+          image={"mobileBrands/iphone.png"}
+          brandEn={"IPHONE"}
+          brandAr={"آيفون"}
+        />
+        <MobileBrands
+          image={"mobileBrands/samsung.png"}
+          brandEn={"SAMSUNG"}
+          brandAr={"سامسونغ"}
+        />
+        <MobileBrands
+          image={"mobileBrands/huawei.png"}
+          brandEn={"HUAWEI"}
+          brandAr={"هواوي"}
+        />
+        <MobileBrands
+          image={"mobileBrands/sony.png"}
+          brandEn={"SONY"}
+          brandAr={"سوني"}
+        />
         <MobileBrands
           image={"mobileBrands/blackberry.png"}
-          brand={"BLACKBERRY"}
+          brandEn={"BLACKBERRY"}
+          brandAr={"بلاك بيري"}
         />
-        <MobileBrands image={"mobileBrands/nokia.png"} brand={"NOKIA"} />
-        <MobileBrands image={"mobileBrands/htc.png"} brand={"HTC"} />
-        <MobileBrands image={"mobileBrands/xiaomi.png"} brand={"XIAOMI"} />
+        <MobileBrands
+          image={"mobileBrands/nokia.png"}
+          brandEn={"NOKIA"}
+          brandAr={"نوكيا"}
+        />
+        <MobileBrands
+          image={"mobileBrands/htc.png"}
+          brandEn={"HTC"}
+          brandAr={"إتش تي سي"}
+        />
+        <MobileBrands
+          image={"mobileBrands/xiaomi.png"}
+          brandEn={"XIAOMI"}
+          brandAr={"شاومي"}
+        />
       </Box>
       <Typography
         sx={{
@@ -592,16 +634,41 @@ function SideFilters() {
           padding: "5px",
         }}
       >
-        <ComputerBrands image={"computerBrands/iphone.png"} brand={"IPHONE"} />
-        <ComputerBrands image={"computerBrands/asus.png"} brand={"ASUS"} />
-        <ComputerBrands image={"computerBrands/dell.png"} brand={"DELL"} />
-        <ComputerBrands image={"computerBrands/hp.png"} brand={"HP"} />
+        <ComputerBrands
+          image={"computerBrands/iphone.png"}
+          brandEn={"IPHONE"}
+          brandAr={"ماك"}
+        />
+        <ComputerBrands
+          image={"computerBrands/asus.png"}
+          brandEn={"ASUS"}
+          brandAr={"أزوس"}
+        />
+        <ComputerBrands
+          image={"computerBrands/dell.png"}
+          brandEn={"DELL"}
+          brandAr={"ديل"}
+        />
+        <ComputerBrands
+          image={"computerBrands/hp.png"}
+          brandEn={"HP"}
+          brandAr={"إتش بي"}
+        />
         <ComputerBrands
           image={"computerBrands/toshiba.png"}
-          brand={"TOSHIBA"}
+          brandEn={"TOSHIBA"}
+          brandAr={"توشيبا"}
         />
-        <ComputerBrands image={"computerBrands/acer.png"} brand={"ACER"} />
-        <ComputerBrands image={"computerBrands/lenovo.png"} brand={"LENOVO"} />
+        <ComputerBrands
+          image={"computerBrands/acer.png"}
+          brandEn={"ACER"}
+          brandAr={"أيسر"}
+        />
+        <ComputerBrands
+          image={"computerBrands/lenovo.png"}
+          brandEn={"LENOVO"}
+          brandAr={"لينوفو"}
+        />
       </Box>
       <Typography
         sx={{
@@ -621,27 +688,33 @@ function SideFilters() {
       >
         <FurnitureItem
           image={"furnitrueCategoriesPhoto/bedroom.png"}
-          category={"Bedroom"}
+          categoryEn={"Bedroom"}
+          categoryAr={"غرفة نوم"}
         />
         <FurnitureItem
           image={"furnitrueCategoriesPhoto/bed.png"}
-          category={"Bed"}
+          categoryEn={"Bed"}
+          categoryAr={"سرير"}
         />
         <FurnitureItem
           image={"furnitrueCategoriesPhoto/capinet.png"}
-          category={"Cabinet"}
+          categoryEn={"Cabinet"}
+          categoryAr={"خزانة"}
         />
         <FurnitureItem
           image={"furnitrueCategoriesPhoto/chair.png"}
-          category={"Chair"}
+          categoryEn={"Chair"}
+          categoryAr={"كرسي"}
         />
         <FurnitureItem
           image={"furnitrueCategoriesPhoto/kanab.png"}
-          category={"Sofa"}
+          categoryEn={"Sofa"}
+          categoryAr={"كنبات"}
         />
         <FurnitureItem
           image={"furnitrueCategoriesPhoto/table.png"}
-          category={"Table"}
+          categoryEn={"Table"}
+          categoryAr={"طاولة"}
         />
       </Box>
       <Typography
@@ -662,23 +735,28 @@ function SideFilters() {
       >
         <AnimalsItem
           image={"animalsCategoriesPhoto/birds.png"}
-          category={"Birds"}
+          categoryEn={"Birds"}
+          categoryAr={"طيور"}
         />
         <AnimalsItem
           image={"animalsCategoriesPhoto/cats.png"}
-          category={"Cat"}
+          categoryEn={"Cat"}
+          categoryAr={"قطط"}
         />
         <AnimalsItem
           image={"animalsCategoriesPhoto/dogs.png"}
-          category={"Dog"}
+          categoryEn={"Dog"}
+          categoryAr={"كلاب"}
         />
         <AnimalsItem
           image={"animalsCategoriesPhoto/fish.png"}
-          category={"Fish"}
+          categoryEn={"Fish"}
+          categoryAr={"أسماك"}
         />
         <AnimalsItem
           image={"animalsCategoriesPhoto/maoashi.png"}
-          category={"Livestock"}
+          categoryEn={"Livestock"}
+          categoryAr={"مواشي"}
         />
       </Box>
     </Box>
