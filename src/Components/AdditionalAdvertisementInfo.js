@@ -59,7 +59,7 @@ function GridItem({ label, value }) {
             :
           </Typography>
         </Box>
-        <Box>{value}</Box>
+        <Box>{t(value)}</Box>
       </Box>
       <Divider
         sx={{ width: "100%", backgroundColor: theme.palette.LIGHT_BLUE }}
@@ -424,7 +424,7 @@ function AdditionalAdvertisementInfo({ adCategory, additionalInfo }) {
             }}
           >
             <GridItem
-              label={"Vehicle Type"}
+              label={"vehicleType"}
               value={additionalInfo.vehicleType}
             />
             <GridItem label={"Status"} value={additionalInfo.status} />

@@ -18,6 +18,7 @@ function VehicleTypeTextFieldSelect({ register, errors, subCategories }) {
       error={!!errors.vehicleType}
       helperText={errors.vehicleType?.message}
     >
+      <MenuItem value={" "}>-</MenuItem>
       {subCategories?.map((category) => {
         if (category.name_en !== "Spare parts") {
           return (

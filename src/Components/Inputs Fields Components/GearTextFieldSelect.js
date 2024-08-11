@@ -19,6 +19,7 @@ function GearTextFieldSelect({ register, errors }) {
       error={!!errors.gear}
       helperText={errors.gear?.message}
     >
+      <MenuItem value={" "}>-</MenuItem>
       <MenuItem value={"normal"}>
         {i18n.language === "en" ? "Normal" : "عادي"}
       </MenuItem>

@@ -19,7 +19,7 @@ function ComputerCategoryTextFieldSelect({ register, errors, subCategory }) {
       error={!!errors.computerCategory}
       helperText={errors.computerCategory?.message}
     >
-      <MenuItem value={""}></MenuItem>
+      <MenuItem value={" "}>-</MenuItem>
       <MenuItem value={"Victus"}>Victus</MenuItem>
       <MenuItem value={"vivo book"}>vivo book</MenuItem>
       <MenuItem value={"EliteBook"}>EliteBook</MenuItem>

@@ -29,28 +29,29 @@ function OwnershipTextFieldSelect({ register, errors }) {
       error={!!errors.ownership}
       helperText={errors.ownership?.message}
     >
-      <MenuItem value={"north"}>
+      <MenuItem value={" "}>-</MenuItem>
+      <MenuItem value={"Separated Green Title Deed"}>
         {i18n.language === "en" ? "Separated Green Title Deed" : "طابو أخضر"}
       </MenuItem>
-      <MenuItem value={"south"}>
+      <MenuItem value={"Outright Sale Contract"}>
         {i18n.language === "en" ? "Outright Sale Contract" : "عقد بيع قطعي"}
       </MenuItem>
-      <MenuItem value={"west"}>
+      <MenuItem value={"Court Judgment"}>
         {i18n.language === "en" ? "Court Judgment" : "حكم محكمة"}
       </MenuItem>
-      <MenuItem value={"east"}>
+      <MenuItem value={"Notary Public Agency"}>
         {i18n.language === "en" ? "Notary Public Agency" : "وكالة كاتب عدل"}
       </MenuItem>
-      <MenuItem value={"north-east"}>
+      <MenuItem value={"Shares Title Deed"}>
         {i18n.language === "en" ? "Shares Title Deed" : "طابو أسهم"}
       </MenuItem>
-      <MenuItem value={"north-west"}>
+      <MenuItem value={"Agricultural Title Deed"}>
         {i18n.language === "en" ? "Agricultural Title Deed" : "طابو زراعي"}
       </MenuItem>
-      <MenuItem value={"south-east"}>
+      <MenuItem value={"Housing Title Deed"}>
         {i18n.language === "en" ? "Housing Title Deed" : "طابو إسكان"}
       </MenuItem>
-      <MenuItem value={"south-west"}>
+      <MenuItem value={"Right of Use"}>
         {i18n.language === "en" ? "Right of Use" : "فروغ"}
       </MenuItem>
     </TextField>

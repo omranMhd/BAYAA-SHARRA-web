@@ -18,6 +18,7 @@ function ClothesStatusTextFieldSelect({ register, errors }) {
       error={!!errors.clothesStatus}
       helperText={errors.clothesStatus?.message}
     >
+      <MenuItem value={" "}>-</MenuItem>
       <MenuItem value={"old"}>Old</MenuItem>
       <MenuItem value={"new"}>New</MenuItem>
     </TextField>

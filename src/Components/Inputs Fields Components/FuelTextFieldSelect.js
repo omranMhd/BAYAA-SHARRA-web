@@ -18,6 +18,7 @@ function FuelTextFieldSelect({ register, errors }) {
       error={!!errors.fuel}
       helperText={errors.fuel?.message}
     >
+      <MenuItem value={" "}>-</MenuItem>
       <MenuItem value={"penzen"}>
         {i18n.language === "en" ? "penzen" : "بنزين"}
       </MenuItem>

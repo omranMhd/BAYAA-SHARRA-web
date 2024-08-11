@@ -18,6 +18,7 @@ function DeviceTypeTextFieldSelect({ register, errors }) {
       error={!!errors.deviceType}
       helperText={errors.deviceType?.message}
     >
+      <MenuItem value={" "}>-</MenuItem>
       <MenuItem value={"Tablet"}>
         {i18n.language === "en" ? "Tablet" : "تابليت"}
       </MenuItem>

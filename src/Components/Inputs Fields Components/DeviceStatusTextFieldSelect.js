@@ -18,6 +18,7 @@ function DeviceStatusTextFieldSelect({ register, errors }) {
       error={!!errors.deviceStatus}
       helperText={errors.deviceStatus?.message}
     >
+      <MenuItem value={" "}>-</MenuItem>
       <MenuItem value={"old"}>
         {i18n.language === "en" ? "Old" : "مستعمل"}
       </MenuItem>

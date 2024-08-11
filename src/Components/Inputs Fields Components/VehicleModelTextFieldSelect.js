@@ -19,6 +19,7 @@ function VehicleModelTextFieldSelect({ register, errors, models }) {
       error={!!errors.vehicleModel}
       helperText={errors.vehicleModel?.message}
     >
+      <MenuItem value={" "}>-</MenuItem>
       {models?.map((model) => {
         return (
           <MenuItem key={model.en} value={model.en}>

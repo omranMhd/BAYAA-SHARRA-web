@@ -19,6 +19,7 @@ function VehicleColorTextFieldSelect({ register, errors }) {
       error={!!errors.vehicleColor}
       helperText={errors.vehicleColor?.message}
     >
+      <MenuItem value={" "}> - </MenuItem>
       <MenuItem value={"red"}>
         {i18n.language === "en" ? "Red" : "أحمر"}
       </MenuItem>

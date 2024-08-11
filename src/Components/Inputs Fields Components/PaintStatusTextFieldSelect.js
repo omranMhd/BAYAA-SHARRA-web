@@ -19,6 +19,7 @@ function PaintStatusTextFieldSelect({ register, errors }) {
       error={!!errors.paintStatus}
       helperText={errors.paintStatus?.message}
     >
+      <MenuItem value={" "}>-</MenuItem>
       <MenuItem value={"original"}>
         {i18n.language === "en" ? "original" : "أساسي"}
       </MenuItem>

@@ -18,8 +18,13 @@ function FurnitureStatusTextFieldSelect({ register, errors }) {
       error={!!errors.furnitureStatus}
       helperText={errors.furnitureStatus?.message}
     >
-      <MenuItem value={"old"}>Old</MenuItem>
-      <MenuItem value={"new"}>New</MenuItem>
+      <MenuItem value={" "}>-</MenuItem>
+      <MenuItem value={"old"}>
+        {i18n.language === "en" ? "old" : "قديم"}
+      </MenuItem>
+      <MenuItem value={"new"}>
+        {i18n.language === "en" ? "new" : "جديد"}
+      </MenuItem>
     </TextField>
   );
 }

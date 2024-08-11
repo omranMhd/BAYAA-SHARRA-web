@@ -26,6 +26,7 @@ function MobileOrTableteCategoryTextFieldSelect({
       error={!!errors.mobOrTabCategory}
       helperText={errors.mobOrTabCategory?.message}
     >
+      <MenuItem value={" "}>-</MenuItem>
       {categoriesList?.map((c) => {
         return (
           <MenuItem value={c.en}>

@@ -18,6 +18,7 @@ function SparePartStatusTextFieldSelect({ register, errors }) {
       error={!!errors.SparePartStatus}
       helperText={errors.SparePartStatus?.message}
     >
+      <MenuItem value={" "}>-</MenuItem>
       <MenuItem value={"old"}>
         {i18n.language === "en" ? "Old" : "مستعمل"}
       </MenuItem>

@@ -18,6 +18,7 @@ function PaymentMethodTextFieldSelect({ register, errors }) {
       error={!!errors.paymentMethodRent}
       helperText={errors.paymentMethodRent?.message}
     >
+      <MenuItem value={" "}>-</MenuItem>
       <MenuItem value={"daily"}>daily</MenuItem>
       <MenuItem value={"weekly"}>weekly</MenuItem>
       <MenuItem value={"monthly"}>monthly</MenuItem>

@@ -18,11 +18,22 @@ function ClothesTypeTextFieldSelect({ register, errors }) {
       error={!!errors.clothesType}
       helperText={errors.clothesType?.message}
     >
-      <MenuItem value={"pants"}>pants</MenuItem>
-      <MenuItem value={"shirt"}>shirt</MenuItem>
-      <MenuItem value={"jacket"}>jacket</MenuItem>
-      <MenuItem value={"formal suit"}>formal suit</MenuItem>
-      <MenuItem value={"shoes"}>shoes</MenuItem>
+      <MenuItem value={" "}>-</MenuItem>
+      <MenuItem value={"pants"}>
+        {i18n.language === "en" ? "pants" : "بنطال"}
+      </MenuItem>
+      <MenuItem value={"shirt"}>
+        {i18n.language === "en" ? "metal" : "قميس"}
+      </MenuItem>
+      <MenuItem value={"jacket"}>
+        {i18n.language === "en" ? "metal" : "سترة"}
+      </MenuItem>
+      <MenuItem value={"formal suit"}>
+        {i18n.language === "en" ? "metal" : "لباس رسمي"}
+      </MenuItem>
+      <MenuItem value={"shoes"}>
+        {i18n.language === "en" ? "metal" : "حذاء"}
+      </MenuItem>
     </TextField>
   );
 }

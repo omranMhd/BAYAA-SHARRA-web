@@ -18,10 +18,19 @@ function MaterialTextFieldSelect({ register, errors }) {
       error={!!errors.material}
       helperText={errors.material?.message}
     >
-      <MenuItem value={"wood"}>wood</MenuItem>
-      <MenuItem value={"metal"}>metal</MenuItem>
-      <MenuItem value={"leather"}>leather</MenuItem>
-      <MenuItem value={"plastic"}>plastic</MenuItem>
+      <MenuItem value={" "}>-</MenuItem>
+      <MenuItem value={"wood"}>
+        {i18n.language === "en" ? "wood" : "خشب"}
+      </MenuItem>
+      <MenuItem value={"metal"}>
+        {i18n.language === "en" ? "metal" : "معدن"}
+      </MenuItem>
+      <MenuItem value={"leather"}>
+        {i18n.language === "en" ? "leather" : "جلد"}
+      </MenuItem>
+      <MenuItem value={"plastic"}>
+        {i18n.language === "en" ? "plastic" : "بلاستك"}
+      </MenuItem>
     </TextField>
   );
 }

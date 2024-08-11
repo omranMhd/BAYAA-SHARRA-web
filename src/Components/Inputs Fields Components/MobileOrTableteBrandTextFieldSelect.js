@@ -111,6 +111,7 @@ function MobileOrTableteBrandTextFieldSelect({
       error={!!errors.mobOrTabBrand}
       helperText={errors.mobOrTabBrand?.message}
     >
+      <MenuItem value={" "}>-</MenuItem>
       {brands.map((brand) => {
         return (
           <MenuItem key={brand.brand.en} value={brand.brand.en}>

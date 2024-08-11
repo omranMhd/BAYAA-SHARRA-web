@@ -19,6 +19,7 @@ function ComputerBrandTextFieldSelect({ register, errors, subCategory }) {
       error={!!errors.computerBrand}
       helperText={errors.computerBrand?.message}
     >
+      <MenuItem value={" "}>-</MenuItem>
       <MenuItem value={"mac"}>
         {i18n.language === "en" ? "MAC" : "ماك"}
       </MenuItem>

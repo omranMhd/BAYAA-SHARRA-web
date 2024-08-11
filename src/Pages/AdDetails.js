@@ -182,10 +182,12 @@ function AdDetails() {
               }
             >
               <Box
-                sx={{
-                  // height: "90vh",
-                  // overflowY: "auto",
-                }}
+                sx={
+                  {
+                    // height: "90vh",
+                    // overflowY: "auto",
+                  }
+                }
               >
                 {/* advertisement owner */}
                 <Box
@@ -334,10 +336,10 @@ function AdDetails() {
                             <Typography>
                               {adDetailsResponse?.data.data.additionalAttributes
                                 .sellOrRent === "rent" &&
-                                `${i18n.language === "en" ? "/" : "\\"} ${
+                                `${i18n.language === "en" ? "/" : "\\"} ${t(
                                   adDetailsResponse?.data.data
                                     .additionalAttributes.paymentMethodRent
-                                }`}
+                                )}`}
                             </Typography>
                           </Box>
                         ) : (

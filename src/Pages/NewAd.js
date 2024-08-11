@@ -430,9 +430,9 @@ function NewAd() {
 
     formData.append("photoes count", photoes.length);
 
-    console.log("formData :");
+    console.log("formData :", formData);
     formData.forEach((value, key) => {
-      console.log(`${key}: ${value}`);
+      console.log("--", `${key}: ${value}`);
     });
 
     addNewAd.mutate(formData);

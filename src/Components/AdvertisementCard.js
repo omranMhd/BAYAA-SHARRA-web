@@ -223,7 +223,7 @@ export default function AdvertisementCard({
                     }
                   }
                 >
-                  <Typography >
+                  <Typography>
                     {`${price
                       ?.toString()
                       .replace(/\B(?=(\d{3})+(?!\d))/g, ",")} ${currency}`}
@@ -232,9 +232,9 @@ export default function AdvertisementCard({
                 {/* طريقة الدفع في حال كان اجار */}
                 <Typography>
                   {sellOrRent === "rent" &&
-                    `${
-                      i18n.language === "en" ? "/" : "\\"
-                    } ${paymentMethodRent}`}
+                    `${i18n.language === "en" ? "/" : "\\"} ${t(
+                      paymentMethodRent
+                    )}`}
                 </Typography>
               </Box>
             ) : (
@@ -254,7 +254,7 @@ export default function AdvertisementCard({
                     }
                   }
                 >
-                  <Typography >
+                  <Typography>
                     <>
                       <del style={{ color: "red" }}>{`${price
                         ?.toString()
@@ -278,7 +278,7 @@ export default function AdvertisementCard({
                     }
                   }
                 >
-                  <Typography >
+                  <Typography>
                     {`${newPrice
                       ?.toString()
                       .replace(/\B(?=(\d{3})+(?!\d))/g, ",")}

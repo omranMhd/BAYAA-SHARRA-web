@@ -18,6 +18,7 @@ function CladdingTextFieldSelect({ register, errors }) {
       error={!!errors.cladding}
       helperText={errors.cladding?.message}
     >
+      <MenuItem value={" "}>-</MenuItem>
       <MenuItem value={"deluxe"}>
         {i18n.language === "en" ? "deluxe" : "ديلوكس"}
       </MenuItem>

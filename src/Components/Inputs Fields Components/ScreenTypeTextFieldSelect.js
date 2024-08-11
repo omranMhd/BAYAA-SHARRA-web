@@ -18,6 +18,7 @@ function ScreenTypeTextFieldSelect({ register, errors }) {
       error={!!errors.screenType}
       helperText={errors.screenType?.message}
     >
+      <MenuItem value={" "}>-</MenuItem>
       <MenuItem value={"touch"}>
         {i18n.language === "en" ? "touch" : "لمس"}
       </MenuItem>
