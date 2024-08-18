@@ -4,6 +4,7 @@ import PhotoSlide from "./PhotoSlide";
 import { useQuery, useMutation } from "react-query";
 import axiosInstance from "../Axios/axiosInstance";
 import Skeleton from "@mui/material/Skeleton";
+import config from "../config";
 
 import { Swiper, SwiperSlide } from "swiper/react";
 import {
@@ -79,7 +80,8 @@ function MainSlider() {
               return (
                 <SwiperSlide>
                   <PhotoSlide
-                    img={`http://127.0.0.1:8000/storage/${img.url}`}
+                    // img={`http://127.0.0.1:8000/storage/${img.url}`}
+                    img={`${config.baseUrl}/storage/${img.url}`}
                   />
                 </SwiperSlide>
               );

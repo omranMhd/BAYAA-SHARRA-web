@@ -1,4 +1,5 @@
 import { useState, useEffect, useContext } from "react";
+import config from "../config";
 import { styled, alpha } from "@mui/material/styles";
 import AppBar from "@mui/material/AppBar";
 import Box from "@mui/material/Box";
@@ -442,7 +443,8 @@ function MainAppBar() {
                     "App\\Notifications\\AddNewCommentOnAdvertisementNotification" && (
                     <Avatar
                       alt="Remy Sharp"
-                      src={`http://127.0.0.1:8000/storage/${notif.data.comment_owner?.image}`}
+                      // src={`http://127.0.0.1:8000/storage/${notif.data.comment_owner?.image}`}
+                      src={`${config.baseUrl}/storage/${notif.data.comment_owner?.image}`}
                       sx={{
                         mx: "5px",
                       }}
@@ -452,7 +454,8 @@ function MainAppBar() {
                     "App\\Notifications\\ReplyOnCommentNotification" && (
                     <Avatar
                       alt="Remy Sharp"
-                      src={`http://127.0.0.1:8000/storage/${notif.data.reply_owner?.image}`}
+                      // src={`http://127.0.0.1:8000/storage/${notif.data.reply_owner?.image}`}
+                      src={`${config.baseUrl}/storage/${notif.data.reply_owner?.image}`}
                       sx={{
                         mx: "5px",
                       }}
@@ -462,7 +465,8 @@ function MainAppBar() {
                     "App\\Notifications\\AcceptancePublishingAdvertisementNotification" && (
                     <Avatar
                       alt="Remy Sharp"
-                      src={`http://127.0.0.1:8000/storage/${notif.data.ad_image?.url}`}
+                      // src={`http://127.0.0.1:8000/storage/${notif.data.ad_image?.url}`}
+                      src={`${config.baseUrl}/storage/${notif.data.ad_image?.url}`}
                       sx={{
                         mx: "5px",
                       }}
@@ -472,7 +476,8 @@ function MainAppBar() {
                     "App\\Notifications\\RejectAdvertisementNotification" && (
                     <Avatar
                       alt="Remy Sharp"
-                      src={`http://127.0.0.1:8000/storage/${notif.data.ad_image?.url}`}
+                      // src={`http://127.0.0.1:8000/storage/${notif.data.ad_image?.url}`}
+                      src={`${config.baseUrl}/storage/${notif.data.ad_image?.url}`}
                       sx={{
                         mx: "5px",
                       }}
@@ -811,7 +816,8 @@ function MainAppBar() {
               >
                 <Avatar
                   alt="Remy Sharp"
-                  src={`http://127.0.0.1:8000/storage/${user.image}`}
+                  // src={`http://127.0.0.1:8000/storage/${user.image}`}
+                  src={`${config.baseUrl}/storage/${user.image}`}
                 />
               </IconButton>
             ) : (

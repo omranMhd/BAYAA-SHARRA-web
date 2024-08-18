@@ -55,33 +55,7 @@ function CategorySlide({
       enabled: false,
     }
   );
-  let icon = "";
-  switch (categoryName) {
-    case "RealEstates":
-      icon = (
-        <ApartmentIcon
-          fontSize="large"
-          // style={{ fontSize: "50px", margin: "auto" }}
-          style={{ fontSize: "50px", margin: "auto" }}
-        />
-      );
-      break;
-    case "vehicles":
-      icon = (
-        <DirectionsCarIcon
-          fontSize="large"
-          style={{ fontSize: "50px", margin: "auto" }}
-        />
-      );
-      break;
-    default:
-      icon = (
-        <ReportGmailerrorredIcon
-          fontSize="large"
-          style={{ fontSize: "50px", margin: "auto" }}
-        />
-      );
-  }
+
   return (
     <>
       <Box
@@ -110,7 +84,26 @@ function CategorySlide({
           }
         }}
       >
-        {icon}{" "}
+        <Box
+          sx={{
+            display: "flex",
+            margin: "auto",
+            backgroundColor: "white",
+            // padding:"5"
+            borderRadius: "100px",
+            width: "45px",
+            height: "45px",
+          }}
+        >
+          <img
+            width="30px"
+            height="30px"
+            style={{ margin: "auto" }}
+            src={`/icons/${categoryName}.png`}
+            alt="rr"
+          />
+        </Box>
+
         <Typography
           style={{ fontSize: "20px", margin: "auto", textAlign: "center" }}
           // style={{ fontSize: "20px", margin: "auto" }}

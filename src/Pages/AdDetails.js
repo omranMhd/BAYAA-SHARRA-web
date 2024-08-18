@@ -1,4 +1,5 @@
 import React from "react";
+import config from "../config";
 import { useParams } from "react-router-dom";
 import { useState, useEffect } from "react";
 import MainAppBar from "../Components/MainAppBar";
@@ -210,7 +211,8 @@ function AdDetails() {
                     alt="Remy Sharp"
                     src={
                       adDetailsResponse?.data.data.owner.photo != null
-                        ? `http://127.0.0.1:8000/storage/${adDetailsResponse?.data.data.owner.photo}`
+                        ? // ? `http://127.0.0.1:8000/storage/${adDetailsResponse?.data.data.owner.photo}`
+                          `${config.baseUrl}/storage/${adDetailsResponse?.data.data.owner.photo}`
                         : "/uesrPhoto.png"
                     }
                   />
@@ -575,7 +577,8 @@ function AdDetails() {
                 {similarAds?.data.data.map((ad) => {
                   return (
                     <AdvertisementCard
-                      image={`http://127.0.0.1:8000/storage/${ad.cardPhoto}`}
+                      // image={`http://127.0.0.1:8000/storage/${ad.cardPhoto}`}
+                      image={`${config.baseUrl}/storage/${ad.cardPhoto}`}
                       // image="/slide3.jpg"
                       // title="200 sqm furnished apartment we  we "
                       title={ad.title}

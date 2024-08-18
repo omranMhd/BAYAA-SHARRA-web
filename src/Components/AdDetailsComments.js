@@ -20,6 +20,7 @@ import { useQuery, useMutation, useQueryClient } from "react-query";
 import axiosInstance from "../Axios/axiosInstance";
 import { useTranslation } from "react-i18next";
 import useUserLogedin from "../Custom Hooks/useUserLogedin";
+import config from "../config";
 
 function AdDetailsComments({ user_id }) {
   const { t, i18n } = useTranslation();
@@ -245,7 +246,8 @@ function AdDetailsComments({ user_id }) {
                         height: "30px",
                       }}
                       alt="Remy Sharp"
-                      src={`http://127.0.0.1:8000/storage/${comment.user.image}`}
+                      // src={`http://127.0.0.1:8000/storage/${comment.user.image}`}
+                      src={`${config.baseUrl}/storage/${comment.user.image}`}
                     />
                     <Box
                       sx={{
@@ -352,7 +354,8 @@ function AdDetailsComments({ user_id }) {
                           height: "30px",
                         }}
                         alt="Remy Sharp"
-                        src={`http://127.0.0.1:8000/storage/${comment.reply.user.image}`}
+                        // src={`http://127.0.0.1:8000/storage/${comment.reply.user.image}`}
+                        src={`${config.baseUrl}/storage/${comment.reply.user.image}`}
                       />
                       <Box
                         sx={{

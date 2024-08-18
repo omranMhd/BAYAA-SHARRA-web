@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import config from "../config";
 import MainAppBar from "../Components/MainAppBar";
 import Footer from "../Components/Footer";
 import { useQuery, useMutation, useQueryClient } from "react-query";
@@ -163,8 +164,8 @@ function FavoriteAds() {
                   borderRadius: "15px",
                   ":hover": {
                     border: "1px solid black", // Assuming you want to change the border color on hover
-                    backgroundColor:"#fff",
-                    color:"#000"
+                    backgroundColor: "#fff",
+                    color: "#000",
                   },
                 }}
                 onClick={() => {
@@ -209,7 +210,8 @@ function FavoriteAds() {
         {favoriteAds.map((ad) => {
           return (
             <AdvertisementCard
-              image={`http://127.0.0.1:8000/storage/${ad.cardPhoto}`}
+              // image={`http://127.0.0.1:8000/storage/${ad.cardPhoto}`}
+              image={`${config.baseUrl}/storage/${ad.cardPhoto}`}
               // title="200 sqm furnished apartment we  we "
               // image="slide3.jpg"
               title={ad.title}

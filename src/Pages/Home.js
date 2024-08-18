@@ -11,7 +11,6 @@ import SideFilters from "../Components/SideFilters";
 import Grid from "@mui/material/Grid";
 
 import { useTheme } from "@mui/material/styles";
-import ShareAdvertisementsContext from "../Contexts/ShareAdvertisementsContext";
 import SvgIcon from "@mui/material/SvgIcon";
 // import Car from "../icons/Electrical devices.svg";
 import { Box, Typography } from "@mui/material";
@@ -36,12 +35,11 @@ function Home() {
 
   return (
     <>
-      <ShareAdvertisementsContext.Provider value={{ ads, setAds }}>
-        <MainAppBar />
-        <MainSlider />
-        <CategoriesSlider />
+      <MainAppBar />
+      <MainSlider />
+      <CategoriesSlider />
 
-        {/* <SvgIcon
+      {/* <SvgIcon
           sx={{
             fontSize: "50px",
             color: "blue",
@@ -61,26 +59,25 @@ function Home() {
           </svg>
         </SvgIcon> */}
 
-        <Grid container spacing={1} /*sx={{direction: "rtl"}}*/>
-          <Grid item xs={9}>
-            <AdvertisementsCardsViewer />
-          </Grid>
-          <Grid
-            item
-            xs={3}
-            sx={
-              {
-                // backgroundColor: theme.palette.DARK_BLUE_or_LIGHT_BLUE,
-                // height: "1000px",
-                // overflowY: "auto",
-              }
-            }
-          >
-            <SideFilters />
-          </Grid>
+      <Grid container spacing={1} /*sx={{direction: "rtl"}}*/>
+        <Grid item xs={9}>
+          <AdvertisementsCardsViewer />
         </Grid>
-        <Footer />
-      </ShareAdvertisementsContext.Provider>
+        <Grid
+          item
+          xs={3}
+          sx={
+            {
+              // backgroundColor: theme.palette.DARK_BLUE_or_LIGHT_BLUE,
+              // height: "1000px",
+              // overflowY: "auto",
+            }
+          }
+        >
+          <SideFilters />
+        </Grid>
+      </Grid>
+      <Footer />
     </>
   );
 }

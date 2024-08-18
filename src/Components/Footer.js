@@ -37,7 +37,7 @@ function Footer() {
         <Box
           sx={{
             backgroundColor: "#153258",
-            height: "500px",
+            // height: "500px",
             opacity: 0.9,
             // opacity: 0.9,
             // borderRadius: "0px 0px 100px 100px",
@@ -45,11 +45,17 @@ function Footer() {
           }}
         >
           <Box sx={{ opacity: 1 }}>
-            <Grid container spacing={1} sx={{ height: "330px" }}>
-              <Grid item xs={4}>
+            <Grid
+              container
+              spacing={1}
+              sx={{
+                // height: "330px",
+              }}
+            >
+              <Grid item xs={12} sm={8} md={6} lg={4}>
                 <Box
                   sx={{
-                    height: "400px",
+                    // height: "400px",
                     // border: "1px solid white",
                     marginLeft: "75px",
                     marginRight: "75px",

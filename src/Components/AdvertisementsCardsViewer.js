@@ -1,4 +1,5 @@
 import React, { useState, useContext, useEffect } from "react";
+import config from "../config";
 import Box from "@mui/material/Box";
 import { Link, json } from "react-router-dom";
 import AdvertisementCard from "../Components/AdvertisementCard";
@@ -104,7 +105,8 @@ function AdvertisementsCardsViewer() {
             {ads?.map((ad) => {
               return (
                 <AdvertisementCard
-                  image={`http://127.0.0.1:8000/storage/${ad.cardPhoto}`}
+                  // image={`http://127.0.0.1:8000/storage/${ad.cardPhoto}`}
+                  image={`${config.baseUrl}/storage/${ad.cardPhoto}`}
                   // title="200 sqm furnished apartment we  we "
                   // image="slide3.jpg"
                   title={ad.title}
@@ -142,7 +144,8 @@ function AdvertisementsCardsViewer() {
             {advertisements?.data.data.data.map((ad) => {
               return (
                 <AdvertisementCard
-                  image={`http://127.0.0.1:8000/storage/${ad.cardPhoto}`}
+                  // image={`http://127.0.0.1:8000/storage/${ad.cardPhoto}`}
+                  image={`${config.baseUrl}/storage/${ad.cardPhoto}`}
                   // title="200 sqm furnished apartment we  we "
                   // image="slide3.jpg"
                   title={ad.title}

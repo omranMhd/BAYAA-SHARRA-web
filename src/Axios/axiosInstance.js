@@ -1,8 +1,9 @@
 import axios from "axios";
+import config from "../config";
 
 // Create an Axios instance with a custom configuration
 const axiosInstance = axios.create({
-  baseURL: "http://127.0.0.1:8000/api", // Replace with your API's base URL
+  baseURL: `${config.baseUrl}/api`, // Replace with your API's base URL
   headers: {
     "Content-Type": "application/vnd.api+json",
     Accept: "application/vnd.api+json",

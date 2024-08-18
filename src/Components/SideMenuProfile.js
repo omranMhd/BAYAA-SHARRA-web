@@ -23,6 +23,7 @@ import DeleteOutlineIcon from "@mui/icons-material/DeleteOutline";
 import Dialog from "@mui/material/Dialog";
 import DialogTitle from "@mui/material/DialogTitle";
 import DialogActions from "@mui/material/DialogActions";
+import config from "../config";
 
 function SideMenuProfile() {
   const { t, i18n } = useTranslation();
@@ -146,7 +147,8 @@ function SideMenuProfile() {
   const currentProfilePhoto =
     user.image === null
       ? "/uesrPhoto.png"
-      : `http://127.0.0.1:8000/storage/${user.image}`;
+      : `${config.baseUrl}/storage/${user.image}`;
+  // : `http://127.0.0.1:8000/storage/${user.image}`;
 
   console.log("currentProfilePhoto :", currentProfilePhoto);
 

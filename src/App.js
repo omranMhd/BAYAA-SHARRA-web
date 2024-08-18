@@ -8,6 +8,7 @@ import CssBaseline from "@mui/material/CssBaseline";
 import { useState } from "react";
 import { Button } from "@mui/material";
 import ThemeContext from "./Contexts/ThemeContext";
+import ShareAdvertisementsContext from "./Contexts/ShareAdvertisementsContext";
 import lightObjectColors from "./Themes/light";
 import darkObjectColors from "./Themes/dark";
 
@@ -19,6 +20,7 @@ function App() {
       ? "light"
       : localStorage.getItem("themeMode")
   );
+  const [ads, setAds] = useState(null);
 
   const theme = createTheme({
     palette: {
@@ -59,10 +61,12 @@ function App() {
         <CssBaseline />
         {/*this provider to send "setMode method to MainAppBar component to use it to change mode*/}
         <ThemeContext.Provider value={{ mode, setMode }}>
-          <QueryClientProvider client={queryClient}>
-            <RouterProvider router={router} />
-            <ReactQueryDevtools />
-          </QueryClientProvider>
+          <ShareAdvertisementsContext.Provider value={{ ads, setAds }}>
+            <QueryClientProvider client={queryClient}>
+              <RouterProvider router={router} />
+              <ReactQueryDevtools />
+            </QueryClientProvider>
+          </ShareAdvertisementsContext.Provider>
         </ThemeContext.Provider>
       </ThemeProvider>
     </>
