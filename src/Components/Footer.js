@@ -48,11 +48,13 @@ function Footer() {
             <Grid
               container
               spacing={1}
-              sx={{
-                // height: "330px",
-              }}
+              sx={
+                {
+                  // height: "330px",
+                }
+              }
             >
-              <Grid item xs={12} sm={8} md={6} lg={4}>
+              <Grid item xs={12} sm={12} md={12} lg={4}>
                 <Box
                   sx={{
                     // height: "400px",
@@ -85,7 +87,7 @@ function Footer() {
                   </Typography>
                 </Box>
               </Grid>
-              <Grid item xs={2}>
+              <Grid item xs={6} sm={4} md={3} lg={2}>
                 <Box
                   sx={{
                     display: "flex",
@@ -230,7 +232,7 @@ function Footer() {
                   </Box>
                 </Box>
               </Grid>
-              <Grid item xs={2}>
+              <Grid item xs={6} sm={4} md={3} lg={2}>
                 <Box
                   sx={{
                     display: "flex",
@@ -375,7 +377,7 @@ function Footer() {
                   </Box>
                 </Box>
               </Grid>
-              <Grid item xs={2}>
+              <Grid item xs={6} sm={4} md={3} lg={2}>
                 <Box
                   sx={{
                     display: "flex",
@@ -516,7 +518,7 @@ function Footer() {
                   </Box>
                 </Box>
               </Grid>
-              <Grid item xs={2}>
+              <Grid item xs={6} sm={12} md={3} lg={2}>
                 <Box
                   sx={{
                     display: "flex",
@@ -559,6 +561,7 @@ function Footer() {
             <Box
               sx={{
                 display: "flex",
+                flexWrap: "wrap",
                 justifyContent: "space-around",
                 marginBottom: "25px",
                 marginTop: "25px",
@@ -608,7 +611,11 @@ function Footer() {
             <Divider
               sx={{ backgroundColor: "white", width: "90%", mx: "auto" }}
             />
-            <Box>
+            <Box
+              sx={{
+                paddingBottom: "20px",
+              }}
+            >
               <Typography
                 sx={{
                   textAlign: "center",
