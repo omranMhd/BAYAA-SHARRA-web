@@ -14,10 +14,9 @@ import ReportGmailerrorredIcon from "@mui/icons-material/ReportGmailerrorred";
 
 import ShareAdvertisementsContext from "../Contexts/ShareAdvertisementsContext";
 import { Typography } from "@mui/material";
-
-import CircularProgress from "@mui/material/CircularProgress";
 import { useTranslation } from "react-i18next";
 import FilterDialog from "./FilterDialog";
+import LoadingDialog from "./LoadingDialog";
 
 function AdvertisementsCardsViewer() {
   const { ads, setAds } = useContext(ShareAdvertisementsContext);
@@ -212,6 +211,7 @@ function AdvertisementsCardsViewer() {
           setOpenFilterDialog={setOpenFilterDialog}
         />
       </Box>
+      <LoadingDialog openDialog={advertisementsIsLoading} />
     </>
   );
 }

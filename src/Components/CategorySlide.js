@@ -10,6 +10,7 @@ import ShareAdvertisementsContext from "../Contexts/ShareAdvertisementsContext";
 import { useQuery } from "react-query";
 import useUserLogedin from "../Custom Hooks/useUserLogedin";
 import axiosInstance from "../Axios/axiosInstance";
+import LoadingDialog from "./LoadingDialog";
 
 function CategorySlide({
   categoryName,
@@ -112,6 +113,7 @@ function CategorySlide({
           {i18n.language === "ar" && categoryName_ar}
         </Typography>
       </Box>
+      <LoadingDialog openDialog={filteredAdsIsLoading} />
     </>
   );
 }

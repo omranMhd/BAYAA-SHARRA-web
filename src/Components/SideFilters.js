@@ -11,6 +11,7 @@ import Tooltip from "@mui/material/Tooltip";
 import { useTranslation } from "react-i18next";
 import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
 import KeyboardArrowUpIcon from "@mui/icons-material/KeyboardArrowUp";
+import LoadingDialog from "./LoadingDialog";
 
 function RealestateItem({ category_name, category_id, image }) {
   const isUserLogedin = useUserLogedin();
@@ -50,28 +51,31 @@ function RealestateItem({ category_name, category_id, image }) {
     }
   );
   return (
-    <Tooltip title={t(category_name)} arrow>
-      <Box
-        sx={{
-          cursor: "pointer",
-          border: `1px solid ${theme.palette.LIGHT_BLUE_or_DARK_BLUE}`,
-          ":hover": {
-            border: `3px solid ${theme.palette.LIGHT_BLUE_or_DARK_BLUE}`,
-          },
-          backgroundImage: `url(/realestateCategoriesPhoto/${image})`,
-          backgroundSize: "cover", // Cover the entire Box with the image
-          backgroundPosition: "center",
-          borderRadius: "10px",
-          width: "75px",
-          height: "75px",
-          margin: "5px",
-          // boxSizing: "content-box"
-        }}
-        onClick={() => {
-          refetchRealEstate();
-        }}
-      ></Box>
-    </Tooltip>
+    <>
+      <Tooltip title={t(category_name)} arrow>
+        <Box
+          sx={{
+            cursor: "pointer",
+            border: `1px solid ${theme.palette.LIGHT_BLUE_or_DARK_BLUE}`,
+            ":hover": {
+              border: `3px solid ${theme.palette.LIGHT_BLUE_or_DARK_BLUE}`,
+            },
+            backgroundImage: `url(/realestateCategoriesPhoto/${image})`,
+            backgroundSize: "cover", // Cover the entire Box with the image
+            backgroundPosition: "center",
+            borderRadius: "10px",
+            width: "75px",
+            height: "75px",
+            margin: "5px",
+            // boxSizing: "content-box"
+          }}
+          onClick={() => {
+            refetchRealEstate();
+          }}
+        ></Box>
+      </Tooltip>
+      <LoadingDialog openDialog={realestatesdAdsIsLoading} />
+    </>
   );
 }
 function VehicleBrand({ brandPhoto, brandName, brandNameAr }) {
@@ -113,28 +117,31 @@ function VehicleBrand({ brandPhoto, brandName, brandNameAr }) {
     }
   );
   return (
-    <Tooltip title={i18n.language === "en" ? brandName : brandNameAr} arrow>
-      <Box
-        sx={{
-          cursor: "pointer",
-          border: `1px solid ${theme.palette.LIGHT_BLUE_or_DARK_BLUE}`,
-          ":hover": {
-            border: `3px solid ${theme.palette.LIGHT_BLUE_or_DARK_BLUE}`,
-          },
-          backgroundImage: `url(/vehiclesBrands/${brandPhoto}.png)`,
-          backgroundSize: "cover", // Cover the entire Box with the image
-          backgroundPosition: "center",
-          borderRadius: "10px",
-          width: "75px",
-          height: "75px",
-          margin: "5px",
-          // boxSizing: "content-box"
-        }}
-        onClick={() => {
-          refetchBrand();
-        }}
-      ></Box>
-    </Tooltip>
+    <>
+      <Tooltip title={i18n.language === "en" ? brandName : brandNameAr} arrow>
+        <Box
+          sx={{
+            cursor: "pointer",
+            border: `1px solid ${theme.palette.LIGHT_BLUE_or_DARK_BLUE}`,
+            ":hover": {
+              border: `3px solid ${theme.palette.LIGHT_BLUE_or_DARK_BLUE}`,
+            },
+            backgroundImage: `url(/vehiclesBrands/${brandPhoto}.png)`,
+            backgroundSize: "cover", // Cover the entire Box with the image
+            backgroundPosition: "center",
+            borderRadius: "10px",
+            width: "75px",
+            height: "75px",
+            margin: "5px",
+            // boxSizing: "content-box"
+          }}
+          onClick={() => {
+            refetchBrand();
+          }}
+        ></Box>
+      </Tooltip>
+      <LoadingDialog openDialog={brandAdsIsLoading} />
+    </>
   );
 }
 
@@ -176,29 +183,31 @@ function FurnitureItem({ image, categoryEn, categoryAr }) {
     }
   );
   return (
-    // <Tooltip title={i18n.language === "en" ? brandName : brandNameAr} arrow>
-    <Tooltip title={i18n.language === "en" ? categoryEn : categoryAr} arrow>
-      <Box
-        sx={{
-          cursor: "pointer",
-          border: `1px solid ${theme.palette.LIGHT_BLUE_or_DARK_BLUE}`,
-          ":hover": {
-            border: `3px solid ${theme.palette.LIGHT_BLUE_or_DARK_BLUE}`,
-          },
-          backgroundImage: `url(${image})`,
-          backgroundSize: "cover", // Cover the entire Box with the image
-          backgroundPosition: "center",
-          borderRadius: "10px",
-          width: "75px",
-          height: "75px",
-          margin: "5px",
-          // boxSizing: "content-box"
-        }}
-        onClick={() => {
-          refetchFurniture();
-        }}
-      ></Box>
-    </Tooltip>
+    <>
+      <Tooltip title={i18n.language === "en" ? categoryEn : categoryAr} arrow>
+        <Box
+          sx={{
+            cursor: "pointer",
+            border: `1px solid ${theme.palette.LIGHT_BLUE_or_DARK_BLUE}`,
+            ":hover": {
+              border: `3px solid ${theme.palette.LIGHT_BLUE_or_DARK_BLUE}`,
+            },
+            backgroundImage: `url(${image})`,
+            backgroundSize: "cover", // Cover the entire Box with the image
+            backgroundPosition: "center",
+            borderRadius: "10px",
+            width: "75px",
+            height: "75px",
+            margin: "5px",
+            // boxSizing: "content-box"
+          }}
+          onClick={() => {
+            refetchFurniture();
+          }}
+        ></Box>
+      </Tooltip>
+      <LoadingDialog openDialog={furnitureAdsIsLoading} />
+    </>
   );
 }
 
@@ -240,28 +249,31 @@ function AnimalsItem({ image, categoryEn, categoryAr }) {
     }
   );
   return (
-    <Tooltip title={i18n.language === "en" ? categoryEn : categoryAr} arrow>
-      <Box
-        sx={{
-          cursor: "pointer",
-          border: `1px solid ${theme.palette.LIGHT_BLUE_or_DARK_BLUE}`,
-          ":hover": {
-            border: `3px solid ${theme.palette.LIGHT_BLUE_or_DARK_BLUE}`,
-          },
-          backgroundImage: `url(${image})`,
-          backgroundSize: "cover", // Cover the entire Box with the image
-          backgroundPosition: "center",
-          borderRadius: "10px",
-          width: "75px",
-          height: "75px",
-          margin: "5px",
-          // boxSizing: "content-box"
-        }}
-        onClick={() => {
-          refetchAnimal();
-        }}
-      ></Box>
-    </Tooltip>
+    <>
+      <Tooltip title={i18n.language === "en" ? categoryEn : categoryAr} arrow>
+        <Box
+          sx={{
+            cursor: "pointer",
+            border: `1px solid ${theme.palette.LIGHT_BLUE_or_DARK_BLUE}`,
+            ":hover": {
+              border: `3px solid ${theme.palette.LIGHT_BLUE_or_DARK_BLUE}`,
+            },
+            backgroundImage: `url(${image})`,
+            backgroundSize: "cover", // Cover the entire Box with the image
+            backgroundPosition: "center",
+            borderRadius: "10px",
+            width: "75px",
+            height: "75px",
+            margin: "5px",
+            // boxSizing: "content-box"
+          }}
+          onClick={() => {
+            refetchAnimal();
+          }}
+        ></Box>
+      </Tooltip>
+      <LoadingDialog openDialog={animalAdsIsLoading} />
+    </>
   );
 }
 
@@ -271,9 +283,9 @@ function MobileBrands({ image, brandEn, brandAr }) {
   const { t, i18n } = useTranslation();
   const { ads, setAds } = useContext(ShareAdvertisementsContext);
   const {
-    isLoading: animalAdsIsLoading,
-    data: animalAds,
-    refetch: refetchAnimal,
+    isLoading: mobileBrandsAdsIsLoading,
+    data: mobileBrandsAds,
+    refetch: refetchMobileBrands,
   } = useQuery(
     `mobile-ads-${brandEn}`,
     () => {
@@ -304,28 +316,31 @@ function MobileBrands({ image, brandEn, brandAr }) {
     }
   );
   return (
-    <Tooltip title={i18n.language === "en" ? brandEn : brandAr} arrow>
-      <Box
-        sx={{
-          cursor: "pointer",
-          border: `1px solid ${theme.palette.LIGHT_BLUE_or_DARK_BLUE}`,
-          ":hover": {
-            border: `3px solid ${theme.palette.LIGHT_BLUE_or_DARK_BLUE}`,
-          },
-          backgroundImage: `url(${image})`,
-          backgroundSize: "cover", // Cover the entire Box with the image
-          backgroundPosition: "center",
-          borderRadius: "10px",
-          width: "75px",
-          height: "75px",
-          margin: "5px",
-          // boxSizing: "content-box"
-        }}
-        onClick={() => {
-          refetchAnimal();
-        }}
-      ></Box>
-    </Tooltip>
+    <>
+      <Tooltip title={i18n.language === "en" ? brandEn : brandAr} arrow>
+        <Box
+          sx={{
+            cursor: "pointer",
+            border: `1px solid ${theme.palette.LIGHT_BLUE_or_DARK_BLUE}`,
+            ":hover": {
+              border: `3px solid ${theme.palette.LIGHT_BLUE_or_DARK_BLUE}`,
+            },
+            backgroundImage: `url(${image})`,
+            backgroundSize: "cover", // Cover the entire Box with the image
+            backgroundPosition: "center",
+            borderRadius: "10px",
+            width: "75px",
+            height: "75px",
+            margin: "5px",
+            // boxSizing: "content-box"
+          }}
+          onClick={() => {
+            refetchMobileBrands();
+          }}
+        ></Box>
+      </Tooltip>
+      <LoadingDialog openDialog={mobileBrandsAdsIsLoading} />
+    </>
   );
 }
 function ComputerBrands({ image, brandEn, brandAr }) {
@@ -334,9 +349,9 @@ function ComputerBrands({ image, brandEn, brandAr }) {
   const { t, i18n } = useTranslation();
   const { ads, setAds } = useContext(ShareAdvertisementsContext);
   const {
-    isLoading: animalAdsIsLoading,
-    data: animalAds,
-    refetch: refetchAnimal,
+    isLoading: computerBrandsAdsIsLoading,
+    data: computerBrandsAds,
+    refetch: refetchComputerBrands,
   } = useQuery(
     `computer-ads-${brandEn}`,
     () => {
@@ -367,28 +382,31 @@ function ComputerBrands({ image, brandEn, brandAr }) {
     }
   );
   return (
-    <Tooltip title={i18n.language === "en" ? brandEn : brandAr} arrow>
-      <Box
-        sx={{
-          cursor: "pointer",
-          border: `1px solid ${theme.palette.LIGHT_BLUE_or_DARK_BLUE}`,
-          ":hover": {
-            border: `3px solid ${theme.palette.LIGHT_BLUE_or_DARK_BLUE}`,
-          },
-          backgroundImage: `url(${image})`,
-          backgroundSize: "cover", // Cover the entire Box with the image
-          backgroundPosition: "center",
-          borderRadius: "10px",
-          width: "75px",
-          height: "75px",
-          margin: "5px",
-          // boxSizing: "content-box"
-        }}
-        onClick={() => {
-          refetchAnimal();
-        }}
-      ></Box>
-    </Tooltip>
+    <>
+      <Tooltip title={i18n.language === "en" ? brandEn : brandAr} arrow>
+        <Box
+          sx={{
+            cursor: "pointer",
+            border: `1px solid ${theme.palette.LIGHT_BLUE_or_DARK_BLUE}`,
+            ":hover": {
+              border: `3px solid ${theme.palette.LIGHT_BLUE_or_DARK_BLUE}`,
+            },
+            backgroundImage: `url(${image})`,
+            backgroundSize: "cover", // Cover the entire Box with the image
+            backgroundPosition: "center",
+            borderRadius: "10px",
+            width: "75px",
+            height: "75px",
+            margin: "5px",
+            // boxSizing: "content-box"
+          }}
+          onClick={() => {
+            refetchComputerBrands();
+          }}
+        ></Box>
+      </Tooltip>
+      <LoadingDialog openDialog={computerBrandsAdsIsLoading} />
+    </>
   );
 }
 function SideFilters() {
