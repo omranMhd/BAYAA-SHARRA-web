@@ -35,6 +35,32 @@ import AccessTimeIcon from "@mui/icons-material/AccessTime";
 import useUserLogedin from "../Custom Hooks/useUserLogedin";
 import AdDetailsActions from "../Components/AdDetailsActions";
 import AdDetailsComments from "../Components/AdDetailsComments";
+import LoadingDialog from "../Components/LoadingDialog";
+import Skeleton from "@mui/material/Skeleton";
+
+function AdDetailsSkeleton() {
+  return (
+    <Box
+      sx={{
+        display: "flex",
+        flexDirection: "column",
+        alignItems: "center",
+        paddingTop: "30px",
+      }}
+    >
+      <Skeleton
+        variant="rectangular"
+        width={"95%"}
+        height={60}
+        sx={{
+          borderRadius: "50px",
+          marginBottom: "10px",
+        }}
+      />
+      <Skeleton variant="rectangular" width={"50%"} height={400} />
+    </Box>
+  );
+}
 
 function AdDetails() {
   const { t, i18n } = useTranslation();
@@ -65,12 +91,14 @@ function AdDetails() {
         // Handle the response data here
         // console.log("onSuccess response", response);
         console.log("test test", response);
-        setPageNotFound(false);
+        // setPageNotFound(false);
       },
       onError: (error) => {
         // Handle any errors here
         console.error("onError", error);
-        setPageNotFound(true);
+        if (error.response.status === 404) {
+          setPageNotFound(true);
+        }
       },
       onSettled: () => {
         // This will run after the mutation is either successful or fails
@@ -168,13 +196,15 @@ function AdDetails() {
     <>
       <Box sx={{ backgroundColor: theme.palette.BLACK_or_BLUED_WHITE }}>
         <MainAppBar />
-        {adDetailsIsLoading ? (
-          <Box>...</Box>
-        ) : adDetailsResponse?.data.data != undefined ? (
+        {adDetailsIsLoading && <AdDetailsSkeleton />}
+        {pageNotFound && (
+          <img alt="page not found" src="/404.png" width={"100%"}/>
+        )}
+        {adDetailsResponse?.data.data != undefined && (
           <Grid container spacing={1}>
             <Grid
               item
-              xs={9}
+              xs={12}
               sx={
                 {
                   // backgroundColor: "red",
@@ -263,6 +293,7 @@ function AdDetails() {
                     sx={{
                       display: "flex",
                       flexDirection: "row",
+                      flexWrap: "wrap",
                       justifyContent: "space-between",
                       // justifyContent: "space-around",
                       padding: "10px",
@@ -545,7 +576,7 @@ function AdDetails() {
             </Grid>
             <Grid
               item
-              xs={3}
+              xs={12}
               sx={
                 {
                   // backgroundColor: "blue",
@@ -567,10 +598,10 @@ function AdDetails() {
                 sx={{
                   // backgroundColor: "blue",
                   display: "flex",
-                  flexDirection: "column",
-                  justifyContent: "space-around",
-                  // flexWrap: "wrap",
-                  alignContent: "space-around",
+                  // flexDirection: "column",
+                  // justifyContent: "space-around",
+                  flexWrap: "wrap",
+                  // alignContent: "space-around",
                   padding: "20px",
                 }}
               >
@@ -588,7 +619,8 @@ function AdDetails() {
                       adderss={ad.address}
                       sellOrRent={ad.sellOrRent}
                       date={ad.created_at}
-                      cardWidth="auto"
+                      // cardWidth="auto"
+                      cardWidth="350px"
                       id={ad.id}
                       isAdInFavoriteListProp={ad.isAdInFavoriteList}
                       paymentMethodRent={ad.paymentMethodRent}
@@ -598,13 +630,10 @@ function AdDetails() {
               </Box>
             </Grid>
           </Grid>
-        ) : (
-          <>
-            <img alt="page not found" src="/404.png" width={"100%"} />
-          </>
         )}
       </Box>
       <Footer />
+      <LoadingDialog openDialog={adDetailsIsLoading} />
     </>
   );
 }

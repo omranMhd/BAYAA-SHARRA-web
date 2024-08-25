@@ -19,7 +19,13 @@ function GridItem({ label, value }) {
   const { t, i18n } = useTranslation();
   const theme = useTheme();
   return (
-    <Grid item xs={6} sx={{ display: "flex", flexDirection: "column" }}>
+    <Grid
+      item
+      xs={12}
+      sm={12}
+      md={6}
+      sx={{ display: "flex", flexDirection: "column" }}
+    >
       <Box sx={{ display: "flex", justifyContent: "space-between" }}>
         <Box sx={{ display: "flex" }}>
           <HomeIcon

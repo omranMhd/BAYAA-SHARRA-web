@@ -23,7 +23,6 @@ import AdvertisementCard from "../Components/AdvertisementCard";
 import config from "../config";
 import ReportGmailerrorredIcon from "@mui/icons-material/ReportGmailerrorred";
 
-
 /////////////////////////////////
 
 import { Swiper, SwiperSlide } from "swiper/react";
@@ -63,6 +62,13 @@ function SearchInput() {
   const [openShowSearchedAdsDialog, setOpenShowSearchedAdsDialog] =
     useState(false);
   const [searchedAds, setSearchedAds] = useState(null);
+  const [width, setWidth] = useState(window.innerWidth);
+
+  useEffect(() => {
+    const handleResize = () => setWidth(window.innerWidth);
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize); // Cleanup listener on unmount
+  }, []); // Empty dependency array means this effect runs once on mount and cleanup on unmount
 
   const getsearchedAdsMutation = useMutation(
     (queryParams) => {
@@ -123,6 +129,7 @@ function SearchInput() {
           },
         }}
       >
+        {/* Search Button */}
         <Button
           variant="contained"
           sx={{
@@ -158,7 +165,7 @@ function SearchInput() {
             // direction: i18n.language === "en" ? "ltr" : "rtl",
           }}
         >
-          {searchText === "" && (
+          {searchText === "" && width >= 900 && (
             <Box
               sx={{
                 color: "black",
@@ -175,10 +182,6 @@ function SearchInput() {
                 justifyContent: "left",
               }}
             >
-              {/* <DirectionsCarIcon /> */}
-              {/* <CottageIcon /> */}
-              {/* <DomainIcon /> */}
-
               {i18n.language === "en" && (
                 <Typography
                   sx={{
@@ -251,25 +254,6 @@ function SearchInput() {
                           src={`/icons/${category.name_en}.png`}
                           alt="rr"
                         />
-                        {/* <Box
-                        sx={{
-                          display: "flex",
-                          margin: "auto",
-                          backgroundColor: "white",
-                          // padding:"5"
-                          borderRadius: "100px",
-                          width: "45px",
-                          height: "45px",
-                        }}
-                      >
-                        <img
-                          width="30px"
-                          height="30px"
-                          style={{ margin: "auto" }}
-                          src={`/icons/${category.name_en}.png`}
-                          alt="rr"
-                        />
-                      </Box> */}
                       </Box>
                     </SwiperSlide>
                   );
@@ -280,6 +264,7 @@ function SearchInput() {
                   sx={{
                     whiteSpace: "nowrap",
                     mr: "2px",
+                    display: { sm: "inline" },
                   }}
                 >
                   البحث في

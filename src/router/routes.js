@@ -9,6 +9,7 @@ import Profile from "../Pages/Profile";
 import FavoriteAds from "../Pages/FavoriteAds";
 import VerevicationCode from "../Pages/VerevicationCode";
 import NoMatch from "../Pages/NoMatch";
+import PrivacyPolicy from "../Pages/PrivacyPolicy";
 import ProtectedRoute from "../Components/ProtectedRoute";
 import UserInfo from "../Components/UserInfo";
 import UserAdvertisements from "../Components/UserAdvertisements";
@@ -34,6 +35,10 @@ const routes = createBrowserRouter([
   {
     path: "/register",
     element: <Register />,
+  },
+  {
+    path: "/privacy-policy",
+    element: <PrivacyPolicy />,
   },
   {
     path: "/new-ad",

@@ -1806,11 +1806,15 @@ function NewAd() {
                         width: "250px",
                         height: "250px",
                         borderRadius: "10px",
+                        display: "flex",
+                        flexDirection: "column",
                       }}
                       onClick={() => {
                         handleIconClick(`file_input_${n}`);
                       }}
                     >
+                      <Typography variant="h4">{n + 1}</Typography>
+
                       <AddAPhotoIcon />
                     </IconButton>
                   )}

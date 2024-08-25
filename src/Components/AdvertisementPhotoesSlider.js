@@ -4,6 +4,7 @@ import Box from "@mui/material/Box";
 import ArrowForwardIosRoundedIcon from "@mui/icons-material/ArrowForwardIosRounded";
 import ArrowBackIosNewRoundedIcon from "@mui/icons-material/ArrowBackIosNewRounded";
 import { IconButton } from "@mui/material";
+import { useState, useEffect } from "react";
 import { Swiper, SwiperSlide } from "swiper/react";
 import {
   Pagination as SwiperPagination,
@@ -14,6 +15,13 @@ import {
 
 function AdvertisementPhotoesSlider({ photoes }) {
   const swiperRef = useRef(null);
+  const [width, setWidth] = useState(window.innerWidth);
+
+  useEffect(() => {
+    const handleResize = () => setWidth(window.innerWidth);
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize); // Cleanup listener on unmount
+  }, []); // Empty dependency array means this effect runs once on mount and cleanup on unmount
   const paginationStyle = {
     bullet: {
       backgroundColor: "#1f8ccc", // Red color
@@ -88,7 +96,8 @@ function AdvertisementPhotoesSlider({ photoes }) {
                   // src={`http://127.0.0.1:8000/storage/${photo}`}
                   src={`${config.baseUrl}/storage/${photo}`}
                   style={{
-                    height: "460px",
+                    // height: "460px",
+                    height: width < 900 ? "260px" : "460px",
                     marginBottom: "30px",
                   }}
                 />

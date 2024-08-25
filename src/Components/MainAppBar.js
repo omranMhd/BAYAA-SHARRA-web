@@ -620,7 +620,7 @@ function MainAppBar() {
           backgroundColor: "#1f8ccc",
         }}
       >
-        this{" "}
+        
       </Box>
       <AppBar
         position="fixed"
@@ -663,27 +663,6 @@ function MainAppBar() {
           {/* Search input component */}
           <SearchInput />
 
-          {/* <Search> */}
-          {/* <SearchIconWrapper>
-              <SearchIcon />
-            </SearchIconWrapper> */}
-
-          {/* <StyledInputBase
-              placeholder={t("search")}
-              inputProps={{ "aria-label": "search" }}
-              onKeyUp={(e) => {
-                if (e.key === "Enter") {
-                  alert(e.target.value);
-                  // Perform your desired action here
-                }
-              }}
-              value={searchText}
-              onChange={(e) => {
-                setSearchText(e.target.value);
-              }}
-            /> */}
-          {/* </Search> */}
-          {/* <Box sx={{ flexGrow: 1 }} /> */}
           <Button
             variant="contained"
             // color={theme.palette.DARK_BLUE}

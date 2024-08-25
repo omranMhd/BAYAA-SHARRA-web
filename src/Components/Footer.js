@@ -13,11 +13,13 @@ import GoogleIcon from "@mui/icons-material/Google";
 import { useTheme } from "@mui/material/styles";
 import FeeCalculationDialog from "./FeeCalculationDialog";
 import { useTranslation } from "react-i18next";
+import { useNavigate } from "react-router-dom";
 
 function Footer() {
   const [openFeeCalculationDialog, setOpenFeeCalculationDialog] =
     useState(false);
   const theme = useTheme();
+  const navigate = useNavigate();
   const { t, i18n } = useTranslation();
 
   return (
@@ -30,7 +32,7 @@ function Footer() {
           backgroundPosition: "center",
           // height: "500px",
           borderRadius: "0px 0px 100px 100px",
-          marginTop: "50px",
+          // marginTop: "50px",
         }}
       >
         {/* image mask */}
@@ -370,6 +372,10 @@ function Footer() {
                       sx={{
                         marginBottom: "5px",
                         color: "white",
+                        cursor: "pointer",
+                      }}
+                      onClick={() => {
+                        navigate("/privacy-policy");
                       }}
                     >
                       {t("Privacy Policy")}
