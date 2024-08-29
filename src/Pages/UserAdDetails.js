@@ -418,6 +418,7 @@ function UserAdDetails() {
               sx={{
                 display: "flex",
                 flexDirection: "row",
+                flexWrap: "wrap",
                 justifyContent: "space-between",
                 // justifyContent: "space-around",
                 padding: "10px",

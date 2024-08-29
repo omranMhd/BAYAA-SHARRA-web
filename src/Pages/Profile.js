@@ -11,17 +11,19 @@ function Profile() {
     <>
       <MainAppBar />
       <Grid container spacing={1} /*sx={{direction: "rtl"}}*/>
-        <Grid item xs={10}>
+        <Grid item xs={12} md={3}>
+          <SideMenuProfile />
+        </Grid>
+        <Grid item xs={12} md={9}>
           <Box
-            sx={{
-              // backgroundColor: "red",
-            }}
+            sx={
+              {
+                // backgroundColor: "red",
+              }
+            }
           >
             <Outlet />
           </Box>
-        </Grid>
-        <Grid item xs={2}>
-          <SideMenuProfile />
         </Grid>
       </Grid>
       <Footer />

@@ -588,7 +588,7 @@ function MainAppBar() {
           >
             <AccountCircle />
           </IconButton>
-          <p>Profile</p>
+          <p>{t("Profile")}</p>
         </MenuItem>
       ) : (
         <MenuItem
@@ -619,9 +619,7 @@ function MainAppBar() {
           height: "68px",
           backgroundColor: "#1f8ccc",
         }}
-      >
-        
-      </Box>
+      ></Box>
       <AppBar
         position="fixed"
         sx={{ backgroundColor: "#e7e7e7", width: "100%" }}

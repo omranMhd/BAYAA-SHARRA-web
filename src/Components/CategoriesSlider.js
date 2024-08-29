@@ -39,17 +39,29 @@ function CategoriesSlider() {
     return () => window.removeEventListener("resize", handleResize); // Cleanup listener on unmount
   }, []); // Empty dependency array means this effect runs once on mount and cleanup on unmount
 
+  // const slidesPerViewCount = () => {
+  //   if (width > 1200) {
+  //     return 5;
+  //   } else if (width <= 1200 && width > 900) {
+  //     return 4;
+  //   } else if (width <= 900 && width > 600) {
+  //     return 3;
+  //   } else if (width <= 600) {
+  //     return 2;
+  //   }
+  // };
   const slidesPerViewCount = () => {
     if (width > 1200) {
       return 5;
     } else if (width <= 1200 && width > 900) {
-      return 4;
-    } else if (width <= 900 && width > 600) {
       return 3;
-    } else if (width <= 600) {
+    } else if (width <= 900 && width > 600) {
       return 2;
+    } else if (width <= 600) {
+      return 1;
     }
   };
+
   const { isLoading: mainCategoriesIsLoading, data: mainCategories } = useQuery(
     "main-categories",
     () => {

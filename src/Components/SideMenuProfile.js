@@ -184,8 +184,9 @@ function SideMenuProfile() {
       <Box
         sx={{
           position: "relative",
-          width: "200px",
-          height: "200px",
+          width: "150px",
+          // width: "50px",
+          height: "150px",
           borderRadius: "100%",
           backgroundImage:
             newProfilePhoto != null

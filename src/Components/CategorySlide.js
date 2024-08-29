@@ -61,6 +61,7 @@ function CategorySlide({
     <>
       <Box
         sx={{
+          // height:"50px",
           display: "flex",
           justifyContent: "center",
           cursor: "pointer",
